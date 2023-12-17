@@ -1,0 +1,13 @@
+syntax = "proto3";
+package quickMining;
+
+enum QuickMiningMode {
+  WhenSneaking   = 0; // Default
+  UnlessSneaking = 1;
+  AlwaysEnabled  = 2;
+  AlwaysDisabled = 3;
+}
+
+message PlayerPrefs {
+  QuickMiningMode mode = 1;
+}

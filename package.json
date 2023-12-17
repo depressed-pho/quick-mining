@@ -1,0 +1,36 @@
+{
+  "name": "quick-mining-addon",
+  "version": "1.0.4",
+  "description": "Allow players to mine the entire ore vein, tree, and more.",
+  "scripts": {
+    "build": "cicada-build",
+    "clean": "cicada-build clean",
+    "distclean": "cicada-build distclean",
+    "install-addon": "cicada-build install",
+    "watch": "cicada-build watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/depressed-pho/quick-mining-addon.git"
+  },
+  "keywords": [
+    "Minecraft",
+    "Bedrock",
+    "Addon"
+  ],
+  "author": "PHO",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/depressed-pho/quick-mining-addon/issues"
+  },
+  "homepage": "https://github.com/depressed-pho/quick-mining-addon#readme",
+  "devDependencies": {
+    "@protobuf-ts/plugin": "^2.8.2",
+    "cicada-build": "github:depressed-pho/cicada-build",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@protobuf-ts/runtime": "^2.8.2",
+    "cicada-lib": "github:depressed-pho/cicada-lib"
+  }
+}

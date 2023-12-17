@@ -1,0 +1,28 @@
+# Editor backups
+*~
+
+# npm
+node_modules
+
+# Autotools
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache
+autoscan.log
+config.log
+config.status
+configure
+configure.scan
+install-sh
+missing
+
+# Built files
+dist
+_build
+*.mcpack
+manifest.json
+
+# Files that are intentionally uncommitted
+Build.rc.local
+.env
