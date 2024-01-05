@@ -3,29 +3,22 @@ import { ItemStack } from "cicada-lib/item/stack.js";
 import { LootCondition, LootTable, LootPool, blockLoots
        } from "../../loot-table.js";
 
-const silkTouchLike =
-    LootCondition.or([
-        LootCondition.matchTool()
-            .typeId("minecraft:shears"),
-        LootCondition.matchTool()
-            .enchantment("silk_touch")
-    ]);
-
-function baseTable(stack: ItemStack): LootTable {
+function lootOfLeaves(leafBlock: ItemStack, extraPools: LootPool[]): LootTable {
     return new LootTable()
-        .add(
-            new LootPool()
-                .condition(silkTouchLike)
-                .entry(stack))
-        .add(
-            new LootPool()
+        .when(
+            LootCondition.or([
+                LootCondition.matchTool().typeId("minecraft:shears"),
+                LootCondition.matchTool().enchantment("silk_touch")
+            ]),
+            [ new LootPool().entry(leafBlock) ]) // 100% drop
+
+        .otherwise(
+            [ new LootPool()
                 .rolls(1, 2)
-                .condition(
-                    LootCondition.and([
-                        LootCondition.not(silkTouchLike),
-                        LootCondition.randomChance(1/50, 1/45, 1/40, 1/30)
-                    ]))
-                .entry(new ItemStack("minecraft:stick")));
+                .condition(LootCondition.randomChance(1/50, 1/45, 1/40, 1/30))
+                .entry(new ItemStack("minecraft:stick")),
+              ...extraPools
+            ]);
 }
 
 // There seems to be no means to directly construct an ItemStack with state
@@ -42,14 +35,32 @@ function itemWithStates(typeId: string,
         throw new Error("No item stack is available for the given ID and states");
 }
 
+// Jungle leaves
 blockLoots.add(
     "minecraft:leaves", {old_leaf_type: "jungle"},
-    baseTable(itemWithStates("minecraft:leaves", {old_leaf_type: "jungle"}))
-        .add(
-            new LootPool()
-                .condition(
-                    LootCondition.and([
-                        LootCondition.not(silkTouchLike),
-                        LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10)
-                    ]))
-                .entry(itemWithStates("minecraft:sapling", {sapling_type: "jungle"}))));
+    lootOfLeaves(
+        itemWithStates("minecraft:leaves", {old_leaf_type: "jungle"}),
+        [ new LootPool()
+            .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
+            .entry(itemWithStates("minecraft:sapling", {sapling_type: "jungle"}))
+        ]));
+
+// Non-flowering Azalea leaves
+blockLoots.add(
+    "minecraft:azalea_leaves",
+    lootOfLeaves(
+        new ItemStack("minecraft:azalea_leaves"),
+        [ new LootPool()
+            .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+            .entry(new ItemStack("minecraft:azalea"))
+        ]));
+
+// Flowering Azalea leaves
+blockLoots.add(
+    "minecraft:azalea_leaves_flowered",
+    lootOfLeaves(
+        new ItemStack("minecraft:azalea_leaves_flowered"),
+        [ new LootPool()
+            .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+            .entry(new ItemStack("minecraft:flowering_azalea"))
+        ]));

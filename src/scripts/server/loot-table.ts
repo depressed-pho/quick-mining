@@ -5,21 +5,33 @@ import { ItemStack } from "cicada-lib/item/stack.js";
  * miserable attempt to simulate it.
  */
 export class LootTable {
-    readonly #pools: LootPool[];
+    readonly #conds: [LootCondition, LootPool[]][];
 
     public constructor() {
-        this.#pools = [];
+        this.#conds = [];
     }
 
-    public add(pool: LootPool): this {
-        this.#pools.push(pool);
+    public when(cond: LootCondition, pools: LootPool[]): this {
+        this.#conds.push([cond, pools]);
         return this;
+    }
+
+    public otherwise(pools: LootPool[]): this {
+        return this.always(pools);
+    }
+
+    public always(pools: LootPool[]): this {
+        return this.when(LootCondition.always(), pools);
     }
 
     public execute(tool?: ItemStack): ItemStack[] {
         const stacks: ItemStack[] = [];
-        for (const pool of this.#pools) {
-            Array.prototype.push.apply(stacks, pool.execute(tool));
+        for (const [cond, pools] of this.#conds) {
+            if (cond.evaluate(tool)) {
+                for (const pool of pools)
+                    Array.prototype.push.apply(stacks, pool.execute(tool));
+                break;
+            }
         }
         return stacks;
     }
@@ -93,6 +105,10 @@ interface Rolls {
 export abstract class LootCondition {
     public abstract evaluate(tool?: ItemStack): boolean;
 
+    public static always(): LootCondition.Always {
+        return new LootCondition.Always();
+    }
+
     public static not(cond: LootCondition): LootCondition.Not {
         return new LootCondition.Not(cond);
     }
@@ -119,6 +135,12 @@ export abstract class LootCondition {
     }
 }
 export namespace LootCondition {
+    export class Always extends LootCondition {
+        public evaluate(): boolean {
+            return true;
+        }
+    }
+
     export class Not extends LootCondition {
         readonly #cond: LootCondition;
 
@@ -323,7 +345,7 @@ export class BlockLootRegistry {
     }
 
     public "get"(perm: BlockPermutation): LootTable|undefined {
-        const entries = this.#blocks.get(perm.type.id);
+        const entries = this.#blocks.get(perm.typeId);
         if (entries) {
             find_matching_entry:
             for (const entry of entries) {

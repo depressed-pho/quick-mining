@@ -31,6 +31,11 @@ const LEAF_BLOCK_IDS = new Set([
     "minecraft:azalea_leaves_flowered",
 ]);
 
+const AZALEA_LEAVES_IDS = new Set([
+    "minecraft:azalea_leaves",
+    "minecraft:azalea_leaves_flowered",
+]);
+
 export class MinerThread extends Thread {
     // THINKME: This should be world-configurable.
     static readonly TIME_BUDGET_IN_MS_PER_TICK = 30; // Max 50
@@ -154,8 +159,16 @@ export class MinerThread extends Thread {
         // non-persistent leaves as a bonus.
         if (this.#origPerm.tags.has("wood"))
             // Gee, leaves don't have block tags...
-            if (LEAF_BLOCK_IDS.has(perm.type.id) && !perm.states.get("persistent_bit"))
+            if (LEAF_BLOCK_IDS.has(perm.typeId) && !perm.states.get("persistent_bit"))
                 return MiningWay.MineAsABonus;
+
+        // A special case for mining azalea leaves (flowering or not). It
+        // should also mine the other variant as long as they have an
+        // identical persistence state.
+        if (AZALEA_LEAVES_IDS.has(this.#origPerm.typeId))
+            if (AZALEA_LEAVES_IDS.has(perm.typeId))
+                if (this.#origPerm.states.get("persistent_bit") === perm.states.get("persistent_bit"))
+                    return MiningWay.MineRegularly;
 
         if (perm.equals(this.#origPerm))
             return MiningWay.MineRegularly;
