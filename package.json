@@ -1,6 +1,6 @@
 {
   "name": "quick-mining-addon",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "description": "Allow players to mine the entire ore vein, tree, and more.",
   "scripts": {
     "build": "cicada-build",

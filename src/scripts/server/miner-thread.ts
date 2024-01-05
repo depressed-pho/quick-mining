@@ -36,12 +36,19 @@ const AZALEA_LEAVES_IDS = new Set([
     "minecraft:azalea_leaves_flowered",
 ]);
 
+const MANGROVE_LOG_IDS = new Set([
+    "minecraft:mangrove_log",
+    "minecraft:stripped_mangrove_log",
+    "minecraft:mangrove_wood",
+    "minecraft:stripped_mangrove_wood",
+]);
+
 export class MinerThread extends Thread {
     // THINKME: This should be world-configurable.
     static readonly TIME_BUDGET_IN_MS_PER_TICK = 30; // Max 50
 
     // THINKME: This should be world-configurable.
-    static readonly MAX_BLOCKS_TO_MINE = 512;
+    static readonly MAX_BLOCKS_TO_MINE = 1024;
 
     readonly #actor: Entity;
     // @ts-ignore: FIXME
@@ -136,6 +143,7 @@ export class MinerThread extends Thread {
             case MiningWay.MineAsABonus:
                 this.#accumulateLoots(
                     block.permutation,
+                    // Tool enchantments should not apply to bonus mining.
                     way === MiningWay.MineRegularly ? this.#tool : undefined);
                 block.type = "minecraft:air";
                 this.#mined.add(loc);
@@ -155,40 +163,97 @@ export class MinerThread extends Thread {
     }
 
     #miningWay(perm: BlockPermutation): MiningWay {
-        // A special case for mining logs. It should also mine
-        // non-persistent leaves as a bonus.
-        if (this.#origPerm.tags.has("wood"))
-            // Gee, leaves don't have block tags...
+        if (this.#origPerm.tags.has("wood")) {
+            // A special case for mining logs. It should also mine
+            // non-persistent leaves as a bonus, without regard to their
+            // types. We could be nicer by restricting leaf types but then
+            // we lose our ability to automatically support custom trees
+            // added by addons. But gee, leaves don't have block tags...
             if (LEAF_BLOCK_IDS.has(perm.typeId) && !perm.states.get("persistent_bit"))
                 return MiningWay.MineAsABonus;
 
-        // A special case for mining azalea leaves (flowering or not). It
-        // should also mine the other variant as long as they have an
-        // identical persistence state.
-        if (AZALEA_LEAVES_IDS.has(this.#origPerm.typeId))
+            // A special case for mining mangrove logs and roots. Mangrove
+            // trees generate alongside mangrove roots and moss
+            // carpets. Their leaves also produce hanging propagules when
+            // bonemeal is applied. While roots and carpets don't really
+            // decay, they can still be broken with a bare hand and drop
+            // themselves, so it would be nice to bonus-mine them as well.
+            if (MANGROVE_LOG_IDS.has(this.#origPerm.typeId)) {
+                switch (perm.typeId) {
+                    case "minecraft:mangrove_roots":
+                        return MiningWay.MineRegularly;
+                    case "minecraft:moss_carpet":
+                        return MiningWay.MineAsABonus;
+                    case "minecraft:mangrove_propagule":
+                        // FIXME: The wiki page
+                        // (https://minecraft.fandom.com/wiki/Mangrove_Propagule)
+                        // doesn't tell us the probability of age=4 hanging
+                        // propagules dropping themselves. We cannot
+                        // simulate their loot table at the moment,
+                        // therefore we cannot bonus-mine them.
+                        return MiningWay.LeaveAlone;
+                }
+            }
+
+            // We consider two wood-like blocks be equivalent as long as
+            // their block states match, except we ignore their pillar
+            // axis. It would be nicer to ignore their strippedness too,
+            // but then again we cannot support custom trees.
+            if (this.#origPerm.typeId === perm.typeId) {
+                let matched = true;
+                for (const [key, value] of this.#origPerm.states) {
+                    if (key === "pillar_axis") {
+                        continue;
+                    }
+                    else if (perm.states.get(key) !== value) {
+                        matched = false;
+                        break;
+                    }
+                }
+                if (matched)
+                    return MiningWay.MineRegularly;
+            }
+        }
+        else if (this.#origPerm.typeId === "minecraft:mangrove_roots") {
+            if (LEAF_BLOCK_IDS.has(perm.typeId) && !perm.states.get("persistent_bit"))
+                // A special case for mining logs (see above).
+                return MiningWay.MineAsABonus;
+
+            else if (MANGROVE_LOG_IDS.has(perm.typeId))
+                // A special case for cutting mangrove roots. It should cut
+                // the entire tree down.
+                return MiningWay.MineRegularly;
+
+            else
+                // A special case for mining mangrove logs and roots (see above).
+                switch (perm.typeId) {
+                    case "minecraft:mangrove_roots":
+                        return MiningWay.MineRegularly;
+                    case "minecraft:moss_carpet":
+                        return MiningWay.MineAsABonus;
+                    case "minecraft:mangrove_propagule":
+                        // FIXME: See above
+                        return MiningWay.LeaveAlone;
+                }
+        }
+        else if (AZALEA_LEAVES_IDS.has(this.#origPerm.typeId)) {
+            // A special case for mining azalea leaves (flowering or
+            // not). It should also mine the other variant as long as they
+            // have an identical persistence state.
             if (AZALEA_LEAVES_IDS.has(perm.typeId))
                 if (this.#origPerm.states.get("persistent_bit") === perm.states.get("persistent_bit"))
                     return MiningWay.MineRegularly;
-
-        if (perm.equals(this.#origPerm))
+        }
+        else if (perm.equals(this.#origPerm)) {
             return MiningWay.MineRegularly;
+        }
 
         return MiningWay.LeaveAlone;
     }
 
     #accumulateLoots(perm: BlockPermutation, tool?: ItemStack) {
-        const table = blockLoots.get(perm);
-        if (table) {
-            for (const stack of table.execute(tool)) {
-                this.#addToLoots(stack);
-            }
-        }
-        else {
-            // Having no specific loot table means that the block should
-            // drop itself regardless of how they are broken.
-            const stack = perm.getItemStack(1);
-            if (stack)
-                this.#addToLoots(stack);
+        for (const stack of blockLoots.get(perm).execute(tool)) {
+            this.#addToLoots(stack);
         }
     }
 

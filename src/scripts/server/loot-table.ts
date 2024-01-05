@@ -344,7 +344,7 @@ export class BlockLootRegistry {
         return this;
     }
 
-    public "get"(perm: BlockPermutation): LootTable|undefined {
+    public "get"(perm: BlockPermutation): LootTable {
         const entries = this.#blocks.get(perm.typeId);
         if (entries) {
             find_matching_entry:
@@ -358,7 +358,18 @@ export class BlockLootRegistry {
                 return entry.table;
             }
         }
-        return undefined;
+
+        // Having no specific loot table means that the block should drop
+        // itself regardless of how they are broken.
+        const stack = perm.getItemStack(1);
+        if (stack)
+            return new LootTable()
+                .always([
+                    new LootPool().entry(stack)
+                ]);
+        else
+            // No corresponding items exist for this block. Drop nothing.
+            return new LootTable();
     }
 }
 
