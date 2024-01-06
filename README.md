@@ -18,6 +18,12 @@ FIXME
   with shears or a Silk Touch hoe.
 * **Mangrove trees**: Mining mangrove logs or roots with an axe mines the
   entire mangrove tree, including moss carpets touching them.
+* **Azalea leaves**: Mining azalea leaves (flowering or not) with a hoe or
+  shears also mines the other variants.
+* **Huge Mushrooms**: Mining mushroom blocks (red or brown) with an axe
+  also mines mushroom stems and vice versa.
+* **Huge Nether Fungi**: Mining nether wart blocks (warped or not) with a
+  hoe also mines surrounding shroomlights and vice versa.
 
 ## Download
 

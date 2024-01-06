@@ -1,0 +1,11 @@
+# -*- org -*-
+
+* TODO [#A] Restrict logs to axes
+* TODO [#A] Restrict mangrove roots to axes
+* TODO [#A] Restrict leaves to hoes and shears
+* TODO [#A] Restrict nether wart blocks to hoes
+* TODO [#A] Restrict shroomlights to hoes
+* TODO [#A] Restrict mushroom blocks to axes
+* DONE [#A] Add a special case for mining nether wart blocks and shroomlights to propagate to each other
+* TODO [#A] Create loot tables for ores
+* TODO [#A] Create the loot table for gravel

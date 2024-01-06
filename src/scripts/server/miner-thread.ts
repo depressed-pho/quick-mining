@@ -8,40 +8,10 @@ import { ItemStack } from "cicada-lib/item/stack.js";
 import { Location } from "cicada-lib/location.js";
 import { Timer } from "cicada-lib/timer.js";
 import { Thread } from "cicada-lib/thread.js";
+import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
 import { blockLoots } from "./loot-table.js";
+import "./block-properties/minecraft.js";
 import "./loot-table/minecraft.js";
-
-enum MiningWay {
-    /// Don't mine this block.
-    LeaveAlone,
-    /// Mine the block in the normal way: the tool durability should be
-    /// consumed.
-    MineRegularly,
-    /// Mine the block as a bonus: the tool durability should not be
-    /// consumed.
-    MineAsABonus,
-}
-
-const LEAF_BLOCK_IDS = new Set([
-    "minecraft:leaves",
-    "minecraft:leaves2",
-    "minecraft:mangrove_leaves",
-    "minecraft:cherry_leaves",
-    "minecraft:azalea_leaves",
-    "minecraft:azalea_leaves_flowered",
-]);
-
-const AZALEA_LEAVES_IDS = new Set([
-    "minecraft:azalea_leaves",
-    "minecraft:azalea_leaves_flowered",
-]);
-
-const MANGROVE_LOG_IDS = new Set([
-    "minecraft:mangrove_log",
-    "minecraft:stripped_mangrove_log",
-    "minecraft:mangrove_wood",
-    "minecraft:stripped_mangrove_wood",
-]);
 
 export class MinerThread extends Thread {
     // THINKME: This should be world-configurable.
@@ -55,7 +25,7 @@ export class MinerThread extends Thread {
     readonly #tool: ItemStack;
     readonly #dimension: Dimension;
     readonly #origLoc: Location;
-    readonly #origPerm: BlockPermutation;
+    readonly #origProps: BlockProperties;
     readonly #mined: HashSet<Location>;
     readonly #leftAlone: HashSet<Location>; // negative cache
     readonly #scheduled: OrdSet<Location>;
@@ -67,7 +37,7 @@ export class MinerThread extends Thread {
         this.#tool      = tool;
         this.#dimension = origin.dimension;
         this.#origLoc   = origin.location;
-        this.#origPerm  = origin.permutation;
+        this.#origProps = blockProps.get(origin.permutation);
 
         const eqLoc     = (la: Location, lb: Location) => la.equals(lb);
         const ordLoc    = (la: Location, lb: Location) => {
@@ -130,7 +100,7 @@ export class MinerThread extends Thread {
             return false;
         }
 
-        const way = this.#miningWay(block.permutation);
+        const way = this.#origProps.miningWay(block.permutation);
         switch (way) {
             case MiningWay.LeaveAlone:
                 this.#leftAlone.add(loc);
@@ -160,95 +130,6 @@ export class MinerThread extends Thread {
                 }
                 return true;
         }
-    }
-
-    #miningWay(perm: BlockPermutation): MiningWay {
-        if (this.#origPerm.tags.has("wood")) {
-            // A special case for mining logs. It should also mine
-            // non-persistent leaves as a bonus, without regard to their
-            // types. We could be nicer by restricting leaf types but then
-            // we lose our ability to automatically support custom trees
-            // added by addons. But gee, leaves don't have block tags...
-            if (LEAF_BLOCK_IDS.has(perm.typeId) && !perm.states.get("persistent_bit"))
-                return MiningWay.MineAsABonus;
-
-            // A special case for mining mangrove logs and roots. Mangrove
-            // trees generate alongside mangrove roots and moss
-            // carpets. Their leaves also produce hanging propagules when
-            // bonemeal is applied. While roots and carpets don't really
-            // decay, they can still be broken with a bare hand and drop
-            // themselves, so it would be nice to bonus-mine them as well.
-            if (MANGROVE_LOG_IDS.has(this.#origPerm.typeId)) {
-                switch (perm.typeId) {
-                    case "minecraft:mangrove_roots":
-                        return MiningWay.MineRegularly;
-                    case "minecraft:moss_carpet":
-                        return MiningWay.MineAsABonus;
-                    case "minecraft:mangrove_propagule":
-                        // FIXME: The wiki page
-                        // (https://minecraft.fandom.com/wiki/Mangrove_Propagule)
-                        // doesn't tell us the probability of age=4 hanging
-                        // propagules dropping themselves. We cannot
-                        // simulate their loot table at the moment,
-                        // therefore we cannot bonus-mine them.
-                        return MiningWay.LeaveAlone;
-                }
-            }
-
-            // We consider two wood-like blocks be equivalent as long as
-            // their block states match, except we ignore their pillar
-            // axis. It would be nicer to ignore their strippedness too,
-            // but then again we cannot support custom trees.
-            if (this.#origPerm.typeId === perm.typeId) {
-                let matched = true;
-                for (const [key, value] of this.#origPerm.states) {
-                    if (key === "pillar_axis") {
-                        continue;
-                    }
-                    else if (perm.states.get(key) !== value) {
-                        matched = false;
-                        break;
-                    }
-                }
-                if (matched)
-                    return MiningWay.MineRegularly;
-            }
-        }
-        else if (this.#origPerm.typeId === "minecraft:mangrove_roots") {
-            if (LEAF_BLOCK_IDS.has(perm.typeId) && !perm.states.get("persistent_bit"))
-                // A special case for mining logs (see above).
-                return MiningWay.MineAsABonus;
-
-            else if (MANGROVE_LOG_IDS.has(perm.typeId))
-                // A special case for cutting mangrove roots. It should cut
-                // the entire tree down.
-                return MiningWay.MineRegularly;
-
-            else
-                // A special case for mining mangrove logs and roots (see above).
-                switch (perm.typeId) {
-                    case "minecraft:mangrove_roots":
-                        return MiningWay.MineRegularly;
-                    case "minecraft:moss_carpet":
-                        return MiningWay.MineAsABonus;
-                    case "minecraft:mangrove_propagule":
-                        // FIXME: See above
-                        return MiningWay.LeaveAlone;
-                }
-        }
-        else if (AZALEA_LEAVES_IDS.has(this.#origPerm.typeId)) {
-            // A special case for mining azalea leaves (flowering or
-            // not). It should also mine the other variant as long as they
-            // have an identical persistence state.
-            if (AZALEA_LEAVES_IDS.has(perm.typeId))
-                if (this.#origPerm.states.get("persistent_bit") === perm.states.get("persistent_bit"))
-                    return MiningWay.MineRegularly;
-        }
-        else if (perm.equals(this.#origPerm)) {
-            return MiningWay.MineRegularly;
-        }
-
-        return MiningWay.LeaveAlone;
     }
 
     #accumulateLoots(perm: BlockPermutation, tool?: ItemStack) {

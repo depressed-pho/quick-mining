@@ -17,12 +17,12 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     }
 
     if (0) { // FIXME
-        //console.log(`${player.name} is breaking a block using ${tool.typeId}`);
+        const block = ev.block;
+        console.log(`${player.name} is breaking a block ${block.typeId} using ${tool.typeId}`);
 
         console.log("Tool tags are:", tool.raw.getTags());
         console.log("Tool components are:", tool.raw.getComponents());
 
-        const block = ev.block;
         console.log("Block tags are:", block.raw.permutation.getTags());
         console.log("Block permutation states are:", block.raw.permutation.getAllStates());
     }
