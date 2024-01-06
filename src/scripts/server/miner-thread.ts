@@ -8,6 +8,7 @@ import { ItemStack } from "cicada-lib/item/stack.js";
 import { Location } from "cicada-lib/location.js";
 import { Timer } from "cicada-lib/timer.js";
 import { Thread } from "cicada-lib/thread.js";
+import { world } from "cicada-lib/world.js";
 import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
 import { blockLoots } from "./loot-table.js";
 import "./block-properties/minecraft.js";
@@ -30,6 +31,7 @@ export class MinerThread extends Thread {
     readonly #leftAlone: HashSet<Location>; // negative cache
     readonly #scheduled: OrdSet<Location>;
     readonly #loots: ItemStack[];
+    readonly #soundsPlayed: Set<string>;
 
     public constructor(actor: Entity, tool: ItemStack, origin: Block) {
         super();
@@ -62,7 +64,8 @@ export class MinerThread extends Thread {
         this.#leftAlone = new HashSet<Location>(eqLoc, hashLoc);
         this.#scheduled = new OrdSet<Location>(ordLoc);
 
-        this.#loots     = [];
+        this.#loots        = [];
+        this.#soundsPlayed = new Set();
     }
 
     protected async* run() {
@@ -79,6 +82,7 @@ export class MinerThread extends Thread {
 
                 if (timer.elapsedMs >= MinerThread.TIME_BUDGET_IN_MS_PER_TICK) {
                     this.#flushLoots();
+                    this.#soundsPlayed.clear();
                     yield;
                     timer = new Timer();
                 }
@@ -107,15 +111,27 @@ export class MinerThread extends Thread {
                 return false;
 
             case MiningWay.MineRegularly:
-                // FIXME: play sound but only once per tick
-                // FIXME: Consume the durability.
-
             case MiningWay.MineAsABonus:
+                if (way === MiningWay.MineRegularly) {
+                    // Play a breaking sound only once per tick. This has
+                    // to be done before actually breaking the block
+                    // because "block.permutation" becomes minecraft:air
+                    // afterwards.
+                    const props   = blockProps.get(block.permutation);
+                    const soundId = props.breakingSoundId;
+                    if (!this.#soundsPlayed.has(soundId)) {
+                        world.playSound(soundId, loc);
+                        this.#soundsPlayed.add(soundId);
+                    }
+
+                    // FIXME: Consume the durability unless the player is in creative.
+                }
+
                 this.#accumulateLoots(
                     block.permutation,
                     // Tool enchantments should not apply to bonus mining.
                     way === MiningWay.MineRegularly ? this.#tool : undefined);
-                block.type = "minecraft:air";
+                block.typeId = "minecraft:air";
                 this.#mined.add(loc);
 
                 for (let x = -1; x <= 1; x++) {

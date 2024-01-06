@@ -43,7 +43,7 @@ export abstract class BlockProperties {
 
 class DefaultBlockProperties extends BlockProperties {
     public get breakingSoundId(): string {
-        throw new Error("This block isn't meant to be quick-mined");
+        throw new Error(`The block ${this.origPerm.typeId} isn't meant to be quick-mined`);
     }
 
     public isToolSuitable(_tool: ItemStack): boolean {
@@ -51,7 +51,7 @@ class DefaultBlockProperties extends BlockProperties {
     }
 
     public override miningWay(_perm: BlockPermutation): MiningWay {
-        throw new Error("This block isn't meant to be quick-mined");
+        throw new Error(`The block ${this.origPerm.typeId} isn't meant to be quick-mined`);
     }
 }
 

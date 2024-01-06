@@ -120,6 +120,28 @@ class LeavesProperties extends BlockProperties {
         return tool.typeId === "minecraft:shears" ||
                tool.tags.has("minecraft:is_hoe");
     }
+
+    public override miningWay(perm: BlockPermutation): MiningWay {
+        // A special case for mining leaves. Ignore the difference in
+        // update_bit.
+        if (this.origPerm.typeId === perm.typeId) {
+            let matched = true;
+            for (const [key, value] of this.origPerm.states) {
+                if (key === "update_bit") {
+                    continue;
+                }
+                else if (perm.states.get(key) !== value) {
+                    matched = false;
+                    break;
+                }
+            }
+            if (matched)
+                return MiningWay.MineRegularly;
+        }
+
+        // No puns intended.
+        return MiningWay.LeaveAlone;
+    }
 }
 for (const blockId of LEAF_BLOCK_IDS) {
     if (AZALEA_LEAVES_IDS.has(blockId))
@@ -137,7 +159,7 @@ for (const blockId of LEAF_BLOCK_IDS) {
                             === perm.states.get("persistent_bit"))
                             return MiningWay.MineRegularly;
 
-                    return MiningWay.LeaveAlone;
+                    return super.miningWay(perm);
                 }
             });
     else if (blockId === "minecraft:cherry_leaves")

@@ -1,7 +1,6 @@
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { LootCondition, LootTable, LootPool, blockLoots
        } from "../../loot-table.js";
-import { itemWithStates } from "./_utils.js";
 
 function lootOfShrooms(blockId: string, item: ItemStack, isStem: boolean): LootTable {
     return new LootTable()
@@ -9,9 +8,7 @@ function lootOfShrooms(blockId: string, item: ItemStack, isStem: boolean): LootT
             LootCondition.matchTool().enchantment("silk_touch"),
             [ new LootPool()
                 .entry(
-                    isStem
-                        ? itemWithStates(blockId, { huge_mushroom_bits: 15 })
-                        : itemWithStates(blockId, { huge_mushroom_bits: 14 }))
+                    new ItemStack(blockId, { huge_mushroom_bits: isStem ? 15 : 14 }))
             ])
         .otherwise(
             [ new LootPool()
