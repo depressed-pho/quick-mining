@@ -146,6 +146,7 @@ export class MinerThread extends Thread {
         // operation is asynchronous. Check if the block is still the one
         // we expect. Note that we cannot verify their block states because
         // they can legitimately change (e.g. "update_bit" on leaves).
+        // FIXME: Use BlockProperties for equivalence
         if (block.typeId !== perm.typeId)
             return;
 
@@ -153,7 +154,11 @@ export class MinerThread extends Thread {
             block.permutation,
             // Tool enchantments should not apply to bonus mining.
             way === MiningWay.MineRegularly ? this.#tool : undefined);
-        block.typeId = "minecraft:air";
+
+        if (block.isWaterlogged)
+            block.typeId = "minecraft:water";
+        else
+            block.typeId = "minecraft:air";
 
         if (way === MiningWay.MineRegularly) {
             // Play a breaking sound only once per tick.
