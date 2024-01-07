@@ -32,14 +32,21 @@ export abstract class BlockProperties {
      */
     public abstract isToolSuitable(tool: ItemStack): boolean;
 
+    /** See if a given block should be considered equivalent to this
+     * block. In most cases this means `this.permutation.equals(perm)`,
+     * which is the default implementation, but some blocks (such as
+     * leaves) need to ignore certain block states
+     * (e.g. `update_bit`).
+     */
+    public isEquivalentTo(perm: BlockPermutation): boolean {
+        return this.permutation.equals(perm);
+    }
+
     /** Determine if or how a given block should be quick-mined as a
      * consequence of mining the block that initiated a quick mining.
      */
     public miningWay(perm: BlockPermutation): MiningWay {
-        // Most blocks are considered equivalent if their block types and
-        // block states match. We cannot ignore their states because some
-        // blocks (such as leaves) share the same block IDs.
-        return perm.equals(this.permutation)
+        return this.isEquivalentTo(perm)
             ? MiningWay.MineRegularly
             : MiningWay.LeaveAlone;
     }
@@ -52,10 +59,6 @@ class DefaultBlockProperties extends BlockProperties {
 
     public isToolSuitable(_tool: ItemStack): boolean {
         return false;
-    }
-
-    public override miningWay(_perm: BlockPermutation): MiningWay {
-        throw new Error(`The block ${this.typeId} isn't meant to be quick-mined`);
     }
 }
 

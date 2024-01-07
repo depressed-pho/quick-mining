@@ -41,12 +41,31 @@ class LogLikeBlockProperties extends BlockProperties {
         return tool.tags.has("minecraft:is_axe");
     }
 
+    public override isEquivalentTo(perm: BlockPermutation): boolean {
+        // We consider two wood-like blocks be equivalent as long as their
+        // block states match, except we ignore their pillar axis. It would
+        // be nicer to ignore their strippedness too, but then we lose our
+        // ability to automatically support custom trees added by addons.
+        if (this.typeId === perm.typeId) {
+            for (const [key, value] of this.permutation.states) {
+                if (key === "pillar_axis")
+                    continue;
+                else if (perm.states.get(key) !== value)
+                    return false;
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public override miningWay(perm: BlockPermutation): MiningWay {
         // A special case for mining logs. It should also mine
         // non-persistent leaves as a bonus, without regard to their
         // types. We could be nicer by restricting leaf types but then
-        // we lose our ability to automatically support custom trees
-        // added by addons. But gee, leaves don't have block tags...
+        // again, we cannot support custom trees. Gee, leaves don't have
+        // block tags...
         if (LEAF_BLOCK_IDS.has(perm.typeId) && !perm.states.get("persistent_bit"))
             return MiningWay.MineAsABonus;
 
@@ -82,26 +101,7 @@ class LogLikeBlockProperties extends BlockProperties {
             }
         }
 
-        // We consider two wood-like blocks be equivalent as long as their
-        // block states match, except we ignore their pillar axis. It would
-        // be nicer to ignore their strippedness too, but then again we
-        // cannot support custom trees.
-        if (this.typeId === perm.typeId) {
-            let matched = true;
-            for (const [key, value] of this.permutation.states) {
-                if (key === "pillar_axis") {
-                    continue;
-                }
-                else if (perm.states.get(key) !== value) {
-                    matched = false;
-                    break;
-                }
-            }
-            if (matched)
-                return MiningWay.MineRegularly;
-        }
-
-        return MiningWay.LeaveAlone;
+        return super.miningWay(perm);
     }
 }
 blockProps.addTaggedProps("wood", LogLikeBlockProperties);
@@ -121,26 +121,21 @@ class LeavesProperties extends BlockProperties {
                tool.tags.has("minecraft:is_hoe");
     }
 
-    public override miningWay(perm: BlockPermutation): MiningWay {
+    public override isEquivalentTo(perm: BlockPermutation): boolean {
         // A special case for mining leaves. Ignore the difference in
         // update_bit.
         if (this.typeId === perm.typeId) {
-            let matched = true;
             for (const [key, value] of this.permutation.states) {
-                if (key === "update_bit") {
+                if (key === "update_bit")
                     continue;
-                }
-                else if (perm.states.get(key) !== value) {
-                    matched = false;
-                    break;
-                }
+                else if (perm.states.get(key) !== value)
+                    return false;
             }
-            if (matched)
-                return MiningWay.MineRegularly;
+            return true;
         }
-
-        // No puns intended.
-        return MiningWay.LeaveAlone;
+        else {
+            return false;
+        }
     }
 }
 for (const blockId of LEAF_BLOCK_IDS) {

@@ -144,10 +144,9 @@ export class MinerThread extends Thread {
 
         // Things might have changed since we scanned blocks, as our
         // operation is asynchronous. Check if the block is still the one
-        // we expect. Note that we cannot verify their block states because
-        // they can legitimately change (e.g. "update_bit" on leaves).
-        // FIXME: Use BlockProperties for equivalence
-        if (block.typeId !== perm.typeId)
+        // we expect.
+        const props = blockProps.get(perm);
+        if (!props.isEquivalentTo(block.permutation))
             return;
 
         this.#accumulateLoots(
@@ -162,7 +161,6 @@ export class MinerThread extends Thread {
 
         if (way === MiningWay.MineRegularly) {
             // Play a breaking sound only once per tick.
-            const props = blockProps.get(perm);
             const soundId = props.breakingSoundId;
             if (!this.#soundsPlayed.has(soundId)) {
                 world.playSound(soundId, block.location);
