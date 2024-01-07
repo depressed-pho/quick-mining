@@ -56,8 +56,8 @@ class LogLikeBlockProperties extends BlockProperties {
         // applied. While roots and carpets don't really decay, they can
         // still be broken with a bare hand and drop themselves, so it
         // would be nice to bonus-mine them as well.
-        if (this.origPerm.typeId === "minecraft:mangrove_roots" ||
-            MANGROVE_LOG_IDS.has(this.origPerm.typeId)) {
+        if (this.typeId === "minecraft:mangrove_roots" ||
+            MANGROVE_LOG_IDS.has(this.typeId)) {
 
             switch (perm.typeId) {
                 case "minecraft:mangrove_roots":
@@ -86,9 +86,9 @@ class LogLikeBlockProperties extends BlockProperties {
         // block states match, except we ignore their pillar axis. It would
         // be nicer to ignore their strippedness too, but then again we
         // cannot support custom trees.
-        if (this.origPerm.typeId === perm.typeId) {
+        if (this.typeId === perm.typeId) {
             let matched = true;
-            for (const [key, value] of this.origPerm.states) {
+            for (const [key, value] of this.permutation.states) {
                 if (key === "pillar_axis") {
                     continue;
                 }
@@ -124,9 +124,9 @@ class LeavesProperties extends BlockProperties {
     public override miningWay(perm: BlockPermutation): MiningWay {
         // A special case for mining leaves. Ignore the difference in
         // update_bit.
-        if (this.origPerm.typeId === perm.typeId) {
+        if (this.typeId === perm.typeId) {
             let matched = true;
-            for (const [key, value] of this.origPerm.states) {
+            for (const [key, value] of this.permutation.states) {
                 if (key === "update_bit") {
                     continue;
                 }
@@ -155,7 +155,7 @@ for (const blockId of LEAF_BLOCK_IDS) {
                     // or not). It should also mine the other variant as
                     // long as they have an identical persistence state.
                     if (AZALEA_LEAVES_IDS.has(perm.typeId))
-                        if (this.origPerm.states.get("persistent_bit")
+                        if (this.permutation.states.get("persistent_bit")
                             === perm.states.get("persistent_bit"))
                             return MiningWay.MineRegularly;
 
@@ -182,7 +182,7 @@ class HugeMushroomProperties extends BlockProperties {
     public override miningWay(perm: BlockPermutation): MiningWay {
         // A special case for mining huge mushrooms. We must ignore
         // differences in block states.
-        if (perm.typeId === this.origPerm.typeId)
+        if (perm.typeId === this.typeId)
             return MiningWay.MineRegularly;
         else
             return MiningWay.LeaveAlone;

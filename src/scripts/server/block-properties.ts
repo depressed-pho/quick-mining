@@ -13,10 +13,14 @@ export enum MiningWay {
 }
 
 export abstract class BlockProperties {
-    public readonly origPerm: BlockPermutation;
+    public readonly permutation: BlockPermutation;
 
-    public constructor(perm: BlockPermutation) {
-        this.origPerm = perm;
+    public constructor(permutation: BlockPermutation) {
+        this.permutation = permutation;
+    }
+
+    public get typeId(): string {
+        return this.permutation.typeId;
     }
 
     /** The ID of the sound to be played when breaking this block.
@@ -35,7 +39,7 @@ export abstract class BlockProperties {
         // Most blocks are considered equivalent if their block types and
         // block states match. We cannot ignore their states because some
         // blocks (such as leaves) share the same block IDs.
-        return perm.equals(this.origPerm)
+        return perm.equals(this.permutation)
             ? MiningWay.MineRegularly
             : MiningWay.LeaveAlone;
     }
@@ -43,7 +47,7 @@ export abstract class BlockProperties {
 
 class DefaultBlockProperties extends BlockProperties {
     public get breakingSoundId(): string {
-        throw new Error(`The block ${this.origPerm.typeId} isn't meant to be quick-mined`);
+        throw new Error(`The block ${this.typeId} isn't meant to be quick-mined`);
     }
 
     public isToolSuitable(_tool: ItemStack): boolean {
@@ -51,7 +55,7 @@ class DefaultBlockProperties extends BlockProperties {
     }
 
     public override miningWay(_perm: BlockPermutation): MiningWay {
-        throw new Error(`The block ${this.origPerm.typeId} isn't meant to be quick-mined`);
+        throw new Error(`The block ${this.typeId} isn't meant to be quick-mined`);
     }
 }
 

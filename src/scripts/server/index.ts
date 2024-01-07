@@ -1,8 +1,7 @@
 import "cicada-lib/shims/console.js";
-import { Block } from "cicada-lib/block.js";
-import { ItemStack } from "cicada-lib/item/stack.js";
 import { Player } from "cicada-lib/player.js";
 import { world } from "cicada-lib/world.js";
+import { blockProps } from "./block-properties.js";
 import { MinerThread } from "./miner-thread.js";
 import { QuickMiningMode } from "./player-prefs_pb.js";
 
@@ -30,7 +29,9 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     if (!isQuickMiningEnabled(player))
         return;
 
-    if (!isToolSuitableForQuicklyMine(tool, ev.block))
+    const block = ev.block;
+    const props = blockProps.get(block.permutation);
+    if (!props.isToolSuitable(tool))
         return;
 
     // Now we know we should do a quick-mining. We are going to break
@@ -68,13 +69,4 @@ function isQuickMiningEnabled(player: Player): boolean {
             console.error(`Unknown quick mining mode: ${mode}`);
             return false;
     }
-}
-
-function isToolSuitableForQuicklyMine(_tool: ItemStack, _block: Block): boolean {
-    /*
-    if (tool.tags.has("minecraft:is_axe")) {
-        // FIXME
-    }
-    */
-    return true;
 }
