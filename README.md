@@ -25,6 +25,23 @@ FIXME
 * **Huge Nether Fungi**: Mining nether wart blocks (warped or not) with a
   hoe also mines surrounding shroomlights and vice versa.
 
+### Known issues
+
+* Hanging mangrove propagules aren't auto-collected. This is currently
+  unfixable because their drop rate is not known to the community and thus
+  we cannot simulate its loot table.
+* Quick-mining huge mushrooms with a non-silk-touch axe yields too many
+  mushrooms. This happens because we don't know their drop rate accurately.
+* Custom ores added by add-ons aren't quick-mined. This is because:
+  1. There are no standard block tags for ore blocks representing the
+     required tool tier,
+  2. Loot tables are not accessible from the scripting API, and
+  3. The API doesn't provide any means to simulate what would be dropped
+     when a block is mined.
+
+In short, these are issues that we can do absolutely nothing about. Ask
+Mojang to improve the API if you want these to be fixed.
+
 ## Download
 
 See [releases](https://github.com/depressed-pho/chunk-utilities/releases).

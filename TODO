@@ -10,3 +10,4 @@
 * TODO [#A] Create the loot table for gravel
 * TODO [#B] MinerThread.TIME_BUDGET_IN_MS_PER_TICK should be world-configurable
 * TODO [#B] MinerThread.MAX_BLOCKS_TO_MINE should be world-configurable
+* TODO [#B] Creative players shouldn't receive blocks they mine
