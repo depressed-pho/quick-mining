@@ -16,6 +16,7 @@ export function populateDefaults(p: PB.PlayerPrefs): PlayerPrefs {
             enableMiningLeaves:     p.coverage?.enableMiningLeaves     ?? true,
             enableMiningLogs:       p.coverage?.enableMiningLogs       ?? true,
             enableMiningMushrooms:  p.coverage?.enableMiningMushrooms  ?? true,
+            enableMiningOres:       p.coverage?.enableMiningOres       ?? true,
             enableMiningWartBlocks: p.coverage?.enableMiningWartBlocks ?? true,
         }
     };
