@@ -3,7 +3,10 @@ import { Player } from "cicada-lib/player.js";
 import { world } from "cicada-lib/world.js";
 import { blockProps } from "./block-properties.js";
 import { MinerThread } from "./miner-thread.js";
+import { PlayerSession } from "./player-session.js";
 import { QuickMiningMode } from "./player-prefs_pb.js";
+
+world.usePlayerSessions(PlayerSession);
 
 world.beforeEvents.playerBreakBlock.subscribe(ev => {
     const player = ev.player;
@@ -31,7 +34,7 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
 
     const block = ev.block;
     const props = blockProps.get(block.permutation);
-    if (!props.isToolSuitable(tool))
+    if (!props.isToolSuitable(tool, player.getSession<PlayerSession>().prefs))
         return;
 
     // Now we know we should do a quick-mining. We are going to break
@@ -43,10 +46,7 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
 });
 
 function isQuickMiningEnabled(player: Player): boolean {
-    // FIXME: This should be configurable.
-    const mode = QuickMiningMode.WhenSneaking as QuickMiningMode;
-
-    switch (mode) {
+    switch (player.getSession<PlayerSession>().prefs.mode) {
         case QuickMiningMode.WhenSneaking:
             if (player.isSneaking)
                 return true;
@@ -63,10 +63,6 @@ function isQuickMiningEnabled(player: Player): boolean {
             return true;
 
         case QuickMiningMode.AlwaysDisabled:
-            return false;
-
-        default:
-            console.error(`Unknown quick mining mode: ${mode}`);
             return false;
     }
 }

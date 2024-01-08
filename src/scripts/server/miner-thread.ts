@@ -15,10 +15,7 @@ import "./block-properties/minecraft.js";
 import "./loot-table/minecraft.js";
 
 export class MinerThread extends Thread {
-    // THINKME: This should be world-configurable.
     static readonly TIME_BUDGET_IN_MS_PER_TICK = 30; // Max 50
-
-    // THINKME: This should be world-configurable.
     static readonly MAX_BLOCKS_TO_MINE = 1024;
 
     readonly #actor: Entity;

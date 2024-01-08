@@ -1,13 +1,21 @@
 syntax = "proto3";
 package quickMining;
 
+message PlayerPrefs {
+  optional QuickMiningMode mode = 1;
+  Coverage coverage = 2;
+}
+
 enum QuickMiningMode {
-  WhenSneaking   = 0; // Default
+  WhenSneaking   = 0;
   UnlessSneaking = 1;
   AlwaysEnabled  = 2;
   AlwaysDisabled = 3;
 }
 
-message PlayerPrefs {
-  QuickMiningMode mode = 1;
+message Coverage {
+  optional bool enableMiningLeaves = 1;
+  optional bool enableMiningLogs = 2;
+  optional bool enableMiningMushrooms = 3;
+  optional bool enableMiningWartBlocks = 4;
 }

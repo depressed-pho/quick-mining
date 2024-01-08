@@ -1,5 +1,6 @@
 import { BlockPermutation } from "cicada-lib/block.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
+import { PlayerPrefs } from "./player-prefs.js";
 
 export enum MiningWay {
     /// Don't mine this block.
@@ -30,7 +31,7 @@ export abstract class BlockProperties {
     /** See if a quick mining should be initiated by mining the block using
      * a given tool.
      */
-    public abstract isToolSuitable(tool: ItemStack): boolean;
+    public abstract isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean;
 
     /** See if a given block should be considered equivalent to this
      * block. In most cases this means `this.permutation.equals(perm)`,

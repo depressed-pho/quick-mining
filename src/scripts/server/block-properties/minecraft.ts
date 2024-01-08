@@ -1,6 +1,7 @@
 import { BlockPermutation } from "cicada-lib/block.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, MiningWay, blockProps } from "../block-properties.js";
+import { PlayerPrefs } from "../player-prefs.js";
 
 const LEAF_BLOCK_IDS = new Set([
     "minecraft:leaves",
@@ -37,8 +38,11 @@ const HUGE_FUNGI_ADJUNCT_IDS = new Set([
 class LogLikeBlockProperties extends BlockProperties {
     public readonly breakingSoundId: string = "dig.wood";
 
-    public isToolSuitable(tool: ItemStack): boolean {
-        return tool.tags.has("minecraft:is_axe");
+    public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean {
+        if (prefs.coverage.enableMiningLogs)
+            return tool.tags.has("minecraft:is_axe");
+        else
+            return false;
     }
 
     public override isEquivalentTo(perm: BlockPermutation): boolean {
@@ -114,11 +118,14 @@ blockProps.addBlockProps(
 class LeavesProperties extends BlockProperties {
     public readonly breakingSoundId: string = "dig.grass";
 
-    public isToolSuitable(tool: ItemStack): boolean {
-        // There is no tags for shears, which is unfortunate but is
-        // understandable because the vanilla Minecraft has only one type of shears.
-        return tool.typeId === "minecraft:shears" ||
-               tool.tags.has("minecraft:is_hoe");
+    public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean {
+        if (prefs.coverage.enableMiningLeaves)
+            // There is no tags for shears, which is unfortunate but is
+            // understandable because the vanilla Minecraft has only one type of shears.
+            return tool.typeId === "minecraft:shears" ||
+                   tool.tags.has("minecraft:is_hoe");
+        else
+            return false;
     }
 
     public override isEquivalentTo(perm: BlockPermutation): boolean {
@@ -170,8 +177,11 @@ for (const blockId of LEAF_BLOCK_IDS) {
 class HugeMushroomProperties extends BlockProperties {
     public readonly breakingSoundId = "dig.wood";
 
-    public isToolSuitable(tool: ItemStack): boolean {
-        return tool.tags.has("minecraft:is_axe");
+    public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean {
+        if (prefs.coverage.enableMiningMushrooms)
+            return tool.tags.has("minecraft:is_axe");
+        else
+            return false;
     }
 
     public override miningWay(perm: BlockPermutation): MiningWay {
@@ -187,8 +197,11 @@ for (const blockId of HUGE_MUSHROOM_IDS)
     blockProps.addBlockProps(blockId, HugeMushroomProperties);
 
 abstract class HugeFungiAdjunctProperties extends BlockProperties {
-    public isToolSuitable(tool: ItemStack): boolean {
-        return tool.tags.has("minecraft:is_hoe");
+    public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean {
+        if (prefs.coverage.enableMiningWartBlocks)
+            return tool.tags.has("minecraft:is_hoe");
+        else
+            return false;
     }
 
     public override miningWay(perm: BlockPermutation): MiningWay {

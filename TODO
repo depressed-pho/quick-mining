@@ -8,3 +8,5 @@
 * TODO [#A] Consume tool durability unless the player is in creative mode
 * TODO [#A] Create loot tables for ores
 * TODO [#A] Create the loot table for gravel
+* TODO [#B] MinerThread.TIME_BUDGET_IN_MS_PER_TICK should be world-configurable
+* TODO [#B] MinerThread.MAX_BLOCKS_TO_MINE should be world-configurable
