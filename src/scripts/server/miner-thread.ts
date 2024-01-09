@@ -11,53 +11,6 @@ import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
 import { LootTable } from "./loot-table.js";
 import "./block-properties/minecraft.js";
 
-// My efforts on optimising HashSet didn't come to fruition. Initially it
-// was 60x slower than this, and now it's still 2x slower than this abysmal
-// abuse of the Set type. IT'S A SHAME.
-class LocationSet {
-    readonly #set: Set<string>;
-
-    public constructor() {
-        this.#set = new Set();
-    }
-
-    public get size(): number {
-        return this.#set.size;
-    }
-
-    public add(loc: Location): void {
-        this.#set.add(LocationSet.#loc2str(loc));
-    }
-
-    public has(loc: Location): boolean {
-        return this.#set.has(LocationSet.#loc2str(loc));
-    }
-
-    public deleteAny(): Location|undefined {
-        const str = this.#set.values().next().value;
-        if (str) {
-            this.#set.delete(str);
-            return LocationSet.#str2loc(str);
-        }
-        else {
-            return undefined;
-        }
-    }
-
-    static #loc2str(loc: Location): string {
-        return `${loc.x},${loc.y},${loc.z}`;
-    }
-
-    static #str2loc(str: string): Location {
-        const pos0 = str.indexOf(",");
-        const pos1 = str.indexOf(",", pos0 + 1);
-        return new Location(
-            parseInt(str.substring(0, pos0)),
-            parseInt(str.substring(pos0 + 1, pos1)),
-            parseInt(str.substring(pos1 + 1)));
-    }
-}
-
 export class MinerThread extends Thread {
     static readonly TIME_BUDGET_IN_MS_PER_TICK = 30; // Max 50
     static readonly MAX_BLOCKS_TO_MINE = 1024;
@@ -250,5 +203,53 @@ export class MinerThread extends Thread {
                 this.#dimension.spawnItem(stack, this.#origLoc);
         }
         this.#loots.splice(0);
+    }
+}
+
+// My efforts on optimising HashSet didn't come to fruition. Initially it
+// was 60x slower than this, and now it's still 2x slower than this abysmal
+// abuse of the Set type although it's slightly faster than OrdSet. IT'S A
+// SHAME.
+class LocationSet {
+    readonly #set: Set<string>;
+
+    public constructor() {
+        this.#set = new Set();
+    }
+
+    public get size(): number {
+        return this.#set.size;
+    }
+
+    public add(loc: Location): void {
+        this.#set.add(LocationSet.#loc2str(loc));
+    }
+
+    public has(loc: Location): boolean {
+        return this.#set.has(LocationSet.#loc2str(loc));
+    }
+
+    public deleteAny(): Location|undefined {
+        const str = this.#set.values().next().value;
+        if (str) {
+            this.#set.delete(str);
+            return LocationSet.#str2loc(str);
+        }
+        else {
+            return undefined;
+        }
+    }
+
+    static #loc2str(loc: Location): string {
+        return `${loc.x},${loc.y},${loc.z}`;
+    }
+
+    static #str2loc(str: string): Location {
+        const pos0 = str.indexOf(",");
+        const pos1 = str.indexOf(",", pos0 + 1);
+        return new Location(
+            parseInt(str.substring(0, pos0)),
+            parseInt(str.substring(pos0 + 1, pos1)),
+            parseInt(str.substring(pos1 + 1)));
     }
 }
