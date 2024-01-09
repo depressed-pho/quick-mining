@@ -1,9 +1,7 @@
 import { Block, BlockPermutation } from "cicada-lib/block.js";
-import { HashSet } from "cicada-lib/collections/hash-set.js";
 import { OrdMap } from "cicada-lib/collections/ordered-map.js";
 import { Dimension } from "cicada-lib/dimension.js";
 import { Entity } from "cicada-lib/entity.js";
-import { Hasher } from "cicada-lib/hasher.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { Location } from "cicada-lib/location.js";
 import { Timer } from "cicada-lib/timer.js";
@@ -12,6 +10,53 @@ import { world } from "cicada-lib/world.js";
 import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
 import { LootTable } from "./loot-table.js";
 import "./block-properties/minecraft.js";
+
+// My efforts on optimising HashSet didn't come to fruition. Initially it
+// was 60x slower than this, and now it's still 2x slower than this abysmal
+// abuse of the Set type. IT'S A SHAME.
+class LocationSet {
+    readonly #set: Set<string>;
+
+    public constructor() {
+        this.#set = new Set();
+    }
+
+    public get size(): number {
+        return this.#set.size;
+    }
+
+    public add(loc: Location): void {
+        this.#set.add(LocationSet.#loc2str(loc));
+    }
+
+    public has(loc: Location): boolean {
+        return this.#set.has(LocationSet.#loc2str(loc));
+    }
+
+    public deleteAny(): Location|undefined {
+        const str = this.#set.values().next().value;
+        if (str) {
+            this.#set.delete(str);
+            return LocationSet.#str2loc(str);
+        }
+        else {
+            return undefined;
+        }
+    }
+
+    static #loc2str(loc: Location): string {
+        return `${loc.x},${loc.y},${loc.z}`;
+    }
+
+    static #str2loc(str: string): Location {
+        const pos0 = str.indexOf(",");
+        const pos1 = str.indexOf(",", pos0 + 1);
+        return new Location(
+            parseInt(str.substring(0, pos0)),
+            parseInt(str.substring(pos0 + 1, pos1)),
+            parseInt(str.substring(pos1 + 1)));
+    }
+}
 
 export class MinerThread extends Thread {
     static readonly TIME_BUDGET_IN_MS_PER_TICK = 30; // Max 50
@@ -23,8 +68,8 @@ export class MinerThread extends Thread {
     readonly #origLoc: Location;
     readonly #origPerm: BlockPermutation;
     readonly #origProps: BlockProperties;
-    readonly #scanned: HashSet<Location>; // negative cache for scanning
-    readonly #toScan: HashSet<Location>;
+    readonly #scanned: LocationSet; // negative cache for scanning
+    readonly #toScan: LocationSet;
     readonly #toMine: OrdMap<Block, [MiningWay, BlockPermutation]>;
     readonly #loots: ItemStack[];
     readonly #soundsPlayed: Set<string>;
@@ -38,12 +83,6 @@ export class MinerThread extends Thread {
         this.#origPerm  = origin.permutation;
         this.#origProps = blockProps.get(origin.permutation);
 
-        const eqLoc     = (la: Location, lb: Location) => la.equals(lb);
-        const hashLoc   = (hasher: Hasher, loc: Location) => {
-            hasher.update(loc.x);
-            hasher.update(loc.y);
-            hasher.update(loc.z);
-        };
         const ordBlock  = (ba: Block, bb: Block) => {
             // We sort scheduled blocks by Y, then X, and then Z, and mine
             // blocks from the highest to the lowest. This is because
@@ -57,8 +96,8 @@ export class MinerThread extends Thread {
                    ba.z < bb.z ? -1 :
                    0;
         };
-        this.#scanned   = new HashSet(eqLoc, hashLoc);
-        this.#toScan    = new HashSet(eqLoc, hashLoc);
+        this.#scanned   = new LocationSet();
+        this.#toScan    = new LocationSet();
         this.#toMine    = new OrdMap(ordBlock);
 
         this.#loots        = [];
@@ -78,12 +117,10 @@ export class MinerThread extends Thread {
                     break;
 
             if (timer.elapsedMs >= MinerThread.TIME_BUDGET_IN_MS_PER_TICK) {
-                //console.log(`Elapsed ${timer}, scanned ${this.#scanned.size} blocks so far`);
                 yield;
                 timer.reset();
             }
         }
-        //console.log(`Elapsed ${timer}, scanned ${this.#scanned.size} blocks`);
 
         // The second path: mine all blocks that we have decided to mine.
         try {
