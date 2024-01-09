@@ -2,7 +2,15 @@ import { BlockPermutation } from "cicada-lib/block.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, MiningWay, blockProps } from "../../block-properties.js";
 import { PlayerPrefs } from "../../player-prefs.js";
-import { LEAF_BLOCK_IDS } from "./leaves.js";
+
+const LEAF_BLOCK_IDS = new Set([
+    "minecraft:leaves",
+    "minecraft:leaves2",
+    "minecraft:mangrove_leaves",
+    "minecraft:cherry_leaves",
+    "minecraft:azalea_leaves",
+    "minecraft:azalea_leaves_flowered",
+]);
 
 const MANGROVE_LOG_IDS = new Set([
     "minecraft:mangrove_log",

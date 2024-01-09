@@ -1,5 +1,6 @@
 import { BlockPermutation } from "cicada-lib/block.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
+import { LootTable, LootPool } from "./loot-table.js";
 import { PlayerPrefs } from "./player-prefs.js";
 
 export enum MiningWay {
@@ -27,6 +28,22 @@ export abstract class BlockProperties {
     /** The ID of the sound to be played when breaking this block.
      */
     public abstract readonly breakingSoundId: string;
+
+    /** Get the loot table for this block. The default implementation
+     * returns a loot table dropping the block itself regardless of how
+     * it's broken.
+     */
+    public get lootTable(): LootTable {
+        const stack = this.permutation.getItemStack(1);
+        if (stack)
+            return new LootTable()
+                .always([
+                    new LootPool().entry(stack)
+                ]);
+        else
+            // No corresponding items exist for this block. Drop nothing.
+            return new LootTable();
+    }
 
     /** See if a quick mining should be initiated by mining the block using
      * a given tool.

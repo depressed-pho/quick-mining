@@ -1,5 +1,9 @@
-import { BlockPermutation, BlockStateValue } from "cicada-lib/block.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
+
+function randomIntInClosedInterval(lower: number, upper: number) {
+    return Math.floor(
+        Math.random() * (upper - lower + 1) + lower);
+}
 
 /** The scripting API does not offer access to loot table, and this is a
  * miserable attempt to simulate it.
@@ -317,71 +321,3 @@ export namespace LootEntry {
         }
     }
 }
-
-export class BlockLootRegistry {
-    readonly #blocks: Map<string, BlockLootRegistryEntry[]>;
-
-    private constructor() {
-        this.#blocks = new Map();
-    }
-
-    public add(typeId: string, table: LootTable): this;
-    public add(typeId: string, states: Record<string, BlockStateValue>, table: LootTable): this;
-    public add(...args: any[]): this {
-        const ents  = this.#blocks.get(args[0]);
-        const entry = args.length == 2
-            ? {
-                table:  args[1]
-              }
-            : {
-                states: args[1],
-                table:  args[2],
-              };
-        if (ents)
-            ents.push(entry);
-        else
-            this.#blocks.set(args[0], [entry]);
-        return this;
-    }
-
-    public "get"(perm: BlockPermutation): LootTable {
-        const entries = this.#blocks.get(perm.typeId);
-        if (entries) {
-            find_matching_entry:
-            for (const entry of entries) {
-                if (entry.states) {
-                    for (const [key, value] of Object.entries(entry.states)) {
-                        if (perm.states.get(key) !== value)
-                            continue find_matching_entry;
-                    }
-                }
-                return entry.table;
-            }
-        }
-
-        // Having no specific loot table means that the block should drop
-        // itself regardless of how they are broken.
-        const stack = perm.getItemStack(1);
-        if (stack)
-            return new LootTable()
-                .always([
-                    new LootPool().entry(stack)
-                ]);
-        else
-            // No corresponding items exist for this block. Drop nothing.
-            return new LootTable();
-    }
-}
-
-interface BlockLootRegistryEntry {
-    states?: Record<string, BlockStateValue>,
-    table:   LootTable
-}
-
-function randomIntInClosedInterval(lower: number, upper: number) {
-    return Math.floor(
-        Math.random() * (upper - lower + 1) + lower);
-}
-
-// @ts-ignore: Intentionally calling a private constructor.
-export const blockLoots = new BlockLootRegistry();

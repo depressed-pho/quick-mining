@@ -10,9 +10,8 @@ import { Timer } from "cicada-lib/timer.js";
 import { Thread } from "cicada-lib/thread.js";
 import { world } from "cicada-lib/world.js";
 import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
-import { blockLoots } from "./loot-table.js";
+import { LootTable } from "./loot-table.js";
 import "./block-properties/minecraft.js";
-import "./loot-table/minecraft.js";
 
 export class MinerThread extends Thread {
     static readonly TIME_BUDGET_IN_MS_PER_TICK = 30; // Max 50
@@ -147,7 +146,7 @@ export class MinerThread extends Thread {
             return;
 
         this.#accumulateLoots(
-            block.permutation,
+            props.lootTable,
             // Tool enchantments should not apply to bonus mining.
             way === MiningWay.MineRegularly ? this.#tool : undefined);
 
@@ -168,8 +167,8 @@ export class MinerThread extends Thread {
         }
     }
 
-    #accumulateLoots(perm: BlockPermutation, tool?: ItemStack) {
-        for (const stack of blockLoots.get(perm).execute(tool)) {
+    #accumulateLoots(lootTable: LootTable, tool?: ItemStack) {
+        for (const stack of lootTable.execute(tool)) {
             this.#addToLoots(stack);
         }
     }

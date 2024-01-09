@@ -1,22 +1,114 @@
 import { BlockPermutation } from "cicada-lib/block.js";
+import { Constructor } from "cicada-lib/mixin.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, MiningWay, blockProps } from "../../block-properties.js";
+import { LootCondition, LootTable, LootPool } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
-
-export const LEAF_BLOCK_IDS = new Set([
-    "minecraft:leaves",
-    "minecraft:leaves2",
-    "minecraft:mangrove_leaves",
-    "minecraft:cherry_leaves",
-    "minecraft:azalea_leaves",
-    "minecraft:azalea_leaves_flowered",
-]);
 
 const AZALEA_LEAVES_IDS = new Set([
     "minecraft:azalea_leaves",
     "minecraft:azalea_leaves_flowered",
 ]);
 
+// Oak leaves; they can drop apples.
+const OAK_LOOTS = lootOfLeaves(
+    new ItemStack("minecraft:leaves", {old_leaf_type: "oak"}),
+    [ new LootPool()
+        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+        .entry(new ItemStack("minecraft:sapling", {sapling_type: "oak"})),
+      new LootPool()
+        .condition(LootCondition.randomChance(1/200, 1/180, 1/160, 1/120, 1/40))
+        .entry(new ItemStack("minecraft:apple"))
+    ]);
+
+// Spruce leaves
+const SPRUCE_LOOTS = lootOfLeaves(
+    new ItemStack("minecraft:leaves", {old_leaf_type: "spruce"}),
+    [ new LootPool()
+        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+        .entry(new ItemStack("minecraft:sapling", {sapling_type: "spruce"}))
+    ]);
+
+// Birch leaves
+const BIRCH_LOOTS = lootOfLeaves(
+    new ItemStack("minecraft:leaves", {old_leaf_type: "birch"}),
+    [ new LootPool()
+        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+        .entry(new ItemStack("minecraft:sapling", {sapling_type: "birch"}))
+    ]);
+
+// Jungle leaves; they have a much lower chance of dropping sapplings.
+const JUNGLE_LOOTS = lootOfLeaves(
+    new ItemStack("minecraft:leaves", {old_leaf_type: "jungle"}),
+    [ new LootPool()
+        .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
+        .entry(new ItemStack("minecraft:sapling", {sapling_type: "jungle"}))
+    ]);
+
+// Acacia leaves
+const ACACIA_LOOTS = lootOfLeaves(
+    new ItemStack("minecraft:leaves2", {new_leaf_type: "acacia"}),
+    [ new LootPool()
+        .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
+        .entry(new ItemStack("minecraft:sapling", {sapling_type: "acacia"}))
+    ]);
+
+// Dark oak leaves; they can drop apples.
+const DARK_OAK_LOOTS = lootOfLeaves(
+    new ItemStack("minecraft:leaves2", {new_leaf_type: "dark_oak"}),
+    [ new LootPool()
+        .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
+        .entry(new ItemStack("minecraft:sapling", {sapling_type: "dark_oak"})),
+      new LootPool()
+        .condition(LootCondition.randomChance(1/200, 1/180, 1/160, 1/120, 1/40))
+        .entry(new ItemStack("minecraft:apple"))
+    ]);
+
+// Mangrove leaves; they don't drop saplings.
+const MANGROVE_LOOTS = lootOfLeaves(
+    new ItemStack("minecraft:mangrove_leaves"), []);
+
+// Cherry leaves
+const CHERRY_LOOTS = lootOfLeaves(
+    new ItemStack("minecraft:cherry_leaves"),
+    [ new LootPool()
+        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+        .entry(new ItemStack("minecraft:cherry_sapling"))
+    ]);
+
+// Azalea leaves
+const AZALEA_LOOTS = lootOfLeaves(
+    new ItemStack("minecraft:azalea_leaves"),
+    [ new LootPool()
+        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+        .entry(new ItemStack("minecraft:azalea"))
+    ]);
+const FLOWERING_AZALEA_LOOTS = lootOfLeaves(
+    new ItemStack("minecraft:azalea_leaves_flowered"),
+    [ new LootPool()
+        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+        .entry(new ItemStack("minecraft:flowering_azalea"))
+    ]);
+
+function lootOfLeaves(leafBlock: ItemStack, extraPools: LootPool[]): LootTable {
+    return new LootTable()
+        .when(
+            LootCondition.or([
+                LootCondition.matchTool().typeId("minecraft:shears"),
+                LootCondition.matchTool().enchantment("silk_touch")
+            ]),
+            [ new LootPool().entry(leafBlock) ]) // 100% drop
+
+        .otherwise(
+            [ new LootPool()
+                .rolls(1, 2)
+                .condition(LootCondition.randomChance(1/50, 1/45, 1/40, 1/30))
+                .entry(new ItemStack("minecraft:stick")),
+              ...extraPools
+            ]);
+}
+
+/// Base class for all leaf blocks.
 class LeavesProperties extends BlockProperties {
     public readonly breakingSoundId: string = "dig.grass";
 
@@ -47,31 +139,87 @@ class LeavesProperties extends BlockProperties {
         }
     }
 }
-for (const blockId of LEAF_BLOCK_IDS) {
-    if (AZALEA_LEAVES_IDS.has(blockId))
-        blockProps.addBlockProps(
-            blockId,
-            class extends LeavesProperties {
-                public override readonly breakingSoundId = "dig.azalea_leaves";
 
-                public override miningWay(perm: BlockPermutation): MiningWay {
-                    // A special case for mining azalea leaves (flowering
-                    // or not). It should also mine the other variant as
-                    // long as they have an identical persistence state.
-                    if (AZALEA_LEAVES_IDS.has(perm.typeId))
-                        if (this.permutation.states.get("persistent_bit")
-                            === perm.states.get("persistent_bit"))
-                            return MiningWay.MineRegularly;
+/// Mixin for azalea-like leaves.
+function AzaleaLike<T extends Constructor<LeavesProperties>>(base: T) {
+    abstract class AzaleaLike extends base {
+        public override readonly breakingSoundId = "dig.azalea_leaves";
 
-                    return super.miningWay(perm);
-                }
-            });
-    else if (blockId === "minecraft:cherry_leaves")
-        blockProps.addBlockProps(
-            blockId,
-            class extends LeavesProperties {
-                public override readonly breakingSoundId = "break.cherry_leaves";
-            });
-    else
-        blockProps.addBlockProps(blockId, LeavesProperties);
+        public override miningWay(perm: BlockPermutation): MiningWay {
+            // A special case for mining azalea leaves (flowering or
+            // not). It should also mine the other variant as long as they
+            // have an identical persistence state.
+            if (AZALEA_LEAVES_IDS.has(perm.typeId))
+                if (this.permutation.states.get("persistent_bit")
+                    === perm.states.get("persistent_bit"))
+                    return MiningWay.MineRegularly;
+
+            return super.miningWay(perm);
+        }
+    }
+    return AzaleaLike;
 }
+
+blockProps.addBlockProps(
+    "minecraft:leaves",
+    class extends LeavesProperties {
+        public override get lootTable(): LootTable {
+            const leafType = this.permutation.states.get("old_leaf_type");
+            switch (leafType) {
+                case "oak":    return OAK_LOOTS;
+                case "spruce": return SPRUCE_LOOTS;
+                case "birch":  return BIRCH_LOOTS;
+                case "jungle": return JUNGLE_LOOTS;
+                default:
+                    throw new Error(`Unknown leaf type for \`minecraft:leaves': ${leafType}`);
+            }
+        }
+    });
+
+blockProps.addBlockProps(
+    "minecraft:leaves2",
+    class extends LeavesProperties {
+        public override get lootTable(): LootTable {
+            const leafType = this.permutation.states.get("new_leaf_type");
+            switch (leafType) {
+                case "acacia":   return ACACIA_LOOTS;
+                case "dark_oak": return DARK_OAK_LOOTS;
+                default:
+                    throw new Error(`Unknown leaf type for \`minecraft:leaves': ${leafType}`);
+            }
+        }
+    });
+
+blockProps.addBlockProps(
+    "minecraft:mangrove_leaves",
+    class extends LeavesProperties {
+        public override get lootTable(): LootTable {
+            return MANGROVE_LOOTS;
+        }
+    });
+
+blockProps.addBlockProps(
+    "minecraft:cherry_leaves",
+    class extends LeavesProperties {
+        public override readonly breakingSoundId = "break.cherry_leaves";
+
+        public override get lootTable(): LootTable {
+            return CHERRY_LOOTS;
+        }
+    });
+
+blockProps.addBlockProps(
+    "minecraft:azalea_leaves",
+    class extends AzaleaLike(LeavesProperties) {
+        public override get lootTable(): LootTable {
+            return AZALEA_LOOTS;
+        }
+    });
+
+blockProps.addBlockProps(
+    "minecraft:azalea_leaves_flowered",
+    class extends AzaleaLike(LeavesProperties) {
+        public override get lootTable(): LootTable {
+            return FLOWERING_AZALEA_LOOTS;
+        }
+    });
