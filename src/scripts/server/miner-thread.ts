@@ -27,14 +27,14 @@ export class MinerThread extends Thread {
     readonly #loots: ItemStack[];
     readonly #soundsPlayed: Set<string>;
 
-    public constructor(actor: Entity, tool: ItemStack, origin: Block) {
+    public constructor(actor: Entity, tool: ItemStack, origin: Block, perm: BlockPermutation) {
         super();
         this.#actor     = actor;
         this.#tool      = tool;
         this.#dimension = origin.dimension;
         this.#origLoc   = origin.location;
-        this.#origPerm  = origin.permutation;
-        this.#origProps = blockProps.get(origin.permutation);
+        this.#origPerm  = perm;
+        this.#origProps = blockProps.get(perm);
 
         const ordBlock  = (ba: Block, bb: Block) => {
             // We sort scheduled blocks by Y, then X, and then Z, and mine
@@ -61,7 +61,10 @@ export class MinerThread extends Thread {
         const timer = new Timer();
 
         // The first path: discover blocks to quick-mine. This is a
-        // non-destructive operation.
+        // non-destructive operation. Note that the block located at
+        // this.#origLoc might not be the one we observed before spawning
+        // this thread, which is fine because this.#scan() will not
+        // schedule blocks incompatible with this.#origPerm.
         this.#scan(this.#origLoc);
         while (this.#toScan.size > 0) {
             const loc = this.#toScan.deleteAny()!;

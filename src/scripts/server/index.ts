@@ -14,9 +14,8 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     // Quick-mining only activates when the player is using a specific kind
     // of tool. It can therefore never be a bare hand.
     const tool = ev.itemStack;
-    if (!tool) {
+    if (!tool)
         return;
-    }
 
     if (0) { // FIXME
         const block = ev.block;
@@ -32,17 +31,35 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     if (!isQuickMiningEnabled(player))
         return;
 
-    const block = ev.block;
-    const props = blockProps.get(block.permutation);
-    if (!props.isToolSuitable(tool, player.getSession<PlayerSession>().prefs))
+    const block   = ev.block;
+    const perm    = block.permutation;
+    const props   = blockProps.get(perm);
+    const session = player.getSession<PlayerSession>();
+    if (!props.isToolSuitable(tool, session.prefs))
         return;
 
     // Now we know we should do a quick-mining. We are going to break
     // blocks in our own way, so we first need to cancel the regular
-    // breakage.
+    // breakage before leaving this event handler.
     ev.cancel();
 
-    new MinerThread(player, tool, ev.block).start();
+    // We are going to use async/await from here. The event handler itself
+    // cannot be asynchronous because it has to call ev.cancel()
+    // synchronously.
+    (async () => {
+        if (session.runningMiner) {
+            // The miner thread this player spawned in the past has not
+            // finished yet. We don't want to spawn more. Do nothing and
+            // forget about this attempt.
+        }
+        else {
+            // There are currently no running miner threads spawned by this
+            // player. We can spawn one.
+            session.runningMiner = new MinerThread(player, tool, block, perm).start();
+            await session.runningMiner.join();
+            session.runningMiner = null;
+        }
+    })();
 });
 
 function isQuickMiningEnabled(player: Player): boolean {
