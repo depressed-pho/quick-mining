@@ -51,17 +51,8 @@ function lootOfShrooms(blockId: string, item: ItemStack, isStem: boolean): LootT
 // A class factory for mushroom blocks.
 function HugeMushroomProperties(stemLoots: LootTable, blockLoots: LootTable) {
     return class HugeMushroomProperties extends BlockProperties {
-        public readonly breakingSoundId = "dig.wood";
-
-        public override get lootTable(): LootTable {
-            const bits = this.permutation.states.get("huge_mushroom_bits");
-            switch (bits) {
-                case 10:
-                case 15:
-                    return stemLoots;
-                default:
-                    return blockLoots;
-            }
+        public breakingSoundId(): string {
+            return "dig.wood";
         }
 
         public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean {
@@ -71,10 +62,21 @@ function HugeMushroomProperties(stemLoots: LootTable, blockLoots: LootTable) {
                 return false;
         }
 
-        public override miningWay(perm: BlockPermutation): MiningWay {
+        public override lootTable(perm: BlockPermutation): LootTable {
+            const bits = perm.states.get("huge_mushroom_bits");
+            switch (bits) {
+                case 10:
+                case 15:
+                    return stemLoots;
+                default:
+                    return blockLoots;
+            }
+        }
+
+        public override miningWay(origin: BlockPermutation, perm: BlockPermutation): MiningWay {
             // A special case for mining huge mushrooms. We must ignore
             // differences in block states.
-            if (perm.typeId === this.typeId)
+            if (origin.typeId === perm.typeId)
                 return MiningWay.MineRegularly;
             else
                 return MiningWay.LeaveAlone;

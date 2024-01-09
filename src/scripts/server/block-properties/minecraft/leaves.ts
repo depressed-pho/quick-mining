@@ -110,7 +110,9 @@ function lootOfLeaves(leafBlock: ItemStack, extraPools: LootPool[]): LootTable {
 
 /// Base class for all leaf blocks.
 class LeavesProperties extends BlockProperties {
-    public readonly breakingSoundId: string = "dig.grass";
+    public breakingSoundId(): string {
+        return "dig.grass";
+    }
 
     public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean {
         if (prefs.coverage.enableMiningLeaves)
@@ -122,14 +124,14 @@ class LeavesProperties extends BlockProperties {
             return false;
     }
 
-    public override isEquivalentTo(perm: BlockPermutation): boolean {
+    public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
         // A special case for mining leaves. Ignore the difference in
         // update_bit.
-        if (this.typeId === perm.typeId) {
-            for (const [key, value] of this.permutation.states) {
+        if (pa.typeId === pb.typeId) {
+            for (const [key, value] of pa.states) {
                 if (key === "update_bit")
                     continue;
-                else if (perm.states.get(key) !== value)
+                else if (pb.states.get(key) !== value)
                     return false;
             }
             return true;
@@ -143,18 +145,19 @@ class LeavesProperties extends BlockProperties {
 /// Mixin for azalea-like leaves.
 function AzaleaLike<T extends Constructor<LeavesProperties>>(base: T) {
     abstract class AzaleaLike extends base {
-        public override readonly breakingSoundId = "dig.azalea_leaves";
+        public override breakingSoundId(): string {
+            return "dig.azalea_leaves";
+        }
 
-        public override miningWay(perm: BlockPermutation): MiningWay {
+        public override miningWay(origin: BlockPermutation, perm: BlockPermutation): MiningWay {
             // A special case for mining azalea leaves (flowering or
             // not). It should also mine the other variant as long as they
             // have an identical persistence state.
             if (AZALEA_LEAVES_IDS.has(perm.typeId))
-                if (this.permutation.states.get("persistent_bit")
-                    === perm.states.get("persistent_bit"))
+                if (origin.states.get("persistent_bit") === perm.states.get("persistent_bit"))
                     return MiningWay.MineRegularly;
 
-            return super.miningWay(perm);
+            return super.miningWay(origin, perm);
         }
     }
     return AzaleaLike;
@@ -163,8 +166,8 @@ function AzaleaLike<T extends Constructor<LeavesProperties>>(base: T) {
 blockProps.addBlockProps(
     "minecraft:leaves",
     class extends LeavesProperties {
-        public override get lootTable(): LootTable {
-            const leafType = this.permutation.states.get("old_leaf_type");
+        public override lootTable(perm: BlockPermutation): LootTable {
+            const leafType = perm.states.get("old_leaf_type");
             switch (leafType) {
                 case "oak":    return OAK_LOOTS;
                 case "spruce": return SPRUCE_LOOTS;
@@ -179,8 +182,8 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:leaves2",
     class extends LeavesProperties {
-        public override get lootTable(): LootTable {
-            const leafType = this.permutation.states.get("new_leaf_type");
+        public override lootTable(perm: BlockPermutation): LootTable {
+            const leafType = perm.states.get("new_leaf_type");
             switch (leafType) {
                 case "acacia":   return ACACIA_LOOTS;
                 case "dark_oak": return DARK_OAK_LOOTS;
@@ -193,7 +196,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:mangrove_leaves",
     class extends LeavesProperties {
-        public override get lootTable(): LootTable {
+        public override lootTable(): LootTable {
             return MANGROVE_LOOTS;
         }
     });
@@ -201,9 +204,11 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:cherry_leaves",
     class extends LeavesProperties {
-        public override readonly breakingSoundId = "break.cherry_leaves";
+        public override breakingSoundId(): string {
+            return "break.cherry_leaves";
+        }
 
-        public override get lootTable(): LootTable {
+        public override lootTable(): LootTable {
             return CHERRY_LOOTS;
         }
     });
@@ -211,7 +216,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:azalea_leaves",
     class extends AzaleaLike(LeavesProperties) {
-        public override get lootTable(): LootTable {
+        public override lootTable(): LootTable {
             return AZALEA_LOOTS;
         }
     });
@@ -219,7 +224,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:azalea_leaves_flowered",
     class extends AzaleaLike(LeavesProperties) {
-        public override get lootTable(): LootTable {
+        public override lootTable(): LootTable {
             return FLOWERING_AZALEA_LOOTS;
         }
     });

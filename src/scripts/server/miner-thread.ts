@@ -21,6 +21,7 @@ export class MinerThread extends Thread {
     readonly #tool: ItemStack;
     readonly #dimension: Dimension;
     readonly #origLoc: Location;
+    readonly #origPerm: BlockPermutation;
     readonly #origProps: BlockProperties;
     readonly #scanned: HashSet<Location>; // negative cache for scanning
     readonly #toScan: HashSet<Location>;
@@ -34,6 +35,7 @@ export class MinerThread extends Thread {
         this.#tool      = tool;
         this.#dimension = origin.dimension;
         this.#origLoc   = origin.location;
+        this.#origPerm  = origin.permutation;
         this.#origProps = blockProps.get(origin.permutation);
 
         const eqLoc     = (la: Location, lb: Location) => la.equals(lb);
@@ -76,10 +78,12 @@ export class MinerThread extends Thread {
                     break;
 
             if (timer.elapsedMs >= MinerThread.TIME_BUDGET_IN_MS_PER_TICK) {
+                //console.log(`Elapsed ${timer}, scanned ${this.#scanned.size} blocks so far`);
                 yield;
                 timer.reset();
             }
         }
+        //console.log(`Elapsed ${timer}, scanned ${this.#scanned.size} blocks`);
 
         // The second path: mine all blocks that we have decided to mine.
         try {
@@ -110,7 +114,7 @@ export class MinerThread extends Thread {
             return false;
         }
 
-        const way = this.#origProps.miningWay(block.permutation);
+        const way = this.#origProps.miningWay(this.#origPerm, block.permutation);
         switch (way) {
             case MiningWay.LeaveAlone:
                 this.#scanned.add(loc);
@@ -142,11 +146,11 @@ export class MinerThread extends Thread {
         // operation is asynchronous. Check if the block is still the one
         // we expect.
         const props = blockProps.get(perm);
-        if (!props.isEquivalentTo(block.permutation))
+        if (!props.isEquivalentTo(perm, block.permutation))
             return;
 
         this.#accumulateLoots(
-            props.lootTable,
+            props.lootTable(block.permutation),
             // Tool enchantments should not apply to bonus mining.
             way === MiningWay.MineRegularly ? this.#tool : undefined);
 

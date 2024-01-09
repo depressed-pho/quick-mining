@@ -20,7 +20,9 @@ const MANGROVE_LOG_IDS = new Set([
 ]);
 
 class LogLikeBlockProperties extends BlockProperties {
-    public readonly breakingSoundId: string = "dig.wood";
+    public breakingSoundId(): string {
+        return "dig.wood";
+    }
 
     public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean {
         if (prefs.coverage.enableMiningLogs)
@@ -29,16 +31,16 @@ class LogLikeBlockProperties extends BlockProperties {
             return false;
     }
 
-    public override isEquivalentTo(perm: BlockPermutation): boolean {
+    public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
         // We consider two wood-like blocks be equivalent as long as their
         // block states match, except we ignore their pillar axis. It would
         // be nicer to ignore their strippedness too, but then we lose our
         // ability to automatically support custom trees added by addons.
-        if (this.typeId === perm.typeId) {
-            for (const [key, value] of this.permutation.states) {
+        if (pa.typeId === pb.typeId) {
+            for (const [key, value] of pa.states) {
                 if (key === "pillar_axis")
                     continue;
-                else if (perm.states.get(key) !== value)
+                else if (pb.states.get(key) !== value)
                     return false;
             }
             return true;
@@ -48,7 +50,7 @@ class LogLikeBlockProperties extends BlockProperties {
         }
     }
 
-    public override miningWay(perm: BlockPermutation): MiningWay {
+    public override miningWay(origin: BlockPermutation, perm: BlockPermutation): MiningWay {
         // A special case for mining logs. It should also mine
         // non-persistent leaves as a bonus, without regard to their
         // types. We could be nicer by restricting leaf types but then
@@ -63,8 +65,8 @@ class LogLikeBlockProperties extends BlockProperties {
         // applied. While roots and carpets don't really decay, they can
         // still be broken with a bare hand and drop themselves, so it
         // would be nice to bonus-mine them as well.
-        if (this.typeId === "minecraft:mangrove_roots" ||
-            MANGROVE_LOG_IDS.has(this.typeId)) {
+        if (origin.typeId === "minecraft:mangrove_roots" ||
+            MANGROVE_LOG_IDS.has(origin.typeId)) {
 
             switch (perm.typeId) {
                 case "minecraft:mangrove_roots":
@@ -89,12 +91,14 @@ class LogLikeBlockProperties extends BlockProperties {
             }
         }
 
-        return super.miningWay(perm);
+        return super.miningWay(origin, perm);
     }
 }
 blockProps.addTaggedProps("wood", LogLikeBlockProperties);
 blockProps.addBlockProps(
     "minecraft:mangrove_roots",
     class extends LogLikeBlockProperties {
-        public override readonly breakingSoundId = "block.mangrove_roots.break";
+        public override breakingSoundId(): string {
+            return "block.mangrove_roots.break";
+        }
     });

@@ -16,7 +16,9 @@ abstract class OreBlockProperties extends BlockProperties {
 /// Mixin for stone-based ore blocks.
 function StoneBased<T extends Constructor<OreBlockProperties>>(base: T) {
     abstract class StoneBased extends base {
-        public readonly breakingSoundId = "dig.stone";
+        public breakingSoundId(): string {
+            return "dig.stone";
+        }
     }
     return StoneBased;
 }
@@ -24,7 +26,9 @@ function StoneBased<T extends Constructor<OreBlockProperties>>(base: T) {
 /// Mixin for deepslate-based ore blocks.
 function DeepslateBased<T extends Constructor<OreBlockProperties>>(base: T) {
     abstract class DeepslateBased extends base {
-        public readonly breakingSoundId = "dig.deepslate";
+        public breakingSoundId(): string {
+            return "dig.deepslate";
+        }
     }
     return DeepslateBased;
 }

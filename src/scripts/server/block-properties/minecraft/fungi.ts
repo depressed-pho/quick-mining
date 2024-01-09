@@ -17,7 +17,7 @@ abstract class HugeFungiAdjunctProperties extends BlockProperties {
             return false;
     }
 
-    public override miningWay(perm: BlockPermutation): MiningWay {
+    public override miningWay(_origin: BlockPermutation, perm: BlockPermutation): MiningWay {
         // A special case for mining nether wart blocks and
         // shroomlights. It should also mine the other variants. Note that
         // we don't mine these blocks as a bonus for huge fungi stems,
@@ -35,14 +35,18 @@ for (const blockId of HUGE_FUNGI_ADJUNCT_IDS) {
             blockProps.addBlockProps(
                 blockId,
                 class extends HugeFungiAdjunctProperties {
-                    public readonly breakingSoundId = "dig.nether_wart";
+                    public breakingSoundId(): string {
+                        return "dig.nether_wart";
+                    }
                 });
             break;
         case "minecraft:shroomlight":
             blockProps.addBlockProps(
                 blockId,
                 class extends HugeFungiAdjunctProperties {
-                    public readonly breakingSoundId = "dig.shroomlight";
+                    public breakingSoundId(): string {
+                        return "dig.shroomlight";
+                    }
                 });
     }
 }
