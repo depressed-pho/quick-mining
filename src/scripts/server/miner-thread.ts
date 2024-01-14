@@ -154,7 +154,7 @@ export class MinerThread extends Thread {
 
         if (way === MiningWay.MineRegularly) {
             // Play a breaking sound only once per tick.
-            const soundId = props.breakingSoundId;
+            const soundId = props.breakingSoundId(block.permutation);
             if (!this.#soundsPlayed.has(soundId)) {
                 world.playSound(soundId, block.location);
                 this.#soundsPlayed.add(soundId);

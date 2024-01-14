@@ -30,14 +30,19 @@ export abstract class BlockProperties {
      */
     public abstract isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean;
 
-    /** See if a given block should be considered equivalent to this
-     * block. In most cases this means `pa.equals(pb)`, which is the
-     * default implementation, but some blocks (such as leaves) need to
-     * ignore certain block states
+    /** See if two blocks should be considered equivalent. In most cases
+     * this means `pa.equals(pb)`, which is the default implementation, but
+     * some blocks (such as leaves) need to ignore certain block states
      * (e.g. `update_bit`).
      */
     public isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
         return pa.equals(pb);
+    }
+
+    /** Get the amount of experience yielded by mining the block.
+     */
+    public experience(_perm: BlockPermutation, _tool: ItemStack): number {
+        return 0;
     }
 
     /** Get the loot table for the block. The default implementation

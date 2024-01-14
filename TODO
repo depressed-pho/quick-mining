@@ -1,13 +1,8 @@
 # -*- org -*-
 
-* DONE [#A] Rewrite the miner thread as a two-pass operation
-* DONE [#A] Take account of waterlogged blocks
-* DONE [#A] Check if blocks to mine are still the same blocks that have been scheduled for
-* DONE [#A] Don't allow a player to run more than a single miner thread simultaneously
-* DONE [#A] Add a special case for mining nether wart blocks and shroomlights to propagate to each other
 * TODO [#A] Consume tool durability unless the player is in creative mode
-* DONE [#A] Loot tables should be returned by BlockProperties
-* TODO [#A] Create loot tables for ores
+* TODO [#A] Sculk blocks
+* TODO [#A] Amethyst Cluster
 * TODO [#A] Create the loot table for gravel
 * TODO [#B] MinerThread.TIME_BUDGET_IN_MS_PER_TICK should be world-configurable
 * TODO [#B] MinerThread.MAX_BLOCKS_TO_MINE should be world-configurable

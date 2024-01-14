@@ -1,6 +1,6 @@
 import { ItemStack } from "cicada-lib/item/stack.js";
 
-function randomIntInClosedInterval(lower: number, upper: number) {
+export function randomIntInClosedInterval(lower: number, upper: number) {
     return Math.floor(
         Math.random() * (upper - lower + 1) + lower);
 }
@@ -307,17 +307,73 @@ export abstract class LootEntry {
 export namespace LootEntry {
     export class Item extends LootEntry {
         readonly #stack: ItemStack;
+        readonly #rolls: Rolls;
+        #isMultiplicative: boolean;
+        #isDiscreteUniform: boolean;
+        #limit: number|undefined;
 
         public constructor(stack: ItemStack) {
             super();
-            this.#stack = stack;
+            this.#stack             = stack;
+            this.#rolls             = {min: 1, max: 1};
+            this.#isMultiplicative  = false;
+            this.#isDiscreteUniform = false;
+            this.#limit             = undefined;
+        }
+
+        public amount(min: number, max: number): this {
+            this.#rolls.min = min;
+            this.#rolls.max = max;
+            return this;
+        }
+
+        public multiplicative(bool: boolean): this {
+            this.#isMultiplicative = bool;
+            return this;
+        }
+
+        public discreteUniform(bool: boolean, limit?: number): this {
+            this.#isDiscreteUniform = bool;
+            this.#limit             = limit;
+            return this;
         }
 
         public execute(tool?: ItemStack): ItemStack[] {
-            if (!this.evalCondition(tool))
+            if (!this.evalCondition(tool)) {
                 return [];
-            else
-                return [this.#stack.clone()];
+            }
+            else if (this.#isMultiplicative && tool) {
+                // https://minecraft.fandom.com/wiki/Fortune#Ore
+                const fortune = tool.enchantments.get("fortune");
+                const level   = fortune ? fortune.level : 0;
+                const dice    = randomIntInClosedInterval(1, level + 2);
+                const mult    = Math.max(1, dice - 1);
+
+                const item  = this.#stack.clone();
+                item.amount = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max);
+
+                const items = [];
+                for (let i = 0; i < mult; i++) {
+                    items.push(item.clone());
+                }
+                return items;
+            }
+            else if (this.#isDiscreteUniform && tool) {
+                const fortune = tool.enchantments.get("fortune");
+                const level   = fortune ? fortune.level : 0;
+                const dice    = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + level);
+
+                const item  = this.#stack.clone();
+                item.amount = this.#limit ? Math.min(dice, this.#limit) : dice;
+
+                return [item];
+            }
+            else {
+                const item  = this.#stack.clone();
+                item.amount = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max);
+
+                return [item];
+            }
         }
     }
 }
