@@ -24,7 +24,7 @@ class LogLikeBlockProperties extends BlockProperties {
         return "dig.wood";
     }
 
-    public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean {
+    public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs): boolean {
         if (prefs.coverage.enableMiningLogs)
             return tool.tags.has("minecraft:is_axe");
         else

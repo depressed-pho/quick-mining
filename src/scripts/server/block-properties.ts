@@ -28,7 +28,7 @@ export abstract class BlockProperties {
     /** See if a quick mining should be initiated by mining the block using
      * a given tool.
      */
-    public abstract isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean;
+    public abstract isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs): boolean;
 
     /** See if two blocks should be considered equivalent. In most cases
      * this means `pa.equals(pb)`, which is the default implementation, but
@@ -76,7 +76,7 @@ class DefaultBlockProperties extends BlockProperties {
         throw new Error(`The block ${perm.typeId} isn't meant to be quick-mined`);
     }
 
-    public isToolSuitable(_tool: ItemStack): boolean {
+    public isToolSuitable(): boolean {
         return false;
     }
 }

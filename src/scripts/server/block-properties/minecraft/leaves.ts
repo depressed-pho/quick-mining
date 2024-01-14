@@ -1,7 +1,7 @@
 import { BlockPermutation } from "cicada-lib/block.js";
 import { Constructor } from "cicada-lib/mixin.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
-import { BlockProperties, MiningWay, blockProps } from "../../block-properties.js";
+import { BlockProperties, blockProps } from "../../block-properties.js";
 import { LootCondition, LootTable, LootPool } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
 
@@ -114,7 +114,7 @@ class LeavesProperties extends BlockProperties {
         return "dig.grass";
     }
 
-    public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean {
+    public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs): boolean {
         if (prefs.coverage.enableMiningLeaves)
             // There is no tags for shears, which is unfortunate but is
             // understandable because the vanilla Minecraft has only one type of shears.
@@ -149,15 +149,15 @@ function AzaleaLike<T extends Constructor<LeavesProperties>>(base: T) {
             return "dig.azalea_leaves";
         }
 
-        public override miningWay(origin: BlockPermutation, perm: BlockPermutation): MiningWay {
+        public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
             // A special case for mining azalea leaves (flowering or
             // not). It should also mine the other variant as long as they
             // have an identical persistence state.
-            if (AZALEA_LEAVES_IDS.has(perm.typeId))
-                if (origin.states.get("persistent_bit") === perm.states.get("persistent_bit"))
-                    return MiningWay.MineRegularly;
+            if (AZALEA_LEAVES_IDS.has(pa.typeId) && AZALEA_LEAVES_IDS.has(pb.typeId))
+                if (pa.states.get("persistent_bit") === pb.states.get("persistent_bit"))
+                    return true;
 
-            return super.miningWay(origin, perm);
+            return super.isEquivalentTo(pa, pb);
         }
     }
     return AzaleaLike;

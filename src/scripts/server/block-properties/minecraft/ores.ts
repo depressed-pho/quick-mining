@@ -8,7 +8,7 @@ import { PlayerPrefs } from "../../player-prefs.js";
 
 /// Base class for all ore blocks.
 abstract class OreBlockProperties extends BlockProperties {
-    public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs) {
+    public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
         if (prefs.coverage.enableMiningOres)
             return tool.tags.has("minecraft:is_pickaxe");
         else
@@ -62,12 +62,12 @@ function NetherrackBased<T extends Constructor<BlockProperties>>(base: T) {
 /// Mixin for ore blocks requiring stone-tier pickaxes to mine.
 function StoneTier<T extends Constructor<OreBlockProperties>>(base: T) {
     abstract class StoneTier extends base {
-        public override isToolSuitable(tool: ItemStack, prefs: PlayerPrefs) {
+        public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
             if (tool.tags.has("minecraft:stone_tier"    ) ||
                 tool.tags.has("minecraft:iron_tier"     ) ||
                 tool.tags.has("minecraft:diamond_tier"  ) ||
                 tool.tags.has("minecraft:netherite_tier"))
-                return super.isToolSuitable(tool, prefs);
+                return super.isToolSuitable(perm, tool, prefs);
             else
                 return false;
         }
@@ -77,17 +77,31 @@ function StoneTier<T extends Constructor<OreBlockProperties>>(base: T) {
 
 /// Mixin for ore blocks requiring iron-tier pickaxes to mine.
 function IronTier<T extends Constructor<OreBlockProperties>>(base: T) {
-    abstract class StoneTier extends base {
-        public override isToolSuitable(tool: ItemStack, prefs: PlayerPrefs) {
+    abstract class IronTier extends base {
+        public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
             if (tool.tags.has("minecraft:iron_tier"     ) ||
                 tool.tags.has("minecraft:diamond_tier"  ) ||
                 tool.tags.has("minecraft:netherite_tier"))
-                return super.isToolSuitable(tool, prefs);
+                return super.isToolSuitable(perm, tool, prefs);
             else
                 return false;
         }
     }
-    return StoneTier;
+    return IronTier;
+}
+
+/// Mixin for ore blocks requiring diamond-tier pickaxes to mine.
+function DiamondTier<T extends Constructor<OreBlockProperties>>(base: T) {
+    abstract class DiamondTier extends base {
+        public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
+            if (tool.tags.has("minecraft:diamond_tier"  ) ||
+                tool.tags.has("minecraft:netherite_tier"))
+                return super.isToolSuitable(perm, tool, prefs);
+            else
+                return false;
+        }
+    }
+    return DiamondTier;
 }
 
 /// Mixin for ore blocks that can be lit.
@@ -106,7 +120,7 @@ function Lit<T extends Constructor<BlockProperties>>(
 }
 
 /// Mixin for blocks whose drops are affected multiplicatively by Fortune.
-function MultiplicativeDrops<T extends Constructor<BlockProperties>>(
+export function MultiplicativeDrops<T extends Constructor<BlockProperties>>(
     base: T, block: ItemStack, minRolls: number, maxRolls: number, drop: ItemStack) {
 
     const loots = new LootTable()
@@ -131,7 +145,7 @@ function MultiplicativeDrops<T extends Constructor<BlockProperties>>(
 }
 
 /// Mixin for blocks whose drops use discrete uniform distribution.
-function DiscreteUniformDrops<T extends Constructor<BlockProperties>>(
+export function DiscreteUniformDrops<T extends Constructor<BlockProperties>>(
     base: T, block: ItemStack, minRolls: number, maxRolls: number,
     limit: number|undefined, drop: ItemStack) {
 
@@ -155,6 +169,15 @@ function DiscreteUniformDrops<T extends Constructor<BlockProperties>>(
     }
     return DiscreteUniformDrops;
 }
+
+// Ancient Debris
+blockProps.addBlockProps(
+    "minecraft:ancient_debris",
+    class extends DiamondTier(OreBlockProperties) {
+        public breakingSoundId(): string {
+            return "dig.ancient_debris";
+        }
+    });
 
 // Coal
 blockProps.addBlockProps(

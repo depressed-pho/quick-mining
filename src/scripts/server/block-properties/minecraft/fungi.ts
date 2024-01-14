@@ -10,7 +10,7 @@ const HUGE_FUNGI_ADJUNCT_IDS = new Set([
 ]);
 
 abstract class HugeFungiAdjunctProperties extends BlockProperties {
-    public isToolSuitable(tool: ItemStack, prefs: PlayerPrefs): boolean {
+    public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs): boolean {
         if (prefs.coverage.enableMiningWartBlocks)
             return tool.tags.has("minecraft:is_hoe");
         else

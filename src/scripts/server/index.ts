@@ -35,7 +35,7 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     const perm    = block.permutation;
     const props   = blockProps.get(perm);
     const session = player.getSession<PlayerSession>();
-    if (!props.isToolSuitable(tool, session.prefs))
+    if (!props.isToolSuitable(perm, tool, session.prefs))
         return;
 
     // Now we know we should do a quick-mining. We are going to break
