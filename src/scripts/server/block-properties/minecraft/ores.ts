@@ -20,7 +20,7 @@ abstract class OreBlockProperties extends BlockProperties {
 function Experience<T extends Constructor<BlockProperties>>(base: T, min: number, max: number) {
     abstract class Experience extends base {
         public override experience(_perm: BlockPermutation, tool: ItemStack): number {
-            if (tool.enchantments.has("fortune"))
+            if (tool.enchantments.has("silk_touch"))
                 return 0;
             else
                 return randomIntInClosedInterval(min, max);

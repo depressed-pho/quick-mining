@@ -4,6 +4,7 @@ import { Dimension } from "cicada-lib/dimension.js";
 import { Entity } from "cicada-lib/entity.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { Location } from "cicada-lib/location.js";
+import { Player, GameMode } from "cicada-lib/player.js";
 import { Timer } from "cicada-lib/timer.js";
 import { Thread } from "cicada-lib/thread.js";
 import { world } from "cicada-lib/world.js";
@@ -26,6 +27,7 @@ export class MinerThread extends Thread {
     readonly #toMine: OrdMap<Block, [MiningWay, BlockPermutation]>;
     readonly #loots: ItemStack[];
     readonly #soundsPlayed: Set<string>;
+    #experience: number;
 
     public constructor(actor: Entity, tool: ItemStack, origin: Block, perm: BlockPermutation) {
         super();
@@ -55,6 +57,7 @@ export class MinerThread extends Thread {
 
         this.#loots        = [];
         this.#soundsPlayed = new Set();
+        this.#experience   = 0;
     }
 
     protected async* run() {
@@ -143,9 +146,11 @@ export class MinerThread extends Thread {
             return;
 
         this.#accumulateLoots(
-            props.lootTable(block.permutation),
+            props.lootTable(perm),
             // Tool enchantments should not apply to bonus mining.
             way === MiningWay.MineRegularly ? this.#tool : undefined);
+
+        this.#experience += props.experience(perm, this.#tool);
 
         if (block.isWaterlogged)
             block.typeId = "minecraft:water";
@@ -154,7 +159,7 @@ export class MinerThread extends Thread {
 
         if (way === MiningWay.MineRegularly) {
             // Play a breaking sound only once per tick.
-            const soundId = props.breakingSoundId(block.permutation);
+            const soundId = props.breakingSoundId(perm);
             if (!this.#soundsPlayed.has(soundId)) {
                 world.playSound(soundId, block.location);
                 this.#soundsPlayed.add(soundId);
@@ -192,20 +197,36 @@ export class MinerThread extends Thread {
     }
 
     #flushLoots() {
-        // Spawn item entities at the location of the actor who initiated
-        // the quick-mining. We could place items directly in their
-        // inventory, but it's easier this way as we don't need to handle
-        // cases like when their inventory is full.
+        // Spawn item entities and experience orbs at the location of the
+        // actor who initiated the quick-mining. We could place items
+        // directly in their inventory, but it's easier this way as we
+        // don't need to handle cases like when their inventory is full.
         if (this.#actor.isValid) {
             for (const stack of this.#loots)
                 this.#actor.dimension.spawnItem(stack, this.#actor.location);
+
+            // Creative players should not receive experience orbs.
+            if (!(this.#actor instanceof Player) || this.#actor.gameMode != GameMode.creative) {
+                // We cannot spawn experience orbs with custom
+                // values. Shit. We must not directly add experience to the
+                // player also, because that would bypass Mending tools.
+                for (let i = 0; i < this.#experience; i++) {
+                    this.#dimension.spawnEntity("minecraft:xp_orb", this.#actor.location);
+                }
+            }
         }
         else {
             // But the actor is invalid. Maybe the player has left?
             for (const stack of this.#loots)
                 this.#dimension.spawnItem(stack, this.#origLoc);
+
+            // We cannot spawn experience orbs with custom values. Shit.
+            for (let i = 0; i < this.#experience; i++) {
+                this.#dimension.spawnEntity("minecraft:xp_orb", this.#origLoc);
+            }
         }
         this.#loots.splice(0);
+        this.#experience = 0;
     }
 }
 
