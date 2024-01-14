@@ -14,6 +14,7 @@ export function populateDefaults(p: PB.PlayerPrefs): PlayerPrefs {
         mode: p.mode ?? QuickMiningMode.WhenSneaking,
         coverage: {
             enableMiningCrystals:   p.coverage?.enableMiningCrystals   ?? true,
+            enableMiningGlowstone:  p.coverage?.enableMiningGlowstone  ?? true,
             enableMiningLeaves:     p.coverage?.enableMiningLeaves     ?? true,
             enableMiningLogs:       p.coverage?.enableMiningLogs       ?? true,
             enableMiningMushrooms:  p.coverage?.enableMiningMushrooms  ?? true,

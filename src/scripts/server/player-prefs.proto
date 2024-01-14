@@ -15,9 +15,10 @@ enum QuickMiningMode {
 
 message Coverage {
   optional bool enableMiningCrystals = 1;
-  optional bool enableMiningLeaves = 2;
-  optional bool enableMiningLogs = 3;
-  optional bool enableMiningMushrooms = 4;
-  optional bool enableMiningOres = 5;
-  optional bool enableMiningWartBlocks = 6;
+  optional bool enableMiningGlowstone = 2;
+  optional bool enableMiningLeaves = 3;
+  optional bool enableMiningLogs = 4;
+  optional bool enableMiningMushrooms = 5;
+  optional bool enableMiningOres = 6;
+  optional bool enableMiningWartBlocks = 7;
 }
