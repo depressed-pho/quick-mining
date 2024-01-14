@@ -30,6 +30,12 @@ export abstract class BlockProperties {
      */
     public abstract isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs): boolean;
 
+    /** See if mining the block should consume durability of the tool.
+     */
+    public consumesDurability(_perm: BlockPermutation, _tool: ItemStack): boolean {
+        return true;
+    }
+
     /** See if two blocks should be considered equivalent. In most cases
      * this means `pa.equals(pb)`, which is the default implementation, but
      * some blocks (such as leaves) need to ignore certain block states

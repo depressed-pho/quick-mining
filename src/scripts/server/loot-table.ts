@@ -310,6 +310,8 @@ export namespace LootEntry {
         readonly #rolls: Rolls;
         #isMultiplicative: boolean;
         #isDiscreteUniform: boolean;
+        #isGrassLike: boolean;
+        #binomial: number|undefined;
         #limit: number|undefined;
 
         public constructor(stack: ItemStack) {
@@ -318,7 +320,13 @@ export namespace LootEntry {
             this.#rolls             = {min: 1, max: 1};
             this.#isMultiplicative  = false;
             this.#isDiscreteUniform = false;
+            this.#isGrassLike       = false;
+            this.#binomial          = undefined;
             this.#limit             = undefined;
+        }
+
+        public rolls(num: number): this {
+            return this.amount(num, num);
         }
 
         public amount(min: number, max: number): this {
@@ -327,14 +335,29 @@ export namespace LootEntry {
             return this;
         }
 
-        public multiplicative(bool: boolean): this {
-            this.#isMultiplicative = bool;
+        public multiplicative(): this {
+            this.#isMultiplicative = true;
             return this;
         }
 
-        public discreteUniform(bool: boolean, limit?: number): this {
-            this.#isDiscreteUniform = bool;
+        public discreteUniform(limit?: number): this {
+            this.#isDiscreteUniform = true;
             this.#limit             = limit;
+            return this;
+        }
+
+        /// https://minecraft.fandom.com/wiki/Fortune#Grass,_ferns_and_large_flowers%E2%80%8C[Bedrock_Edition_only]
+        public grassLike(): this {
+            this.#isGrassLike = true;
+            return this;
+        }
+
+        /** At least one drop is guaranteed. Calling `.rolls(num)` sets
+         * `num + fortune` additional rolls where `fortune` is the
+         * fortune level.
+         */
+        public binomial(probability: number): this {
+            this.#binomial = probability;
             return this;
         }
 
@@ -365,6 +388,38 @@ export namespace LootEntry {
 
                 const item  = this.#stack.clone();
                 item.amount = this.#limit ? Math.min(dice, this.#limit) : dice;
+
+                return [item];
+            }
+            else if (this.#isGrassLike && tool) {
+                const dice = randomIntInClosedInterval(1, 8);
+                if (dice < 8) {
+                    // No drops regardless of fortune.
+                    return [];
+                }
+                else {
+                    const fortune = tool.enchantments.get("fortune");
+                    const level   = fortune ? fortune.level : 0;
+                    const maximum = 1 + level * 2;
+
+                    const item  = this.#stack.clone();
+                    item.amount = randomIntInClosedInterval(1, maximum);
+
+                    return [item];
+                }
+            }
+            else if (this.#binomial !== undefined && tool) {
+                const fortune = tool.enchantments.get("fortune");
+                const level   = fortune ? fortune.level : 0;
+                const rolls   = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + level);
+
+                const item = this.#stack.clone();
+                let amount = 1;
+                for (let i = 0; i < rolls; i++) {
+                    if (Math.random() < this.#binomial)
+                        amount++;
+                }
+                item.amount = amount;
 
                 return [item];
             }

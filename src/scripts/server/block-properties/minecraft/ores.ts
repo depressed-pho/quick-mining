@@ -133,11 +133,11 @@ export function MultiplicativeDrops<T extends Constructor<BlockProperties>>(
                     LootEntry
                         .item(drop)
                         .amount(minRolls, maxRolls)
-                        .multiplicative(true))
+                        .multiplicative())
             ]);
 
     abstract class MultiplicativeDrops extends base {
-        public override lootTable(): LootTable {
+        public override lootTable(_perm: BlockPermutation): LootTable {
             return loots;
         }
     }
@@ -159,11 +159,11 @@ export function DiscreteUniformDrops<T extends Constructor<BlockProperties>>(
                     LootEntry
                         .item(drop)
                         .amount(minRolls, maxRolls)
-                        .discreteUniform(true, limit))
+                        .discreteUniform(limit))
             ]);
 
     abstract class DiscreteUniformDrops extends base {
-        public override lootTable(): LootTable {
+        public override lootTable(_perm: BlockPermutation): LootTable {
             return loots;
         }
     }
