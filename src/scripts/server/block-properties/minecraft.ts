@@ -9,4 +9,5 @@ import "./minecraft/ores.js";
 import "./minecraft/plants.js";
 import "./minecraft/sand.js";
 import "./minecraft/sculk-family.js";
+import "./minecraft/soul-sand.js";
 import "./minecraft/shrooms.js";

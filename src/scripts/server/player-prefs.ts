@@ -50,6 +50,7 @@ const DEFAULTS: PlayerPrefs = {
         enableMiningPlants:        true,
         enableMiningSandLike:      true,
         enableMiningSculkFamily:   true,
+        enableMiningSoulSandLike:  true,
         enableMiningWartBlocks:    true,
     }
 };

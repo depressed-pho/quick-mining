@@ -25,5 +25,6 @@ message Coverage {
   optional bool enableMiningPlants = 9;
   optional bool enableMiningSandLike = 10;
   optional bool enableMiningSculkFamily = 11;
-  optional bool enableMiningWartBlocks = 12;
+  optional bool enableMiningSoulSandLike = 12;
+  optional bool enableMiningWartBlocks = 13;
 }
