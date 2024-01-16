@@ -2,9 +2,9 @@ import { BlockPermutation } from "cicada-lib/block.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { Constructor } from "cicada-lib/mixin.js";
 import { BlockProperties, blockProps } from "../../block-properties.js";
-import { LootTable, LootCondition, LootEntry, LootPool,
-         randomIntInClosedInterval } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
+import { DiscreteUniformDrops, IIsToolSuitable,
+         MultiplicativeDrops, YieldsExperience } from "../mixins.js";
 
 /// Base class for all ore blocks.
 abstract class OreBlockProperties extends BlockProperties {
@@ -14,19 +14,6 @@ abstract class OreBlockProperties extends BlockProperties {
         else
             return false;
     }
-}
-
-/// Mixin for blocks that yield experience when mined with a non-silk-touch tool.
-export function Experience<T extends Constructor<BlockProperties>>(base: T, min: number, max = min) {
-    abstract class Experience extends base {
-        public override experience(_perm: BlockPermutation, tool: ItemStack): number {
-            if (tool.enchantments.has("silk_touch"))
-                return 0;
-            else
-                return randomIntInClosedInterval(min, max);
-        }
-    }
-    return Experience;
 }
 
 /// Mixin for stone-based ore blocks.
@@ -60,7 +47,7 @@ function NetherrackBased<T extends Constructor<BlockProperties>>(base: T) {
 }
 
 /// Mixin for ore blocks requiring stone-tier pickaxes to mine.
-function StoneTier<T extends Constructor<OreBlockProperties>>(base: T) {
+function StoneTier<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
     abstract class StoneTier extends base {
         public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
             if (tool.tags.has("minecraft:stone_tier"    ) ||
@@ -76,7 +63,7 @@ function StoneTier<T extends Constructor<OreBlockProperties>>(base: T) {
 }
 
 /// Mixin for ore blocks requiring iron-tier pickaxes to mine.
-function IronTier<T extends Constructor<OreBlockProperties>>(base: T) {
+function IronTier<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
     abstract class IronTier extends base {
         public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
             if (tool.tags.has("minecraft:iron_tier"     ) ||
@@ -91,7 +78,7 @@ function IronTier<T extends Constructor<OreBlockProperties>>(base: T) {
 }
 
 /// Mixin for ore blocks requiring diamond-tier pickaxes to mine.
-function DiamondTier<T extends Constructor<OreBlockProperties>>(base: T) {
+function DiamondTier<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
     abstract class DiamondTier extends base {
         public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
             if (tool.tags.has("minecraft:diamond_tier"  ) ||
@@ -119,57 +106,6 @@ function Lit<T extends Constructor<BlockProperties>>(
     return Lit;
 }
 
-/// Mixin for blocks whose drops are affected multiplicatively by Fortune.
-export function MultiplicativeDrops<T extends Constructor<BlockProperties>>(
-    base: T, block: ItemStack, minRolls: number, maxRolls: number, drop: ItemStack) {
-
-    const loots = new LootTable()
-        .when(
-            LootCondition.matchTool().enchantment("silk_touch"),
-            [ new LootPool().entry(block) ]) // 100% drop
-        .otherwise(
-            [ new LootPool()
-                .entry(
-                    LootEntry
-                        .item(drop)
-                        .amount(minRolls, maxRolls)
-                        .multiplicative())
-            ]);
-
-    abstract class MultiplicativeDrops extends base {
-        public override lootTable(_perm: BlockPermutation): LootTable {
-            return loots;
-        }
-    }
-    return MultiplicativeDrops;
-}
-
-/// Mixin for blocks whose drops use discrete uniform distribution.
-export function DiscreteUniformDrops<T extends Constructor<BlockProperties>>(
-    base: T, block: ItemStack, minRolls: number, maxRolls: number,
-    limit: number|undefined, drop: ItemStack) {
-
-    const loots = new LootTable()
-        .when(
-            LootCondition.matchTool().enchantment("silk_touch"),
-            [ new LootPool().entry(block) ]) // 100% drop
-        .otherwise(
-            [ new LootPool()
-                .entry(
-                    LootEntry
-                        .item(drop)
-                        .amount(minRolls, maxRolls)
-                        .discreteUniform(limit))
-            ]);
-
-    abstract class DiscreteUniformDrops extends base {
-        public override lootTable(_perm: BlockPermutation): LootTable {
-            return loots;
-        }
-    }
-    return DiscreteUniformDrops;
-}
-
 // Ancient Debris
 blockProps.addBlockProps(
     "minecraft:ancient_debris",
@@ -183,7 +119,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:coal_ore",
     class extends MultiplicativeDrops(
-        StoneBased(Experience(OreBlockProperties, 0, 2)),
+        StoneBased(YieldsExperience(OreBlockProperties, 0, 2)),
         new ItemStack("minecraft:coal_ore"),
         1, 1,
         new ItemStack("minecraft:coal")) {});
@@ -191,7 +127,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:deepslate_coal_ore",
     class extends MultiplicativeDrops(
-        DeepslateBased(Experience(OreBlockProperties, 0, 2)),
+        DeepslateBased(YieldsExperience(OreBlockProperties, 0, 2)),
         new ItemStack("minecraft:deepslate_coal_ore"),
         1, 1,
         new ItemStack("minecraft:coal")) {});
@@ -234,7 +170,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:emerald_ore",
     class extends MultiplicativeDrops(
-        IronTier(StoneBased(Experience(OreBlockProperties, 3, 7))),
+        IronTier(StoneBased(YieldsExperience(OreBlockProperties, 3, 7))),
         new ItemStack("minecraft:emerald_ore"),
         1, 1,
         new ItemStack("minecraft:emerald")) {});
@@ -242,7 +178,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:deepslate_emerald_ore",
     class extends MultiplicativeDrops(
-        IronTier(DeepslateBased(Experience(OreBlockProperties, 3, 7))),
+        IronTier(DeepslateBased(YieldsExperience(OreBlockProperties, 3, 7))),
         new ItemStack("minecraft:deepslate_emerald_ore"),
         1, 1,
         new ItemStack("minecraft:emerald")) {});
@@ -267,7 +203,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:nether_gold_ore",
     class extends MultiplicativeDrops(
-        NetherrackBased(Experience(OreBlockProperties, 0, 1)),
+        NetherrackBased(YieldsExperience(OreBlockProperties, 0, 1)),
         new ItemStack("minecraft:nether_gold_ore"),
         2, 6,
         new ItemStack("minecraft:gold_nugget")) {});
@@ -293,7 +229,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:lapis_ore",
     class extends MultiplicativeDrops(
-        StoneTier(StoneBased(Experience(OreBlockProperties, 2, 5))),
+        StoneTier(StoneBased(YieldsExperience(OreBlockProperties, 2, 5))),
         new ItemStack("minecraft:lapis_ore"),
         4, 9,
         new ItemStack("minecraft:lapis_lazuli")) {});
@@ -301,7 +237,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:deepslate_lapis_ore",
     class extends MultiplicativeDrops(
-        StoneTier(DeepslateBased(Experience(OreBlockProperties, 2, 5))),
+        StoneTier(DeepslateBased(YieldsExperience(OreBlockProperties, 2, 5))),
         new ItemStack("minecraft:deepslate_lapis_ore"),
         4, 9,
         new ItemStack("minecraft:lapis_lazuli")) {});
@@ -310,7 +246,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:quartz_ore",
     class extends MultiplicativeDrops(
-        NetherrackBased(Experience(OreBlockProperties, 2, 5)),
+        NetherrackBased(YieldsExperience(OreBlockProperties, 2, 5)),
         new ItemStack("minecraft:quartz_ore"),
         1, 1,
         new ItemStack("minecraft:quartz")) {});
@@ -323,7 +259,7 @@ blockProps.addBlockProps(
     class extends DiscreteUniformDrops(
         IronTier(
             StoneBased(
-                Lit(Experience(OreBlockProperties, 2, 5),
+                Lit(YieldsExperience(OreBlockProperties, 2, 5),
                     "minecraft:lit_redstone_ore", "minecraft:redstone_ore"))),
         new ItemStack("minecraft:redstone_ore"),
         4, 5, undefined,
@@ -334,7 +270,7 @@ blockProps.addBlockProps(
     class extends DiscreteUniformDrops(
         IronTier(
             StoneBased(
-                Lit(Experience(OreBlockProperties, 2, 5),
+                Lit(YieldsExperience(OreBlockProperties, 2, 5),
                     "minecraft:lit_redstone_ore", "minecraft:redstone_ore"))),
         new ItemStack("minecraft:redstone_ore"),
         4, 5, undefined,
@@ -345,7 +281,7 @@ blockProps.addBlockProps(
     class extends DiscreteUniformDrops(
         IronTier(
             DeepslateBased(
-                Lit(Experience(OreBlockProperties, 2, 3),
+                Lit(YieldsExperience(OreBlockProperties, 2, 3),
                     "minecraft:lit_deepslate_redstone_ore", "minecraft:deepslate_redstone_ore"))),
         new ItemStack("minecraft:deepslate_redstone_ore"),
         4, 5, undefined,
@@ -356,7 +292,7 @@ blockProps.addBlockProps(
     class extends DiscreteUniformDrops(
         IronTier(
             DeepslateBased(
-                Lit(Experience(OreBlockProperties, 2, 3),
+                Lit(YieldsExperience(OreBlockProperties, 2, 3),
                     "minecraft:lit_deepslate_redstone_ore", "minecraft:deepslate_redstone_ore"))),
         new ItemStack("minecraft:deepslate_redstone_ore"),
         4, 5, undefined,

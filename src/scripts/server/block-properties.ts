@@ -1,4 +1,4 @@
-import { BlockPermutation } from "cicada-lib/block.js";
+import { Block, BlockPermutation } from "cicada-lib/block.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { LootTable, LootPool } from "./loot-table.js";
 import { PlayerPrefs } from "./player-prefs.js";
@@ -29,6 +29,17 @@ export abstract class BlockProperties {
      * a given tool.
      */
     public abstract isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs): boolean;
+
+    /** Break a block. Most blocks turns into either `minecraft:air` or
+     * `minecraft:water` depending on whether it is waterlogged, but there
+     * are some special cases like ice.
+     */
+    public "break"(block: Block, _tool?: ItemStack): void {
+        if (block.isWaterlogged)
+            block.typeId = "minecraft:water";
+        else
+            block.typeId = "minecraft:air";
+    }
 
     /** See if mining the block should consume durability of the tool.
      */

@@ -1,10 +1,9 @@
 import { BlockPermutation } from "cicada-lib/block.js";
-import { Constructor } from "cicada-lib/mixin.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, blockProps } from "../../block-properties.js";
-import { LootTable, LootCondition, LootPool } from "../../loot-table.js";
+import { LootCondition } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
-import { Experience } from "./ores.js";
+import { SilkTouchForDrop, YieldsExperience } from "../mixins.js";
 import { GlowLichenLike } from "./plants.js";
 
 /// Base class for sculk family blocks.
@@ -17,27 +16,11 @@ abstract class SculkFamilyProperties extends BlockProperties {
     }
 }
 
-/// Mixin for blocks requiring a silk-touch tool to drop itself.
-function SilkTouchRequired<T extends Constructor<BlockProperties>>(base: T, block: ItemStack) {
-    const loots = new LootTable()
-        .when(
-            LootCondition.matchTool().enchantment("silk_touch"),
-            [ new LootPool().entry(block) ]); // 100% drop
-
-    abstract class SilkTouchRequired extends base {
-        public override lootTable(): LootTable {
-            return loots;
-        }
-    }
-    return SilkTouchRequired;
-}
-
 // Sculk
 blockProps.addBlockProps(
     "minecraft:sculk",
-    class extends SilkTouchRequired(
-        Experience(SculkFamilyProperties, 1),
-        new ItemStack("minecraft:sculk")) {
+    class extends SilkTouchForDrop(
+        YieldsExperience(SculkFamilyProperties, 1)) {
 
         public breakingSoundId(): string {
             return "break.sculk";
@@ -47,9 +30,8 @@ blockProps.addBlockProps(
 // Sculk Catalyst
 blockProps.addBlockProps(
     "minecraft:sculk_catalyst",
-    class extends SilkTouchRequired(
-        Experience(SculkFamilyProperties, 5),
-        new ItemStack("minecraft:sculk_catalyst")) {
+    class extends SilkTouchForDrop(
+        YieldsExperience(SculkFamilyProperties, 5)) {
 
         public breakingSoundId(): string {
             return "break.sculk_catalyst";
@@ -59,9 +41,8 @@ blockProps.addBlockProps(
 // Sculk Sensor
 blockProps.addBlockProps(
     "minecraft:sculk_sensor",
-    class extends SilkTouchRequired(
-        Experience(SculkFamilyProperties, 5),
-        new ItemStack("minecraft:sculk_sensor")) {
+    class extends SilkTouchForDrop(
+        YieldsExperience(SculkFamilyProperties, 5)) {
 
         public breakingSoundId(): string {
             return "break.sculk_sensor";
@@ -71,9 +52,8 @@ blockProps.addBlockProps(
 // Sculk Shrieker
 blockProps.addBlockProps(
     "minecraft:sculk_shrieker",
-    class extends SilkTouchRequired(
-        Experience(SculkFamilyProperties, 5),
-        new ItemStack("minecraft:sculk_shrieker")) {
+    class extends SilkTouchForDrop(
+        YieldsExperience(SculkFamilyProperties, 5)) {
 
         public breakingSoundId(): string {
             return "break.sculk_shrieker";

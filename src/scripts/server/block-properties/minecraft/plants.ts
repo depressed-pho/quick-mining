@@ -4,7 +4,7 @@ import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, blockProps } from "../../block-properties.js";
 import { LootTable, LootCondition, LootEntry, LootPool } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
-import { DiscreteUniformDrops } from "./ores.js";
+import { DiscreteUniformDrops, IIsToolSuitable } from "../mixins.js";
 
 /// Base class for all plants.
 abstract class PlantProperties extends BlockProperties {
@@ -14,7 +14,7 @@ abstract class PlantProperties extends BlockProperties {
 }
 
 /// Mixin for plants requiring axes to quick-mine.
-function MinedWithAxe<T extends Constructor<PlantProperties>>(base: T) {
+function MinedWithAxe<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
     abstract class MinedWithAxe extends base {
         public breakingSoundId(): string {
             return "dig.wood";
@@ -32,7 +32,7 @@ function MinedWithAxe<T extends Constructor<PlantProperties>>(base: T) {
 
 /// Mixin for plants requiring hoes to quick-mine. These plants don't
 /// consume the tool durability.
-function MinedWithHoe<T extends Constructor<PlantProperties>>(base: T) {
+function MinedWithHoe<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
     abstract class MinedWithHoe extends base {
         public breakingSoundId(): string {
             return "dig.grass";
@@ -53,7 +53,7 @@ function MinedWithHoe<T extends Constructor<PlantProperties>>(base: T) {
 }
 
 /// Mixin for plants requiring shears to quick-mine. They drop itself when mined.
-function MinedWithShears<T extends Constructor<PlantProperties>>(base: T) {
+function MinedWithShears<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
     abstract class MinedWithShears extends base {
         public breakingSoundId(): string {
             return "dig.grass";
@@ -71,7 +71,7 @@ function MinedWithShears<T extends Constructor<PlantProperties>>(base: T) {
 
 /// Mixin for plants requiring either hoes or shears to quick-mine. These
 /// plants don't consume the tool durability when mined with a hoe.
-function MinedWithHoeOrShears<T extends Constructor<PlantProperties>>(base: T) {
+function MinedWithHoeOrShears<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
     abstract class MinedWithHoeOrShears extends base {
         public breakingSoundId(): string {
             return "dig.grass";
@@ -96,7 +96,7 @@ function MinedWithHoeOrShears<T extends Constructor<PlantProperties>>(base: T) {
 }
 
 /// Mixin for crops. Their seed drops use binomial distribution.
-function Crop<T extends Constructor<PlantProperties>>(
+function Crop<T extends Constructor<BlockProperties & IIsToolSuitable>>(
     base: T, item: ItemStack, seed: ItemStack, extraPools?: LootPool[]) {
 
     const loots = new LootTable()

@@ -1,6 +1,7 @@
 import "./minecraft/crystals.js";
-import "./minecraft/glowstone.js";
 import "./minecraft/fungi.js";
+import "./minecraft/glowstone.js";
+import "./minecraft/ice.js";
 import "./minecraft/leaves.js";
 import "./minecraft/logs.js";
 import "./minecraft/ores.js";

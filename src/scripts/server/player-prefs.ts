@@ -41,6 +41,7 @@ const DEFAULTS: PlayerPrefs = {
     coverage: {
         enableMiningCrystals:      true,
         enableMiningGlowstoneLike: true,
+        enableMiningIceLike:       true,
         enableMiningLeaves:        true,
         enableMiningLogs:          true,
         enableMiningMushrooms:     true,

@@ -103,7 +103,7 @@ export class MinerThread extends Thread {
     #scan(loc: Location): boolean {
         const block = this.#dimension.getBlock(loc);
 
-        if (!block || !block.isValid) {
+        if (!block) {
             // This block is either in an unloaded chunk or out of the world boundary,
             // so we can't do anything about it.
             this.#scanned.add(loc);
@@ -145,17 +145,11 @@ export class MinerThread extends Thread {
         if (!props.isEquivalentTo(perm, block.permutation))
             return;
 
-        this.#loots.merge(
-            props.lootTable(perm).execute(
-                // Tool enchantments should not apply to bonus mining.
-                way === MiningWay.MineRegularly ? this.#tool : undefined));
-
+        // Tool enchantments should not apply to bonus mining.
+        const tool = way === MiningWay.MineRegularly ? this.#tool : undefined;
+        this.#loots.merge(props.lootTable(perm).execute(tool));
         this.#experience += props.experience(perm, this.#tool);
-
-        if (block.isWaterlogged)
-            block.typeId = "minecraft:water";
-        else
-            block.typeId = "minecraft:air";
+        props.break(block, tool);
 
         if (way === MiningWay.MineRegularly) {
             // Play a breaking sound only once per tick.

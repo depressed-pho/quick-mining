@@ -2,7 +2,7 @@ import { BlockPermutation } from "cicada-lib/block.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, blockProps } from "../../block-properties.js";
 import { PlayerPrefs } from "../../player-prefs.js";
-import { DiscreteUniformDrops } from "./ores.js";
+import { DiscreteUniformDrops } from "../mixins.js";
 
 /// Base class for glowstone-like blocks.
 abstract class GlowstoneLikeProperties extends BlockProperties {
