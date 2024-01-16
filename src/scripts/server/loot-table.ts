@@ -1,3 +1,4 @@
+import { ItemBag } from "cicada-lib/item/bag.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 
 export function randomIntInClosedInterval(lower: number, upper: number) {
@@ -28,16 +29,16 @@ export class LootTable {
         return this.when(LootCondition.always(), pools);
     }
 
-    public execute(tool?: ItemStack): ItemStack[] {
-        const stacks: ItemStack[] = [];
+    public execute(tool?: ItemStack): ItemBag {
+        const items = new ItemBag();
         for (const [cond, pools] of this.#conds) {
             if (cond.evaluate(tool)) {
                 for (const pool of pools)
-                    Array.prototype.push.apply(stacks, pool.execute(tool));
+                    items.merge(pool.execute(tool));
                 break;
             }
         }
-        return stacks;
+        return items;
     }
 }
 
@@ -80,8 +81,8 @@ export class LootPool {
         return this;
     }
 
-    public execute(tool?: ItemStack): ItemStack[] {
-        const stacks: ItemStack[] = [];
+    public execute(tool?: ItemStack): ItemBag {
+        const items = new ItemBag();
         const numRolls = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max);
         for (let i = 0; i < numRolls; i++) {
             if (this.#cond && !this.#cond.evaluate(tool))
@@ -92,12 +93,12 @@ export class LootPool {
             for (const ent of this.#ents) {
                 rand -= ent.weight();
                 if (rand < 0) {
-                    Array.prototype.push.apply(stacks, ent.execute(tool));
+                    items.merge(ent.execute(tool));
                     break;
                 }
             }
         }
-        return stacks;
+        return items;
     }
 }
 
@@ -298,7 +299,7 @@ export abstract class LootEntry {
             return true;
     }
 
-    public abstract execute(tool?: ItemStack): ItemStack[];
+    public abstract execute(tool?: ItemStack): ItemBag;
 
     public static item(stack: ItemStack): LootEntry.Item {
         return new LootEntry.Item(stack);
@@ -361,9 +362,9 @@ export namespace LootEntry {
             return this;
         }
 
-        public execute(tool?: ItemStack): ItemStack[] {
+        public execute(tool?: ItemStack): ItemBag {
             if (!this.evalCondition(tool)) {
-                return [];
+                return new ItemBag();
             }
             else if (this.#isMultiplicative && tool) {
                 // https://minecraft.fandom.com/wiki/Fortune#Ore
@@ -371,63 +372,68 @@ export namespace LootEntry {
                 const level   = fortune ? fortune.level : 0;
                 const dice    = randomIntInClosedInterval(1, level + 2);
                 const mult    = Math.max(1, dice - 1);
+                const items   = new ItemBag();
 
-                const item   = this.#stack.clone();
-                item.amount *= randomIntInClosedInterval(this.#rolls.min, this.#rolls.max);
+                items.add(
+                    this.#stack,
+                    mult * randomIntInClosedInterval(this.#rolls.min, this.#rolls.max));
 
-                const items = [];
-                for (let i = 0; i < mult; i++) {
-                    items.push(item.clone());
-                }
                 return items;
             }
             else if (this.#isDiscreteUniform && tool) {
                 const fortune = tool.enchantments.get("fortune");
                 const level   = fortune ? fortune.level : 0;
                 const dice    = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + level);
+                const items   = new ItemBag();
 
-                const item   = this.#stack.clone();
-                item.amount *= this.#limit ? Math.min(dice, this.#limit) : dice;
+                items.add(
+                    this.#stack,
+                    this.#limit ? Math.min(dice, this.#limit) : dice);
 
-                return [item];
+                return items;
             }
             else if (this.#isGrassLike && tool) {
                 const dice = randomIntInClosedInterval(1, 8);
                 if (dice < 8) {
                     // No drops regardless of fortune.
-                    return [];
+                    return new ItemBag();
                 }
                 else {
                     const fortune = tool.enchantments.get("fortune");
                     const level   = fortune ? fortune.level : 0;
                     const maximum = 1 + level * 2;
+                    const items   = new ItemBag();
 
-                    const item   = this.#stack.clone();
-                    item.amount *= randomIntInClosedInterval(1, maximum);
+                    items.add(
+                        this.#stack,
+                        randomIntInClosedInterval(1, maximum));
 
-                    return [item];
+                    return items;
                 }
             }
             else if (this.#binomial !== undefined && tool) {
                 const fortune = tool.enchantments.get("fortune");
                 const level   = fortune ? fortune.level : 0;
                 const rolls   = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + level);
+                const items   = new ItemBag();
 
-                const item = this.#stack.clone();
                 let amount = 1;
                 for (let i = 0; i < rolls; i++) {
                     if (Math.random() < this.#binomial)
                         amount++;
                 }
-                item.amount *= amount;
+                items.add(this.#stack, amount);
 
-                return [item];
+                return items;
             }
             else {
-                const item   = this.#stack.clone();
-                item.amount *= randomIntInClosedInterval(this.#rolls.min, this.#rolls.max);
+                const items = new ItemBag();
 
-                return [item];
+                items.add(
+                    this.#stack,
+                    randomIntInClosedInterval(this.#rolls.min, this.#rolls.max));
+
+                return items;
             }
         }
     }

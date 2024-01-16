@@ -2,6 +2,7 @@ import { Block, BlockPermutation } from "cicada-lib/block.js";
 import { OrdMap } from "cicada-lib/collections/ordered-map.js";
 import { Dimension } from "cicada-lib/dimension.js";
 import { Entity } from "cicada-lib/entity.js";
+import { ItemBag } from "cicada-lib/item/bag.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { Location } from "cicada-lib/location.js";
 import { Player, GameMode } from "cicada-lib/player.js";
@@ -9,7 +10,6 @@ import { Timer } from "cicada-lib/timer.js";
 import { Thread } from "cicada-lib/thread.js";
 import { world } from "cicada-lib/world.js";
 import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
-import { LootTable } from "./loot-table.js";
 import "./block-properties/minecraft.js";
 
 export class MinerThread extends Thread {
@@ -25,7 +25,7 @@ export class MinerThread extends Thread {
     readonly #scanned: LocationSet; // negative cache for scanning
     readonly #toScan: LocationSet;
     readonly #toMine: OrdMap<Block, [MiningWay, BlockPermutation]>;
-    readonly #loots: ItemStack[];
+    readonly #loots: ItemBag;
     readonly #soundsPlayed: Set<string>;
     #experience: number;
 
@@ -55,7 +55,7 @@ export class MinerThread extends Thread {
         this.#toScan    = new LocationSet();
         this.#toMine    = new OrdMap(ordBlock);
 
-        this.#loots        = [];
+        this.#loots        = new ItemBag();
         this.#soundsPlayed = new Set();
         this.#experience   = 0;
     }
@@ -145,10 +145,10 @@ export class MinerThread extends Thread {
         if (!props.isEquivalentTo(perm, block.permutation))
             return;
 
-        this.#accumulateLoots(
-            props.lootTable(perm),
-            // Tool enchantments should not apply to bonus mining.
-            way === MiningWay.MineRegularly ? this.#tool : undefined);
+        this.#loots.merge(
+            props.lootTable(perm).execute(
+                // Tool enchantments should not apply to bonus mining.
+                way === MiningWay.MineRegularly ? this.#tool : undefined));
 
         this.#experience += props.experience(perm, this.#tool);
 
@@ -167,33 +167,6 @@ export class MinerThread extends Thread {
 
             // FIXME: Consume the durability unless the player is in creative.
         }
-    }
-
-    #accumulateLoots(lootTable: LootTable, tool?: ItemStack) {
-        for (const stack of lootTable.execute(tool)) {
-            this.#addToLoots(stack);
-        }
-    }
-
-    #addToLoots(stack: ItemStack) {
-        // Try to merge the stack with existing ones as far as possible.
-        for (const st of this.#loots) {
-            if (st.isStackableWith(stack)) {
-                const numTaken = Math.min(st.maxAmount - st.amount, stack.amount);
-                if (numTaken > 0) {
-                    st.amount += numTaken;
-
-                    const numRemains = stack.amount - numTaken;
-                    if (numRemains == 0)
-                        return;
-                    else
-                        stack.amount = numRemains;
-                }
-            }
-        }
-
-        // It couldn't be fully merged so add it to the list.
-        this.#loots.push(stack);
     }
 
     #flushLoots() {
@@ -226,7 +199,7 @@ export class MinerThread extends Thread {
                 this.#dimension.spawnEntity("minecraft:xp_orb", this.#origLoc);
             }
         }
-        this.#loots.splice(0);
+        this.#loots.clear();
         this.#experience = 0;
     }
 }
