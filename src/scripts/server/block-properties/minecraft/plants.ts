@@ -243,58 +243,53 @@ blockProps.addBlockProps(
         }
     });
 
-// Grass, fern, and snow fern.
-// NOTE: Tall grass, fern, and flowers are impossible to quick-mine and
-// collect loots because breaking their upper halves also breaks their lower-halves.
+// Grass and fern.
+// NOTE: Tall grass, tall ferns, and tall flowers are impossible to
+// quick-mine and collect loots because breaking their upper halves also
+// breaks their lower-halves.
 blockProps.addBlockProps(
     "minecraft:tallgrass",
     class extends MinedWithHoeOrShears(PlantProperties) {
         readonly #grassLoots = new LootTable()
             .when(
                 LootCondition.matchTool().typeId("minecraft:shears"),
-                [ new LootPool().entry(new ItemStack("minecraft:tallgrass", {tall_grass_type: 1})) ])
+                [ new LootPool().entry(
+                    new ItemStack("minecraft:tallgrass", {tall_grass_type: "tall"})) ])
             .otherwise(
                 [ new LootPool()
                     .entry(
                         LootEntry
-                            .item(new ItemStack("minecraft:wheat_seeds"))
-                            .grassLike())
+                            .grassLike(new ItemStack("minecraft:wheat_seeds")))
                 ]);
 
         readonly #fernLoots = new LootTable()
             .when(
                 LootCondition.matchTool().typeId("minecraft:shears"),
-                [ new LootPool().entry(new ItemStack("minecraft:tallgrass", {tall_grass_type: 2})) ])
+                [ new LootPool().entry(
+                    new ItemStack("minecraft:tallgrass", {tall_grass_type: "fern"})) ])
             .otherwise(
                 [ new LootPool()
                     .entry(
                         LootEntry
-                            .item(new ItemStack("minecraft:wheat_seeds"))
-                            .grassLike())
+                            .grassLike(new ItemStack("minecraft:wheat_seeds")))
                 ]);
 
-        public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
-            // Ignore the difference in snow-logged ferns and regular ferns.
-            if (pa.typeId === pb.typeId) {
-                const typeA = pa.states.get("tall_grass_type") ?? "tall";
-                const typeB = pb.states.get("tall_grass_type") ?? "tall";
-                if (typeA === "fern" || typeA == "snow")
-                    return typeB === "fern" || typeB === "snow"; // Fern or Snow-logged fern.
-                else
-                    return typeA === typeB;
-            }
-            return false;
-        }
+        // We would really like to ignore the difference in snow-loggedness
+        // in grass and ferns, but snow-logged plants are represented very
+        // differently from water-logged blocks. They are actually
+        // "minecraft:snow_layer" with the "covered_bit" set, and the plant
+        // type is seemingly stored in their NBT, so we can't tell which
+        // snow layer is snow-logging what kind of plant.
 
         public override lootTable(perm: BlockPermutation): LootTable {
             const grassType = perm.states.get("tall_grass_type");
             switch (grassType) {
-                case "default":
+                case "default": // Unused
                 case "tall":
                     return this.#grassLoots;
 
                 case "fern":
-                case "snow":
+                case "snow": // Unused?
                     return this.#fernLoots;
 
                 case undefined:

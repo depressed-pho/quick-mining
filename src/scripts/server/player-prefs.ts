@@ -39,6 +39,7 @@ function populate<T>(prefs: T, defaults: DeepRequired<T>): DeepRequired<T> {
 const DEFAULTS: PlayerPrefs = {
     mode: QuickMiningMode.WhenSneaking,
     coverage: {
+        enableMiningClayLike:      true,
         enableMiningCrystals:      true,
         enableMiningGlowstoneLike: true,
         enableMiningIceLike:       true,
@@ -47,6 +48,7 @@ const DEFAULTS: PlayerPrefs = {
         enableMiningMushrooms:     true,
         enableMiningOres:          true,
         enableMiningPlants:        true,
+        enableMiningSandLike:      true,
         enableMiningSculkFamily:   true,
         enableMiningWartBlocks:    true,
     }

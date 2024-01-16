@@ -213,9 +213,8 @@ export namespace LootCondition {
 
         public evaluate(tool?: ItemStack): boolean {
             if (tool) {
-                const fortune = tool.enchantments.get("fortune");
-                const level   = fortune ? fortune.level : 0;
-                const chance  = this.#chances[level >= 4 ? 4 : level]!;
+                const fortune = tool.enchantments.get("fortune")?.level ?? 0;
+                const chance  = this.#chances[fortune >= 4 ? 4 : fortune]!;
                 return Math.random() < chance;
             }
             else {
@@ -304,6 +303,15 @@ export abstract class LootEntry {
     public static item(stack: ItemStack): LootEntry.Item {
         return new LootEntry.Item(stack);
     }
+
+    /// https://minecraft.fandom.com/wiki/Fortune#Grass,_ferns_and_large_flowers%E2%80%8C[Bedrock_Edition_only]
+    public static grassLike(seed: ItemStack): LootEntry.GrassLike {
+        return new LootEntry.GrassLike(seed);
+    }
+
+    public static gravelLike(original: ItemStack, decomposed: ItemStack): LootEntry.GravelLike {
+        return new LootEntry.GravelLike(original, decomposed);
+    }
 }
 export namespace LootEntry {
     export class Item extends LootEntry {
@@ -311,7 +319,6 @@ export namespace LootEntry {
         readonly #rolls: Rolls;
         #isMultiplicative: boolean;
         #isDiscreteUniform: boolean;
-        #isGrassLike: boolean;
         #binomial: number|undefined;
         #limit: number|undefined;
 
@@ -321,7 +328,6 @@ export namespace LootEntry {
             this.#rolls             = {min: 1, max: 1};
             this.#isMultiplicative  = false;
             this.#isDiscreteUniform = false;
-            this.#isGrassLike       = false;
             this.#binomial          = undefined;
             this.#limit             = undefined;
         }
@@ -347,12 +353,6 @@ export namespace LootEntry {
             return this;
         }
 
-        /// https://minecraft.fandom.com/wiki/Fortune#Grass,_ferns_and_large_flowers%E2%80%8C[Bedrock_Edition_only]
-        public grassLike(): this {
-            this.#isGrassLike = true;
-            return this;
-        }
-
         /** At least one drop is guaranteed. Calling `.rolls(num)` sets
          * `num + fortune` additional rolls where `fortune` is the
          * fortune level.
@@ -366,11 +366,10 @@ export namespace LootEntry {
             if (!this.evalCondition(tool)) {
                 return new ItemBag();
             }
-            else if (this.#isMultiplicative && tool) {
+            else if (this.#isMultiplicative) {
                 // https://minecraft.fandom.com/wiki/Fortune#Ore
-                const fortune = tool.enchantments.get("fortune");
-                const level   = fortune ? fortune.level : 0;
-                const dice    = randomIntInClosedInterval(1, level + 2);
+                const fortune = tool?.enchantments.get("fortune")?.level ?? 0;
+                const dice    = randomIntInClosedInterval(1, fortune + 2);
                 const mult    = Math.max(1, dice - 1);
                 const items   = new ItemBag();
 
@@ -380,10 +379,9 @@ export namespace LootEntry {
 
                 return items;
             }
-            else if (this.#isDiscreteUniform && tool) {
-                const fortune = tool.enchantments.get("fortune");
-                const level   = fortune ? fortune.level : 0;
-                const dice    = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + level);
+            else if (this.#isDiscreteUniform) {
+                const fortune = tool?.enchantments.get("fortune")?.level ?? 0;
+                const dice    = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + fortune);
                 const items   = new ItemBag();
 
                 items.add(
@@ -392,29 +390,9 @@ export namespace LootEntry {
 
                 return items;
             }
-            else if (this.#isGrassLike && tool) {
-                const dice = randomIntInClosedInterval(1, 8);
-                if (dice < 8) {
-                    // No drops regardless of fortune.
-                    return new ItemBag();
-                }
-                else {
-                    const fortune = tool.enchantments.get("fortune");
-                    const level   = fortune ? fortune.level : 0;
-                    const maximum = 1 + level * 2;
-                    const items   = new ItemBag();
-
-                    items.add(
-                        this.#stack,
-                        randomIntInClosedInterval(1, maximum));
-
-                    return items;
-                }
-            }
-            else if (this.#binomial !== undefined && tool) {
-                const fortune = tool.enchantments.get("fortune");
-                const level   = fortune ? fortune.level : 0;
-                const rolls   = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + level);
+            else if (this.#binomial !== undefined) {
+                const fortune = tool?.enchantments.get("fortune")?.level ?? 0;
+                const rolls   = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + fortune);
                 const items   = new ItemBag();
 
                 let amount = 1;
@@ -435,6 +413,63 @@ export namespace LootEntry {
 
                 return items;
             }
+        }
+    }
+
+    export class GrassLike extends LootEntry {
+        readonly #seed: ItemStack;
+
+        public constructor(seed: ItemStack) {
+            super();
+            this.#seed = seed;
+        }
+
+        public execute(tool?: ItemStack): ItemBag {
+            const dice = randomIntInClosedInterval(1, 8);
+            if (dice < 8) {
+                // No drops regardless of fortune.
+                return new ItemBag();
+            }
+            else {
+                const fortune = tool?.enchantments.get("fortune")?.level ?? 0;
+                const maximum = 1 + fortune * 2;
+                const items   = new ItemBag();
+
+                items.add(
+                    this.#seed,
+                    randomIntInClosedInterval(1, maximum));
+
+                return items;
+            }
+        }
+    }
+
+    export class GravelLike extends LootEntry {
+        readonly #original: ItemStack;
+        readonly #decomposed: ItemStack;
+
+        public constructor(original: ItemStack, decomposed: ItemStack) {
+            super();
+            this.#original   = original;
+            this.#decomposed = decomposed;
+        }
+
+        public execute(tool?: ItemStack): ItemBag {
+            const silkTouch    = tool?.enchantments.has("silk_touch") ?? false;
+            const fortune      = tool?.enchantments.get("fortune")?.level ?? 0;
+            const decompChance =
+                silkTouch    ? 0    :
+                fortune == 0 ? 0.1  :
+                fortune == 1 ? 0.14 :
+                fortune == 2 ? 0.25 : 1.0;
+
+            const items = new ItemBag();
+            items.add(
+                Math.random() < decompChance
+                    ? this.#decomposed
+                    : this.#original);
+
+            return items;
         }
     }
 }
