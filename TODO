@@ -2,10 +2,18 @@
 
 * TODO [#A] Consume tool durability unless the player is in creative mode
 * TODO [#A] Sculk blocks
+* TODO [#A] Tuff
+* TODO [#A] Ice, packed ice, and blue ice
+* TODO [#A] Clay
 * TODO [#A] Gravel
 * TODO [#A] Sand and red sand
 * TODO [#A] Soul sand and soul soil
+* TODO [#A] Smooth basalt
+* TODO [#A] Calcite
+* TODO [#A] Obsidian and Crying obsidian
+* TODO [#A] Magma block
+* TODO [#A] Terracotta
+* TODO [#B] Restrict the number of blocks based on horiz/vert distances
 * TODO [#B] MinerThread.TIME_BUDGET_IN_MS_PER_TICK should be world-configurable
-* TODO [#B] MinerThread.MAX_BLOCKS_TO_MINE should be world-configurable
 * TODO [#B] Creative players shouldn't receive blocks they mine
 * TODO [#C] Auto-collection should be toggleable

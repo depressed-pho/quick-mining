@@ -11,7 +11,7 @@ abstract class GlowstoneLikeProperties extends BlockProperties {
     }
 
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-        if (prefs.coverage.enableMiningGlowstone)
+        if (prefs.coverage.enableMiningGlowstoneLike)
             // This isn't really correct, as these blocks can be mined with
             // any tools (including bare hands). But should we really allow
             // players to initiate a quick mining of glowstones with

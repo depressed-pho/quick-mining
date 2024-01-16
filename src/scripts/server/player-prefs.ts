@@ -9,18 +9,43 @@ export type PlayerPrefs = DeepRequired<PB.PlayerPrefs>;
 // Protobuf sucks because it doesn't allow fields to have default values.
 // Cap'n Proto sucks less, but its TypeScript implementation is
 // unmaintained. Blah...
-export function populateDefaults(p: PB.PlayerPrefs): PlayerPrefs {
-    return {
-        mode: p.mode ?? QuickMiningMode.WhenSneaking,
-        coverage: {
-            enableMiningCrystals:   p.coverage?.enableMiningCrystals   ?? true,
-            enableMiningGlowstone:  p.coverage?.enableMiningGlowstone  ?? true,
-            enableMiningLeaves:     p.coverage?.enableMiningLeaves     ?? true,
-            enableMiningLogs:       p.coverage?.enableMiningLogs       ?? true,
-            enableMiningMushrooms:  p.coverage?.enableMiningMushrooms  ?? true,
-            enableMiningOres:       p.coverage?.enableMiningOres       ?? true,
-            enableMiningPlants:     p.coverage?.enableMiningPlants     ?? true,
-            enableMiningWartBlocks: p.coverage?.enableMiningWartBlocks ?? true,
-        }
-    };
+export function populateDefaults(prefs: PB.PlayerPrefs): PlayerPrefs {
+    return populate(prefs, DEFAULTS);
 }
+
+function populate<T>(prefs: T, defaults: DeepRequired<T>): DeepRequired<T> {
+    // @ts-ignore: TypeScript isn't smart enough to typecheck this code,
+    // and I don't complain. We would have a hard time writing type-safe
+    // code doing this even in PureScript.
+    return Object.fromEntries(
+        Object.entries(defaults).map(([key, value]) => {
+            // @ts-ignore
+            if (prefs[key] !== undefined) {
+                if (typeof value === "object") {
+                    // @ts-ignore
+                    return [key, populate(prefs[key], value)];
+                }
+                else {
+                    // @ts-ignore
+                    return [key, prefs[key]];
+                }
+            }
+            else {
+                return [key, value];
+            }
+        }));
+}
+
+const DEFAULTS: PlayerPrefs = {
+    mode: QuickMiningMode.WhenSneaking,
+    coverage: {
+        enableMiningCrystals:      true,
+        enableMiningGlowstoneLike: true,
+        enableMiningLeaves:        true,
+        enableMiningLogs:          true,
+        enableMiningMushrooms:     true,
+        enableMiningOres:          true,
+        enableMiningPlants:        true,
+        enableMiningWartBlocks:    true,
+    }
+};
