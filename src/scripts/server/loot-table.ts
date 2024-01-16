@@ -372,8 +372,8 @@ export namespace LootEntry {
                 const dice    = randomIntInClosedInterval(1, level + 2);
                 const mult    = Math.max(1, dice - 1);
 
-                const item  = this.#stack.clone();
-                item.amount = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max);
+                const item   = this.#stack.clone();
+                item.amount *= randomIntInClosedInterval(this.#rolls.min, this.#rolls.max);
 
                 const items = [];
                 for (let i = 0; i < mult; i++) {
@@ -386,8 +386,8 @@ export namespace LootEntry {
                 const level   = fortune ? fortune.level : 0;
                 const dice    = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + level);
 
-                const item  = this.#stack.clone();
-                item.amount = this.#limit ? Math.min(dice, this.#limit) : dice;
+                const item   = this.#stack.clone();
+                item.amount *= this.#limit ? Math.min(dice, this.#limit) : dice;
 
                 return [item];
             }
@@ -402,8 +402,8 @@ export namespace LootEntry {
                     const level   = fortune ? fortune.level : 0;
                     const maximum = 1 + level * 2;
 
-                    const item  = this.#stack.clone();
-                    item.amount = randomIntInClosedInterval(1, maximum);
+                    const item   = this.#stack.clone();
+                    item.amount *= randomIntInClosedInterval(1, maximum);
 
                     return [item];
                 }
@@ -419,13 +419,13 @@ export namespace LootEntry {
                     if (Math.random() < this.#binomial)
                         amount++;
                 }
-                item.amount = amount;
+                item.amount *= amount;
 
                 return [item];
             }
             else {
-                const item  = this.#stack.clone();
-                item.amount = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max);
+                const item   = this.#stack.clone();
+                item.amount *= randomIntInClosedInterval(this.#rolls.min, this.#rolls.max);
 
                 return [item];
             }

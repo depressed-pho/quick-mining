@@ -38,6 +38,10 @@ FIXME
   2. Loot tables are not accessible from the scripting API, and
   3. The API doesn't provide any means to simulate what would be dropped
      when a block is mined.
+* Mining a huge blob of Sculk blocks with a non-silk-touch hoe spawns a
+  huge number of small experience orbs and may cause a lag, as opposed to
+  spawning a few large experience orbs. This is because there is no means
+  to spawn orbs whose value is larger than 1.
 
 In short, these are issues that we can do absolutely nothing about. Ask
 Mojang to improve the API if you want these to be fixed.

@@ -208,8 +208,9 @@ export class MinerThread extends Thread {
             // Creative players should not receive experience orbs.
             if (!(this.#actor instanceof Player) || this.#actor.gameMode != GameMode.creative) {
                 // We cannot spawn experience orbs with custom
-                // values. Shit. We must not directly add experience to the
-                // player also, because that would bypass Mending tools.
+                // values. Shit. We should not directly add experience to
+                // the player also, because that would bypass Mending
+                // tools.
                 for (let i = 0; i < this.#experience; i++) {
                     this.#dimension.spawnEntity("minecraft:xp_orb", this.#actor.location);
                 }

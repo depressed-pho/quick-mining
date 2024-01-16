@@ -5,4 +5,5 @@ import "./minecraft/leaves.js";
 import "./minecraft/logs.js";
 import "./minecraft/ores.js";
 import "./minecraft/plants.js";
+import "./minecraft/sculk-family.js";
 import "./minecraft/shrooms.js";

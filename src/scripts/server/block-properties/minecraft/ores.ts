@@ -17,7 +17,7 @@ abstract class OreBlockProperties extends BlockProperties {
 }
 
 /// Mixin for blocks that yield experience when mined with a non-silk-touch tool.
-function Experience<T extends Constructor<BlockProperties>>(base: T, min: number, max: number) {
+export function Experience<T extends Constructor<BlockProperties>>(base: T, min: number, max = min) {
     abstract class Experience extends base {
         public override experience(_perm: BlockPermutation, tool: ItemStack): number {
             if (tool.enchantments.has("silk_touch"))

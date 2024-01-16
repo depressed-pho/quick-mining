@@ -52,6 +52,23 @@ function MinedWithHoe<T extends Constructor<PlantProperties>>(base: T) {
     return MinedWithHoe;
 }
 
+/// Mixin for plants requiring shears to quick-mine. They drop itself when mined.
+function MinedWithShears<T extends Constructor<PlantProperties>>(base: T) {
+    abstract class MinedWithShears extends base {
+        public breakingSoundId(): string {
+            return "dig.grass";
+        }
+
+        public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
+            if (tool.typeId === "minecraft:shears")
+                return super.isToolSuitable(perm, tool, prefs);
+            else
+                return false;
+        }
+    }
+    return MinedWithShears;
+}
+
 /// Mixin for plants requiring either hoes or shears to quick-mine. These
 /// plants don't consume the tool durability when mined with a hoe.
 function MinedWithHoeOrShears<T extends Constructor<PlantProperties>>(base: T) {
@@ -108,6 +125,72 @@ function Crop<T extends Constructor<PlantProperties>>(
         }
     }
     return Crop;
+}
+
+/// Mixin for glow-lichen-like plants. Multiple of them can be placed in
+/// the area of one block, and mining them causes all in the block to drop.
+export function GlowLichenLike<T extends Constructor<BlockProperties>>(base: T, cond?: LootCondition) {
+    abstract class GlowLichenLike extends base {
+        public override lootTable(perm: BlockPermutation): LootTable {
+            const bits   = Number(perm.states.get("multi_face_direction_bits") || 63);
+            const amount =
+                ((bits & 0x01) != 0 ? 1 : 0) +
+                ((bits & 0x02) != 0 ? 1 : 0) +
+                ((bits & 0x04) != 0 ? 1 : 0) +
+                ((bits & 0x08) != 0 ? 1 : 0) +
+                ((bits & 0x10) != 0 ? 1 : 0) +
+                ((bits & 0x20) != 0 ? 1 : 0);
+
+            const stack = perm.getItemStack(amount);
+            if (stack)
+                if (cond)
+                    return new LootTable().when(cond, [new LootPool().entry(stack)]);
+                else
+                    return new LootTable().always([new LootPool().entry(stack)]);
+            else
+                return new LootTable(); // Drop nothing
+        }
+
+        public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
+            // Ignore the difference in direction bits.
+            if (pa.typeId === pb.typeId) {
+                for (const [key, value] of pa.states) {
+                if (key === "multi_face_direction_bits")
+                    continue;
+                else if (pb.states.get(key) !== value)
+                    return false;
+                }
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    return GlowLichenLike;
+}
+
+/// Mixin for vine-like plants. Multiple of them can be placed in
+/// the area of one block, but mining them causes only one in the block to drop.
+function VineLike<T extends Constructor<BlockProperties>>(base: T) {
+    abstract class VineLike extends base {
+        public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
+            // Ignore the difference in direction bits.
+            if (pa.typeId === pb.typeId) {
+                for (const [key, value] of pa.states) {
+                if (key === "vine_direction_bits")
+                    continue;
+                else if (pb.states.get(key) !== value)
+                    return false;
+                }
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    return VineLike;
 }
 
 // Melon
@@ -244,6 +327,11 @@ blockProps.addBlockProps(
         new ItemStack("minecraft:carrot"),
         new ItemStack("minecraft:carrot")) {});
 
+// Glow Lichen
+blockProps.addBlockProps(
+    "minecraft:glow_lichen",
+    class extends GlowLichenLike(MinedWithShears(PlantProperties)) {});
+
 // Potato
 blockProps.addBlockProps(
     "minecraft:potatoes",
@@ -255,6 +343,15 @@ blockProps.addBlockProps(
             .condition(LootCondition.randomChance(0.02))
             .entry(new ItemStack("minecraft:poisonous_potato"))
         ]) {});
+
+// Vines
+blockProps.addBlockProps(
+    "minecraft:vine",
+    class extends VineLike(MinedWithShears(PlantProperties)) {
+        public override breakingSoundId(): string {
+            return "dig.roots";
+        }
+    });
 
 // Wheat
 blockProps.addBlockProps(

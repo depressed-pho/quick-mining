@@ -46,6 +46,7 @@ const DEFAULTS: PlayerPrefs = {
         enableMiningMushrooms:     true,
         enableMiningOres:          true,
         enableMiningPlants:        true,
+        enableMiningSculkFamily:   true,
         enableMiningWartBlocks:    true,
     }
 };
