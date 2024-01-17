@@ -251,6 +251,33 @@ blockProps.addBlockProps(
         1, 1,
         new ItemStack("minecraft:quartz")) {});
 
+// Raw copper
+blockProps.addBlockProps(
+    "minecraft:raw_copper_block",
+    class extends StoneTier(OreBlockProperties) {
+        public breakingSoundId(): string {
+            return "dig.stone";
+        }
+    });
+
+// Raw gold
+blockProps.addBlockProps(
+    "minecraft:raw_gold_block",
+    class extends IronTier(OreBlockProperties) {
+        public breakingSoundId(): string {
+            return "dig.stone";
+        }
+    });
+
+// Raw iron
+blockProps.addBlockProps(
+    "minecraft:raw_iron_block",
+    class extends StoneTier(OreBlockProperties) {
+        public breakingSoundId(): string {
+            return "dig.stone";
+        }
+    });
+
 // Redstone
 // FIXME: The exact amount of experience is not known:
 // https://minecraft.fandom.com/wiki/Redstone_Ore

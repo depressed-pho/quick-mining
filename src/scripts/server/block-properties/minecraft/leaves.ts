@@ -4,6 +4,7 @@ import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, blockProps } from "../../block-properties.js";
 import { LootCondition, LootTable, LootPool } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
+import { IgnoringState } from "../mixins.js";
 
 const AZALEA_LEAVES_IDS = new Set([
     "minecraft:azalea_leaves",
@@ -109,7 +110,7 @@ function lootOfLeaves(leafBlock: ItemStack, extraPools: LootPool[]): LootTable {
 }
 
 /// Base class for all leaf blocks.
-class LeavesProperties extends BlockProperties {
+class LeavesProperties extends IgnoringState(BlockProperties, "update_bit") {
     public breakingSoundId(): string {
         return "dig.grass";
     }
@@ -122,23 +123,6 @@ class LeavesProperties extends BlockProperties {
                    tool.tags.has("minecraft:is_hoe");
         else
             return false;
-    }
-
-    public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
-        // A special case for mining leaves. Ignore the difference in
-        // update_bit.
-        if (pa.typeId === pb.typeId) {
-            for (const [key, value] of pa.states) {
-                if (key === "update_bit")
-                    continue;
-                else if (pb.states.get(key) !== value)
-                    return false;
-            }
-            return true;
-        }
-        else {
-            return false;
-        }
     }
 }
 

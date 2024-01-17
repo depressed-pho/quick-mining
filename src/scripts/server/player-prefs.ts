@@ -51,6 +51,7 @@ const DEFAULTS: PlayerPrefs = {
         enableMiningSandLike:      true,
         enableMiningSculkFamily:   true,
         enableMiningSoulSandLike:  true,
+        enableMiningTuffLike:      true, // FIXME: should be false
         enableMiningWartBlocks:    true,
     }
 };

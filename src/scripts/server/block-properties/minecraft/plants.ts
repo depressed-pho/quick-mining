@@ -4,7 +4,7 @@ import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, blockProps } from "../../block-properties.js";
 import { LootTable, LootCondition, LootEntry, LootPool } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
-import { DiscreteUniformDrops, IIsToolSuitable } from "../mixins.js";
+import { DiscreteUniformDrops, IIsToolSuitable, IgnoringState } from "../mixins.js";
 
 /// Base class for all plants.
 abstract class PlantProperties extends BlockProperties {
@@ -130,7 +130,8 @@ function Crop<T extends Constructor<BlockProperties & IIsToolSuitable>>(
 /// Mixin for glow-lichen-like plants. Multiple of them can be placed in
 /// the area of one block, and mining them causes all in the block to drop.
 export function GlowLichenLike<T extends Constructor<BlockProperties>>(base: T, cond?: LootCondition) {
-    abstract class GlowLichenLike extends base {
+    // Ignore the difference in direction bits.
+    abstract class GlowLichenLike extends IgnoringState(base, "multi_face_direction_bits") {
         public override lootTable(perm: BlockPermutation): LootTable {
             const bits   = Number(perm.states.get("multi_face_direction_bits") || 63);
             const amount =
@@ -150,22 +151,6 @@ export function GlowLichenLike<T extends Constructor<BlockProperties>>(base: T, 
             else
                 return new LootTable(); // Drop nothing
         }
-
-        public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
-            // Ignore the difference in direction bits.
-            if (pa.typeId === pb.typeId) {
-                for (const [key, value] of pa.states) {
-                if (key === "multi_face_direction_bits")
-                    continue;
-                else if (pb.states.get(key) !== value)
-                    return false;
-                }
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
     }
     return GlowLichenLike;
 }
@@ -173,24 +158,8 @@ export function GlowLichenLike<T extends Constructor<BlockProperties>>(base: T, 
 /// Mixin for vine-like plants. Multiple of them can be placed in
 /// the area of one block, but mining them causes only one in the block to drop.
 function VineLike<T extends Constructor<BlockProperties>>(base: T) {
-    abstract class VineLike extends base {
-        public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
-            // Ignore the difference in direction bits.
-            if (pa.typeId === pb.typeId) {
-                for (const [key, value] of pa.states) {
-                if (key === "vine_direction_bits")
-                    continue;
-                else if (pb.states.get(key) !== value)
-                    return false;
-                }
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-    }
-    return VineLike;
+    // Ignore the difference in direction bits.
+    return IgnoringState(base, "vine_direction_bits");
 }
 
 // Melon

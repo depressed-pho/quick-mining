@@ -55,6 +55,15 @@ blockProps.addBlockProps(
         }
     });
 
+// Mud
+blockProps.addBlockProps(
+    "minecraft:mud",
+    class extends ClayLikeProperties {
+        public breakingSoundId(): string {
+            return "block.mud.break";
+        }
+    });
+
 // Snow block
 blockProps.addBlockProps(
     "minecraft:snow",

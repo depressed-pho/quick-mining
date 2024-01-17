@@ -1,11 +1,11 @@
 # -*- org -*-
 
 * TODO [#A] Consume tool durability unless the player is in creative mode
-* TODO [#A] Calcite
 * TODO [#A] Obsidian and Crying obsidian
-* TODO [#A] Magma block
-* TODO [#A] Terracotta
 * TODO [#B] Restrict the number of blocks based on horiz/vert distances
 * TODO [#B] MinerThread.TIME_BUDGET_IN_MS_PER_TICK should be world-configurable
 * TODO [#B] Creative players shouldn't receive blocks they mine
 * TODO [#C] Auto-collection should be toggleable
+* TODO [#C] Ground protection
+* TODO [#C] Budding amethyst protection
+* TODO [#C] Show an indicator when the pointer is on a block that is going to be quick-mined

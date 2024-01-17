@@ -2,6 +2,7 @@ import { BlockPermutation } from "cicada-lib/block.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, MiningWay, blockProps } from "../../block-properties.js";
 import { PlayerPrefs } from "../../player-prefs.js";
+import { IgnoringState } from "../mixins.js";
 
 const LEAF_BLOCK_IDS = new Set([
     "minecraft:leaves",
@@ -19,7 +20,11 @@ const MANGROVE_LOG_IDS = new Set([
     "minecraft:stripped_mangrove_wood",
 ]);
 
-class LogLikeBlockProperties extends BlockProperties {
+// We consider two wood-like blocks be equivalent as long as their block
+// states match, except we ignore their pillar axis. It would be nicer to
+// ignore their strippedness too, but then we lose our ability to
+// automatically support custom trees added by addons.
+class LogLikeBlockProperties extends IgnoringState(BlockProperties, "pillar_axis") {
     public breakingSoundId(): string {
         return "dig.wood";
     }
@@ -29,25 +34,6 @@ class LogLikeBlockProperties extends BlockProperties {
             return tool.tags.has("minecraft:is_axe");
         else
             return false;
-    }
-
-    public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
-        // We consider two wood-like blocks be equivalent as long as their
-        // block states match, except we ignore their pillar axis. It would
-        // be nicer to ignore their strippedness too, but then we lose our
-        // ability to automatically support custom trees added by addons.
-        if (pa.typeId === pb.typeId) {
-            for (const [key, value] of pa.states) {
-                if (key === "pillar_axis")
-                    continue;
-                else if (pb.states.get(key) !== value)
-                    return false;
-            }
-            return true;
-        }
-        else {
-            return false;
-        }
     }
 
     public override miningWay(origin: BlockPermutation, perm: BlockPermutation): MiningWay {

@@ -6,6 +6,29 @@ import { LootTable, LootCondition, LootEntry, LootPool,
          randomIntInClosedInterval } from "../loot-table.js";
 import { PlayerPrefs } from "../player-prefs.js";
 
+/** Mixin for blocks that should be considered equivalent ignoring a
+ * certain block state. This mixin overrides `isEquivalentTo`.
+ */
+export function IgnoringState<T extends Constructor<BlockProperties>>(base: T, state: string) {
+    abstract class IgnoringState extends base {
+        public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
+            if (pa.typeId === pb.typeId) {
+                for (const [key, value] of pa.states) {
+                    if (key === state)
+                        continue;
+                    else if (pb.states.get(key) !== value)
+                        return false;
+                }
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    return IgnoringState;
+}
+
 /// Mixin for blocks requiring a silk-touch tool to quick-mine.
 export function SilkTouchForQuickMining<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
     abstract class SilkTouchForQuickMining extends base {

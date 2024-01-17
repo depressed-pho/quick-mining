@@ -51,12 +51,3 @@ blockProps.addBlockProps(
             return "break.amethyst_cluster";
         }
     });
-
-// Block of amethyst
-blockProps.addBlockProps(
-    "minecraft:amethyst_block",
-    class extends CrystalProperties {
-        public breakingSoundId(): string {
-            return "break.amethyst_block";
-        }
-    });
