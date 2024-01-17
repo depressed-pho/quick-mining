@@ -25,12 +25,12 @@
   },
   "homepage": "https://github.com/depressed-pho/quick-mining-addon#readme",
   "devDependencies": {
-    "@protobuf-ts/plugin": "^2.8.2",
+    "@protobuf-ts/plugin": "^2.9.3",
     "cicada-build": "github:depressed-pho/cicada-build",
-    "typescript": "^4.7.4"
+    "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@protobuf-ts/runtime": "^2.8.2",
+    "@protobuf-ts/runtime": "^2.9.3",
     "cicada-lib": "github:depressed-pho/cicada-lib"
   }
 }
