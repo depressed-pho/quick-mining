@@ -21,11 +21,12 @@ message Coverage {
   optional bool enableMiningLeaves = 5;
   optional bool enableMiningLogs = 6;
   optional bool enableMiningMushrooms = 7;
-  optional bool enableMiningOres = 8;
-  optional bool enableMiningPlants = 9;
-  optional bool enableMiningSandLike = 10;
-  optional bool enableMiningSculkFamily = 11;
-  optional bool enableMiningSoulSandLike = 12;
-  optional bool enableMiningTuffLike = 13;
-  optional bool enableMiningWartBlocks = 14;
+  optional bool enableMiningObsidian = 8;
+  optional bool enableMiningOres = 9;
+  optional bool enableMiningPlants = 10;
+  optional bool enableMiningSandLike = 11;
+  optional bool enableMiningSculkFamily = 12;
+  optional bool enableMiningSoulSandLike = 13;
+  optional bool enableMiningTuffLike = 14;
+  optional bool enableMiningWartBlocks = 15;
 }

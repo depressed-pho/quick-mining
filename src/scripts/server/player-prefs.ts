@@ -46,6 +46,7 @@ const DEFAULTS: PlayerPrefs = {
         enableMiningLeaves:        true,
         enableMiningLogs:          true,
         enableMiningMushrooms:     true,
+        enableMiningObsidian:      true,
         enableMiningOres:          true,
         enableMiningPlants:        true,
         enableMiningSandLike:      true,

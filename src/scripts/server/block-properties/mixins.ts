@@ -135,3 +135,48 @@ export function DiscreteUniformDrops<T extends Constructor<BlockProperties>>(
     }
     return DiscreteUniformDrops;
 }
+
+/// Mixin for blocks requiring stone-tier tools to mine.
+export function StoneTier<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
+    abstract class StoneTier extends base {
+        public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
+            if (tool.tags.has("minecraft:stone_tier"    ) ||
+                tool.tags.has("minecraft:iron_tier"     ) ||
+                tool.tags.has("minecraft:diamond_tier"  ) ||
+                tool.tags.has("minecraft:netherite_tier"))
+                return super.isToolSuitable(perm, tool, prefs);
+            else
+                return false;
+        }
+    }
+    return StoneTier;
+}
+
+/// Mixin for blocks requiring iron-tier tools to mine.
+export function IronTier<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
+    abstract class IronTier extends base {
+        public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
+            if (tool.tags.has("minecraft:iron_tier"     ) ||
+                tool.tags.has("minecraft:diamond_tier"  ) ||
+                tool.tags.has("minecraft:netherite_tier"))
+                return super.isToolSuitable(perm, tool, prefs);
+            else
+                return false;
+        }
+    }
+    return IronTier;
+}
+
+/// Mixin for blocks requiring diamond-tier tools to mine.
+export function DiamondTier<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
+    abstract class DiamondTier extends base {
+        public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
+            if (tool.tags.has("minecraft:diamond_tier"  ) ||
+                tool.tags.has("minecraft:netherite_tier"))
+                return super.isToolSuitable(perm, tool, prefs);
+            else
+                return false;
+        }
+    }
+    return DiamondTier;
+}

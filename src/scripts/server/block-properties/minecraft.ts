@@ -5,6 +5,7 @@ import "./minecraft/glowstone.js";
 import "./minecraft/ice.js";
 import "./minecraft/leaves.js";
 import "./minecraft/logs.js";
+import "./minecraft/obsidian.js";
 import "./minecraft/ores.js";
 import "./minecraft/plants.js";
 import "./minecraft/sand.js";

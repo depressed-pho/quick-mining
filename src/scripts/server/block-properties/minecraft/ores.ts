@@ -3,8 +3,8 @@ import { ItemStack } from "cicada-lib/item/stack.js";
 import { Constructor } from "cicada-lib/mixin.js";
 import { BlockProperties, blockProps } from "../../block-properties.js";
 import { PlayerPrefs } from "../../player-prefs.js";
-import { DiscreteUniformDrops, IIsToolSuitable,
-         MultiplicativeDrops, YieldsExperience } from "../mixins.js";
+import { DiamondTier, DiscreteUniformDrops, IronTier,
+         MultiplicativeDrops, StoneTier, YieldsExperience } from "../mixins.js";
 
 /// Base class for all ore blocks.
 abstract class OreBlockProperties extends BlockProperties {
@@ -44,51 +44,6 @@ function NetherrackBased<T extends Constructor<BlockProperties>>(base: T) {
         }
     }
     return NetherrackBased;
-}
-
-/// Mixin for ore blocks requiring stone-tier pickaxes to mine.
-function StoneTier<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
-    abstract class StoneTier extends base {
-        public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-            if (tool.tags.has("minecraft:stone_tier"    ) ||
-                tool.tags.has("minecraft:iron_tier"     ) ||
-                tool.tags.has("minecraft:diamond_tier"  ) ||
-                tool.tags.has("minecraft:netherite_tier"))
-                return super.isToolSuitable(perm, tool, prefs);
-            else
-                return false;
-        }
-    }
-    return StoneTier;
-}
-
-/// Mixin for ore blocks requiring iron-tier pickaxes to mine.
-function IronTier<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
-    abstract class IronTier extends base {
-        public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-            if (tool.tags.has("minecraft:iron_tier"     ) ||
-                tool.tags.has("minecraft:diamond_tier"  ) ||
-                tool.tags.has("minecraft:netherite_tier"))
-                return super.isToolSuitable(perm, tool, prefs);
-            else
-                return false;
-        }
-    }
-    return IronTier;
-}
-
-/// Mixin for ore blocks requiring diamond-tier pickaxes to mine.
-function DiamondTier<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
-    abstract class DiamondTier extends base {
-        public override isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-            if (tool.tags.has("minecraft:diamond_tier"  ) ||
-                tool.tags.has("minecraft:netherite_tier"))
-                return super.isToolSuitable(perm, tool, prefs);
-            else
-                return false;
-        }
-    }
-    return DiamondTier;
 }
 
 /// Mixin for ore blocks that can be lit.
