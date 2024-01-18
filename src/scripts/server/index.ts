@@ -5,6 +5,7 @@ import { blockProps } from "./block-properties.js";
 import { MinerThread } from "./miner-thread.js";
 import { PlayerSession } from "./player-session.js";
 import { QuickMiningMode } from "./player-prefs_pb.js";
+import "./commands.js";
 
 world.usePlayerSessions(PlayerSession);
 
