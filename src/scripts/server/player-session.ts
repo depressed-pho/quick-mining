@@ -1,19 +1,18 @@
 import { IPlayerSession, Player } from "cicada-lib/player.js";
-import { DeepRequired } from "cicada-lib/types.js";
 import { MinerThread } from "./miner-thread.js";
-import { populateDefaults } from "./player-prefs.js";
-import { PlayerPrefs } from "./player-prefs_pb.js";
+import { PlayerPrefs, populateDefaults } from "./player-prefs.js";
+import * as PB from "./player-prefs_pb.js";
 
 export class PlayerSession implements IPlayerSession {
     public runningMiner: MinerThread|null;
-    #prefs: DeepRequired<PlayerPrefs>;
+    #prefs: PlayerPrefs;
 
     public constructor(player: Player) {
         this.runningMiner = null;
-        this.#prefs       = populateDefaults(player.getPreferences(PlayerPrefs));
+        this.#prefs       = populateDefaults(player.getPreferences(PB.PlayerPrefs));
     }
 
-    public get prefs(): DeepRequired<PlayerPrefs> {
+    public get prefs(): PlayerPrefs {
         return this.#prefs;
     }
 

@@ -6,6 +6,28 @@ export { QuickMiningMode };
 
 export type PlayerPrefs = DeepRequired<PB.PlayerPrefs>;
 
+const DEFAULTS: PlayerPrefs = {
+    mode: QuickMiningMode.WhenSneaking,
+    // This has to be kept in sync with player-prefs/ui.ts
+    coverage: {
+        enableMiningClayLike:      true,
+        enableMiningCrystals:      true,
+        enableMiningGlowstoneLike: true,
+        enableMiningIceLike:       true,
+        enableMiningLeaves:        true,
+        enableMiningLogs:          true,
+        enableMiningMushrooms:     true,
+        enableMiningObsidian:      true,
+        enableMiningOres:          true,
+        enableMiningPlants:        true,
+        enableMiningSandLike:      true,
+        enableMiningSculkFamily:   true,
+        enableMiningSoulSandLike:  true,
+        enableMiningTuffLike:      false,
+        enableMiningWartBlocks:    true,
+    }
+};
+
 // Protobuf sucks because it doesn't allow fields to have default values.
 // Cap'n Proto sucks less, but its TypeScript implementation is
 // unmaintained. Blah...
@@ -35,24 +57,3 @@ function populate<T>(prefs: T, defaults: DeepRequired<T>): DeepRequired<T> {
             }
         }));
 }
-
-const DEFAULTS: PlayerPrefs = {
-    mode: QuickMiningMode.WhenSneaking,
-    coverage: {
-        enableMiningClayLike:      true,
-        enableMiningCrystals:      true,
-        enableMiningGlowstoneLike: true,
-        enableMiningIceLike:       true,
-        enableMiningLeaves:        true,
-        enableMiningLogs:          true,
-        enableMiningMushrooms:     true,
-        enableMiningObsidian:      true,
-        enableMiningOres:          true,
-        enableMiningPlants:        true,
-        enableMiningSandLike:      true,
-        enableMiningSculkFamily:   true,
-        enableMiningSoulSandLike:  true,
-        enableMiningTuffLike:      true, // FIXME: should be false
-        enableMiningWartBlocks:    true,
-    }
-};

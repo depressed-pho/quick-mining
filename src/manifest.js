@@ -9,6 +9,7 @@ module.exports = {
     },
     packs: [
         {
+            name: "Quick Mining Addon [BP]",
             uuid: "7e534f24-729f-4091-95f5-f8b530d6ebee",
             modules: [
                 {
@@ -20,10 +21,34 @@ module.exports = {
                     include: ["scripts/**"]
                 }
             ],
-            dependencies: {
-                "@minecraft/server": "1.8.0-beta",
-                "@minecraft/server-ui": "1.2.0-beta"
-            }
+            dependencies: [
+                {
+                    uuid: "8273c28f-b128-46bb-a1b3-281f98db5fe0", // RP
+                    version: "self"
+                },
+                {
+                    module_name: "@minecraft/server",
+                    version: "1.8.0-beta"
+                },
+                {
+                    module_name: "@minecraft/server-ui",
+                    version: "1.2.0-beta"
+                }
+            ]
+        },
+        {
+            name: "Quick Mining Addon [RP]",
+            uuid: "8273c28f-b128-46bb-a1b3-281f98db5fe0",
+            modules: [
+                {
+                    description: "quick-mining resources",
+                    type: "resources",
+                    uuid: "57ca31c9-c7db-45cf-a919-a8e63613669d",
+                    include: [
+                        "texts/**/*.lang"
+                    ]
+                }
+            ]
         }
     ]
 };
