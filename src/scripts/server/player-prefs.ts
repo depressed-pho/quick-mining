@@ -6,25 +6,29 @@ export { QuickMiningMode };
 
 export type PlayerPrefs = DeepRequired<PB.PlayerPrefs>;
 
+// This has to be kept in sync with player-prefs/ui.ts
 const DEFAULTS: PlayerPrefs = {
     mode: QuickMiningMode.WhenSneaking,
-    // This has to be kept in sync with player-prefs/ui.ts
+    protection: {
+        abortBeforeToolBreaks: true,
+    },
     coverage: {
-        enableMiningClayLike:      true,
-        enableMiningCrystals:      true,
-        enableMiningGlowstoneLike: true,
-        enableMiningIceLike:       true,
-        enableMiningLeaves:        true,
-        enableMiningLogs:          true,
-        enableMiningMushrooms:     true,
-        enableMiningObsidian:      true,
-        enableMiningOres:          true,
-        enableMiningPlants:        true,
-        enableMiningSandLike:      true,
-        enableMiningSculkFamily:   true,
-        enableMiningSoulSandLike:  true,
-        enableMiningTuffLike:      false,
-        enableMiningWartBlocks:    true,
+        clayLike:      true,
+        crystals:      true,
+        glowstoneLike: true,
+        iceLike:       true,
+        leaves:        true,
+        logs:          true,
+        mushrooms:     true,
+        obsidian:      true,
+        ores:          true,
+        plants:        true,
+        sandLike:      true,
+        sculkFamily:   true,
+        soulSandLike:  true,
+        terracotta:    false,
+        tuffLike:      false,
+        wartBlocks:    true,
     }
 };
 

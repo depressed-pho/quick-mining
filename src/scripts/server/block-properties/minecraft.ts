@@ -12,4 +12,5 @@ import "./minecraft/sand.js";
 import "./minecraft/sculk-family.js";
 import "./minecraft/soul-sand.js";
 import "./minecraft/shrooms.js";
+import "./minecraft/terracotta.js";
 import "./minecraft/tuff.js";

@@ -6,7 +6,7 @@ import { MultiplicativeDrops, SilkTouchRequired } from "../mixins.js";
 
 abstract class CrystalProperties extends BlockProperties {
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-        if (prefs.coverage.enableMiningCrystals)
+        if (prefs.coverage.crystals)
             return tool.tags.has("minecraft:is_pickaxe");
         else
             return false;

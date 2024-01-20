@@ -9,7 +9,7 @@ import { DiamondTier, DiscreteUniformDrops, IronTier,
 /// Base class for all ore blocks.
 abstract class OreBlockProperties extends BlockProperties {
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-        if (prefs.coverage.enableMiningOres)
+        if (prefs.coverage.ores)
             return tool.tags.has("minecraft:is_pickaxe");
         else
             return false;

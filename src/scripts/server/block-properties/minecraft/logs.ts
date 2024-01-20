@@ -30,7 +30,7 @@ class LogLikeBlockProperties extends IgnoringState(BlockProperties, "pillar_axis
     }
 
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs): boolean {
-        if (prefs.coverage.enableMiningLogs)
+        if (prefs.coverage.logs)
             return tool.tags.has("minecraft:is_axe");
         else
             return false;

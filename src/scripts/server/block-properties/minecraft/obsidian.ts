@@ -11,7 +11,7 @@ abstract class ObsidianLikeProperties extends BlockProperties {
     }
 
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-        if (prefs.coverage.enableMiningObsidian)
+        if (prefs.coverage.obsidian)
             return tool.tags.has("minecraft:is_pickaxe");
         else
             return false;

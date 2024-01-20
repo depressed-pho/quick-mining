@@ -56,7 +56,7 @@ function HugeMushroomProperties(stemLoots: LootTable, blockLoots: LootTable) {
         }
 
         public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs): boolean {
-            if (prefs.coverage.enableMiningMushrooms)
+            if (prefs.coverage.mushrooms)
                 return tool.tags.has("minecraft:is_axe");
             else
                 return false;

@@ -6,7 +6,7 @@ import { PlayerPrefs } from "../../player-prefs.js";
 /// Base class for soul-sand-like blocks.
 abstract class SoulSandLikeProperties extends BlockProperties {
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-        if (prefs.coverage.enableMiningSoulSandLike)
+        if (prefs.coverage.soulSandLike)
             return tool.tags.has("minecraft:is_shovel");
         else
             return false;

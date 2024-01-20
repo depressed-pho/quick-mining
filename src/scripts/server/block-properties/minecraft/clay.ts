@@ -8,7 +8,7 @@ import { PlayerPrefs } from "../../player-prefs.js";
 /// Base class for clay-like blocks.
 abstract class ClayLikeProperties extends BlockProperties {
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-        if (prefs.coverage.enableMiningClayLike)
+        if (prefs.coverage.clayLike)
             return tool.tags.has("minecraft:is_shovel");
         else
             return false;

@@ -11,7 +11,7 @@ abstract class IceLikeProperties extends BlockProperties {
     }
 
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-        if (prefs.coverage.enableMiningIceLike)
+        if (prefs.coverage.iceLike)
             return tool.tags.has("minecraft:is_pickaxe");
         else
             return false;

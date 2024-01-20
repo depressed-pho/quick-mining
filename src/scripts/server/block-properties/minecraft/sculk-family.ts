@@ -9,7 +9,7 @@ import { GlowLichenLike } from "./plants.js";
 /// Base class for sculk family blocks.
 abstract class SculkFamilyProperties extends BlockProperties {
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-        if (prefs.coverage.enableMiningSculkFamily)
+        if (prefs.coverage.sculkFamily)
             return tool.tags.has("minecraft:is_hoe");
         else
             return false;

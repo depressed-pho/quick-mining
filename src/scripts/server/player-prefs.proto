@@ -3,6 +3,7 @@ package quickMining;
 
 message PlayerPrefs {
   optional QuickMiningMode mode = 1;
+  optional Protection protection = 3;
   Coverage coverage = 2;
 }
 
@@ -13,20 +14,25 @@ enum QuickMiningMode {
   AlwaysDisabled = 3;
 }
 
+message Protection {
+  optional bool abortBeforeToolBreaks = 1;
+}
+
 message Coverage {
-  optional bool enableMiningClayLike = 1;
-  optional bool enableMiningCrystals = 2;
-  optional bool enableMiningGlowstoneLike = 3;
-  optional bool enableMiningIceLike = 4;
-  optional bool enableMiningLeaves = 5;
-  optional bool enableMiningLogs = 6;
-  optional bool enableMiningMushrooms = 7;
-  optional bool enableMiningObsidian = 8;
-  optional bool enableMiningOres = 9;
-  optional bool enableMiningPlants = 10;
-  optional bool enableMiningSandLike = 11;
-  optional bool enableMiningSculkFamily = 12;
-  optional bool enableMiningSoulSandLike = 13;
-  optional bool enableMiningTuffLike = 14;
-  optional bool enableMiningWartBlocks = 15;
+  optional bool clayLike = 1;
+  optional bool crystals = 2;
+  optional bool glowstoneLike = 3;
+  optional bool iceLike = 4;
+  optional bool leaves = 5;
+  optional bool logs = 6;
+  optional bool mushrooms = 7;
+  optional bool obsidian = 8;
+  optional bool ores = 9;
+  optional bool plants = 10;
+  optional bool sandLike = 11;
+  optional bool sculkFamily = 12;
+  optional bool soulSandLike = 13;
+  optional bool terracotta = 16;
+  optional bool tuffLike = 14;
+  optional bool wartBlocks = 15;
 }

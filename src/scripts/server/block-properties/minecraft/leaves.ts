@@ -116,7 +116,7 @@ class LeavesProperties extends IgnoringState(BlockProperties, "update_bit") {
     }
 
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs): boolean {
-        if (prefs.coverage.enableMiningLeaves)
+        if (prefs.coverage.leaves)
             // There is no tags for shears, which is unfortunate but is
             // understandable because the vanilla Minecraft has only one type of shears.
             return tool.typeId === "minecraft:shears" ||

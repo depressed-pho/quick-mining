@@ -1,11 +1,9 @@
 import "cicada-lib/shims/console.js";
-import { GameMode, Player } from "cicada-lib/player.js";
-import { spawn } from "cicada-lib/thread.js";
+import { Player } from "cicada-lib/player.js";
 import { world } from "cicada-lib/world.js";
 import { blockProps } from "./block-properties.js";
 import { MinerThread } from "./miner-thread.js";
 import { PlayerSession } from "./player-session.js";
-import { PlayerPrefsUI } from "./player-prefs/ui.js";
 import { QuickMiningMode } from "./player-prefs_pb.js";
 import "./commands.js";
 
@@ -38,7 +36,7 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     const perm    = block.permutation;
     const props   = blockProps.get(perm);
     const session = player.getSession<PlayerSession>();
-    if (!props.isToolSuitable(perm, tool, session.prefs))
+    if (!props.isToolSuitable(perm, tool, session.playerPrefs))
         return;
 
     // Now we know we should do a quick-mining. We are going to break
@@ -66,7 +64,7 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
 });
 
 function isQuickMiningEnabled(player: Player): boolean {
-    switch (player.getSession<PlayerSession>().prefs.mode) {
+    switch (player.getSession<PlayerSession>().playerPrefs.mode) {
         case QuickMiningMode.WhenSneaking:
             if (player.isSneaking)
                 return true;
@@ -86,33 +84,3 @@ function isQuickMiningEnabled(player: Player): boolean {
             return false;
     }
 }
-
-world.beforeEvents.itemUse.subscribe(ev => {
-    // Open the prefs UI if the item is a tool, and the player is sneaking,
-    // and they swung the tool in the air. The last part is especially hard
-    // to detect within the set of currently available events.
-
-    if (!ev.itemStack.tags.has("minecraft:is_tool"))
-        return;
-
-    const player = ev.source;
-    if (!player.isSneaking)
-        return;
-
-    // The maximum distance changes depending on whether the player is
-    // using touch control, but we can't detect that.
-    const maxDistance = player.gameMode === GameMode.creative ? 14 : 8;
-    const hit = ev.source.getBlockFromViewDirection({
-        includeLiquidBlocks:   false,
-        includePassableBlocks: true,
-        maxDistance
-    });
-    if (hit)
-        return;
-
-    // Now open the UI. We must do it in a separate thread because we're in
-    // the read-only mode right now.
-    spawn(async function* () {
-        await PlayerPrefsUI.open(player);
-    });
-});

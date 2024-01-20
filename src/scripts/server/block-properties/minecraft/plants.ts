@@ -9,7 +9,7 @@ import { DiscreteUniformDrops, IIsToolSuitable, IgnoringState } from "../mixins.
 /// Base class for all plants.
 abstract class PlantProperties extends BlockProperties {
     public isToolSuitable(_perm: BlockPermutation, _tool: ItemStack, prefs: PlayerPrefs) {
-        return prefs.coverage.enableMiningPlants;
+        return prefs.coverage.plants;
     }
 }
 
