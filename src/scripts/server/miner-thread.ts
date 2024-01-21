@@ -1,7 +1,7 @@
 import { Block, BlockPermutation } from "cicada-lib/block.js";
 import { OrdMap } from "cicada-lib/collections/ordered-map.js";
 import { Dimension } from "cicada-lib/dimension.js";
-import { Entity } from "cicada-lib/entity.js";
+import { EquipmentSlot } from "cicada-lib/entity.js";
 import { ItemBag } from "cicada-lib/item/bag.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { Location } from "cicada-lib/location.js";
@@ -10,13 +10,14 @@ import { Timer } from "cicada-lib/timer.js";
 import { Thread } from "cicada-lib/thread.js";
 import { world } from "cicada-lib/world.js";
 import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
+import { PlayerSession } from "./player-session.js";
 import "./block-properties/minecraft.js";
 
 export class MinerThread extends Thread {
     static readonly TIME_BUDGET_IN_MS_PER_TICK = 30; // Max 50
     static readonly MAX_BLOCKS_TO_MINE = 1024;
 
-    readonly #actor: Entity;
+    readonly #player: Player;
     readonly #tool: ItemStack;
     readonly #dimension: Dimension;
     readonly #origLoc: Location;
@@ -29,9 +30,9 @@ export class MinerThread extends Thread {
     readonly #soundsPlayed: Set<string>;
     #experience: number;
 
-    public constructor(actor: Entity, tool: ItemStack, origin: Block, perm: BlockPermutation) {
+    public constructor(player: Player, tool: ItemStack, origin: Block, perm: BlockPermutation) {
         super();
-        this.#actor     = actor;
+        this.#player    = player;
         this.#tool      = tool;
         this.#dimension = origin.dimension;
         this.#origLoc   = origin.location;
@@ -84,7 +85,8 @@ export class MinerThread extends Thread {
         // The second path: mine all blocks that we have decided to mine.
         try {
             for (const [block, [way, perm]] of this.#toMine.entries().reverse()) {
-                this.#tryMining(block, way, perm);
+                if (!this.#tryMining(block, way, perm))
+                    break;
 
                 if (timer.elapsedMs >= MinerThread.TIME_BUDGET_IN_MS_PER_TICK) {
                     this.#flushLoots();
@@ -97,6 +99,13 @@ export class MinerThread extends Thread {
         finally {
             this.#flushLoots();
         }
+    }
+
+    get #isCreative(): boolean {
+        if (this.#player.isValid)
+            return this.#player.gameMode == GameMode.creative;
+        else
+            return false;
     }
 
     // Return `true` iff it actually scheduled the block for mining.
@@ -133,7 +142,8 @@ export class MinerThread extends Thread {
         }
     }
 
-    #tryMining(block: Block, way: MiningWay, perm: BlockPermutation) {
+    /// Return `true` if we should continue mining blocks. `false` otherwise.
+    #tryMining(block: Block, way: MiningWay, perm: BlockPermutation): boolean {
         console.assert(
             way === MiningWay.MineRegularly ||
             way === MiningWay.MineAsABonus);
@@ -143,14 +153,9 @@ export class MinerThread extends Thread {
         // we expect.
         const props = blockProps.get(perm);
         if (!props.isEquivalentTo(perm, block.permutation))
-            return;
+            return true;
 
-        // Tool enchantments should not apply to bonus mining.
-        const tool = way === MiningWay.MineRegularly ? this.#tool : undefined;
-        this.#loots.merge(props.lootTable(perm).execute(tool));
-        this.#experience += props.experience(perm, this.#tool);
-        props.break(block, tool);
-
+        let toolWithstood = true;
         if (way === MiningWay.MineRegularly) {
             // Play a breaking sound only once per tick.
             const soundId = props.breakingSoundId(perm);
@@ -159,32 +164,74 @@ export class MinerThread extends Thread {
                 this.#soundsPlayed.add(soundId);
             }
 
-            // FIXME: Consume the durability unless the player is in creative.
+            // Consume the durability unless the player is in creative.
+            if (!this.#isCreative) {
+                // The item stack this.#tool is only a snapshot of the tool
+                // the player used to initiate quick-mining. At this point
+                // they might have put it in a chest, handed it to another
+                // player, thrown it in lava, or whatever. So we have no
+                // choice but to just reduce the durability of the tool the
+                // player is currently holding in their main hand. What
+                // else can we do?
+                if (!this.#player.isValid)
+                    return false;
+
+                const tool = this.#player.equipments.get(EquipmentSlot.Mainhand);
+                if (tool && tool.durability) {
+                    const prefs = this.#player.getSession<PlayerSession>().playerPrefs;
+                    if (prefs.protection.abortBeforeToolBreaks) {
+                        if (tool.durability.current <= 1)
+                            return false;
+                    }
+
+                    tool.durability.damage(1);
+                    if (tool.durability.current <= 0) {
+                        world.playSound("random.break", this.#player.location);
+                        // THINKME: This would be wrong for things like
+                        // tools leaving scraps upon breaking, but there is
+                        // currently no mechanism available for us to
+                        // customise the behaviour.
+                        this.#player.equipments.delete(EquipmentSlot.Mainhand);
+                        toolWithstood = false;
+                    }
+                    else {
+                        this.#player.equipments.set(EquipmentSlot.Mainhand, tool);
+                    }
+                }
+            }
         }
+
+        // Tool enchantments should not apply to bonus mining.
+        const tool = way === MiningWay.MineRegularly ? this.#tool : undefined;
+        this.#loots.merge(props.lootTable(perm).execute(tool));
+        this.#experience += props.experience(perm, this.#tool);
+        props.break(block, tool);
+
+        return toolWithstood;
     }
 
     #flushLoots() {
         // Spawn item entities and experience orbs at the location of the
-        // actor who initiated the quick-mining. We could place items
+        // player who initiated the quick-mining. We could place items
         // directly in their inventory, but it's easier this way as we
         // don't need to handle cases like when their inventory is full.
-        if (this.#actor.isValid) {
+        if (this.#player.isValid) {
             for (const stack of this.#loots)
-                this.#actor.dimension.spawnItem(stack, this.#actor.location);
+                this.#player.dimension.spawnItem(stack, this.#player.location);
 
             // Creative players should not receive experience orbs.
-            if (!(this.#actor instanceof Player) || this.#actor.gameMode != GameMode.creative) {
+            if (!this.#isCreative) {
                 // We cannot spawn experience orbs with custom
                 // values. Shit. We should not directly add experience to
                 // the player also, because that would bypass Mending
                 // tools.
                 for (let i = 0; i < this.#experience; i++) {
-                    this.#dimension.spawnEntity("minecraft:xp_orb", this.#actor.location);
+                    this.#dimension.spawnEntity("minecraft:xp_orb", this.#player.location);
                 }
             }
         }
         else {
-            // But the actor is invalid. Maybe the player has left?
+            // But the player is invalid. Maybe the they have left?
             for (const stack of this.#loots)
                 this.#dimension.spawnItem(stack, this.#origLoc);
 

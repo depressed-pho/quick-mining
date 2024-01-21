@@ -93,7 +93,7 @@ export class PlayerPrefsUI {
         while (true) {
             resp = await form.show(player);
             if (!resp.formValues) {
-                if (timer.elapsedMs <= 100) {
+                if (timer.elapsedMs <= 300) {
                     // It's highly likely that the form didn't even show
                     // up.
                     await delay(0.2);
