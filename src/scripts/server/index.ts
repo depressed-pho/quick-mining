@@ -1,10 +1,12 @@
 import "cicada-lib/shims/console.js";
 import { Player } from "cicada-lib/player.js";
 import { world } from "cicada-lib/world.js";
+import * as Fmt from "cicada-lib/fmt-code.js";
 import { blockProps } from "./block-properties.js";
 import { MinerThread } from "./miner-thread.js";
 import { PlayerSession } from "./player-session.js";
 import { QuickMiningMode } from "./player-prefs_pb.js";
+import pkg from "package.json";
 import "./commands.js";
 
 world.usePlayerSessions(PlayerSession);
@@ -84,3 +86,50 @@ function isQuickMiningEnabled(player: Player): boolean {
             return false;
     }
 }
+
+world.afterEvents.playerSpawn.subscribe(ev => {
+    if (!ev.initialSpawn)
+        return;
+
+    ev.player.sendMessage([
+        Fmt.toString([ Fmt.setColour(Fmt.Colour.Orange) ]),
+        "Quick Mining Addon v" + pkg.version,
+        Fmt.toString([ Fmt.reset, Fmt.setColour(Fmt.Colour.Green) ]),
+        { translate: "game.quick-mining.message.welcome.installed" },
+        { translate: (() => {
+            switch (ev.player.getSession<PlayerSession>().playerPrefs.mode) {
+                case QuickMiningMode.WhenSneaking:
+                    return "game.quick-mining.message.welcome.mode.when-sneaking";
+                case QuickMiningMode.UnlessSneaking:
+                    return "game.quick-mining.message.welcome.mode.unless-sneaking";
+                case QuickMiningMode.AlwaysEnabled:
+                    return "game.quick-mining.message.welcome.mode.always-enabled";
+                case QuickMiningMode.AlwaysDisabled:
+                    return "game.quick-mining.message.welcome.mode.always-disabled";
+            }
+        })() },
+        Fmt.toString([ Fmt.reset ])
+    ]);
+
+    ev.player.sendMessage([
+        Fmt.toString([ Fmt.setColour(Fmt.Colour.Green) ]),
+        { translate: "game.quick-mining.message.welcome.prefs-cmd.0" },
+        Fmt.toString([ Fmt.setColour(Fmt.Colour.WarmLightGray) ]),
+        ";qmine prefs",
+        Fmt.toString([ Fmt.setColour(Fmt.Colour.Green) ]),
+        { translate: "game.quick-mining.message.welcome.prefs-cmd.1" },
+        Fmt.toString([ Fmt.reset ])
+    ]);
+
+    if (ev.player.isOp) {
+        ev.player.sendMessage([
+            Fmt.toString([ Fmt.setColour(Fmt.Colour.Green) ]),
+            { translate: "game.quick-mining.message.welcome.admin-cmd.0" },
+            Fmt.toString([ Fmt.setColour(Fmt.Colour.WarmLightGray) ]),
+            ";qmine admin",
+            Fmt.toString([ Fmt.setColour(Fmt.Colour.Green) ]),
+            { translate: "game.quick-mining.message.welcome.admin-cmd.1" },
+            Fmt.toString([ Fmt.reset ])
+        ]);
+    }
+});

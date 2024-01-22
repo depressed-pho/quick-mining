@@ -1,6 +1,8 @@
 # -*- org -*-
 
 * DONE [#A] Consume tool durability unless the player is in creative mode
+* DONE [#A] Show messages when a player joins
+* TODO [#A] Implement =;qm admin=
 * TODO [#B] Restrict the number of blocks based on horiz/vert distances
 * TODO [#B] MinerThread.TIME_BUDGET_IN_MS_PER_TICK should be world-configurable
 * TODO [#B] Creative players shouldn't receive blocks they mine

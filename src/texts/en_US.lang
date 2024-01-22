@@ -1,9 +1,18 @@
 game.quick-mining.message.close-chat=Please close the chat screen so that GUI can show up
+game.quick-mining.message.welcome.installed= is installed,
+game.quick-mining.message.welcome.mode.when-sneaking= activated when sneaking.
+game.quick-mining.message.welcome.mode.unless-sneaking= activated when not sneaking.
+game.quick-mining.message.welcome.mode.always-enabled= always enabled.
+game.quick-mining.message.welcome.mode.always-disabled= always disabled.
+game.quick-mining.message.welcome.prefs-cmd.0=Type "
+game.quick-mining.message.welcome.prefs-cmd.1=" in the chat screen to change your preferences.
+game.quick-mining.message.welcome.admin-cmd.0=Type "
+game.quick-mining.message.welcome.admin-cmd.1=" in the chat screen to change the world settings.
 
 ui.quick-mining.prefs.title=Quick Mining: User Preferences
 ui.quick-mining.prefs.mode.label=Enable quick mining:
 ui.quick-mining.prefs.mode.item.when-sneaking=When sneaking
-ui.quick-mining.prefs.mode.item.unless-sneaking=Unless sneaking
+ui.quick-mining.prefs.mode.item.unless-sneaking=When not sneaking
 ui.quick-mining.prefs.mode.item.always-enabled=Always
 ui.quick-mining.prefs.mode.item.always-disabled=Never
 ui.quick-mining.prefs.protection.abort-before-tool-breaks=Abort quick-mining when your tool is about to break

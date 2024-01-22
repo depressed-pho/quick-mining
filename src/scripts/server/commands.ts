@@ -5,7 +5,7 @@ import { PlayerSession } from "./player-session.js";
 
 type QuickMineSubCommand = QuickMinePrefsCommand;
 
-@subcommand("preferences")
+@subcommand("preferences", {aliases: ["prefs"]})
 class QuickMinePrefsCommand {}
 
 @command("qmine", {aliases: ["qm"]})
