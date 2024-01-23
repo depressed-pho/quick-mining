@@ -231,11 +231,11 @@ export class MinerThread extends Thread {
         // directly in their inventory, but it's easier this way as we
         // don't need to handle cases like when their inventory is full.
         if (this.#player.isValid) {
-            for (const stack of this.#loots)
-                this.#player.dimension.spawnItem(stack, this.#player.location);
-
-            // Creative players should not receive experience orbs.
+            // But creative players should not receive items or XPs.
             if (!this.#isCreative) {
+                for (const stack of this.#loots)
+                    this.#player.dimension.spawnItem(stack, this.#player.location);
+
                 // We cannot spawn experience orbs with custom
                 // values. Shit. We should not directly add experience to
                 // the player also, because that would bypass Mending
