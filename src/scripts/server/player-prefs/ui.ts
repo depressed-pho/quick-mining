@@ -1,8 +1,6 @@
-import { delay } from "cicada-lib/delay.js";
 import { Player } from "cicada-lib/player.js";
-import { Timer } from "cicada-lib/timer.js";
 import { ModalFormData } from "cicada-lib/ui.js";
-import { PlayerPrefs } from "../player-prefs.js";
+import { PlayerPrefs, QuickMiningMode } from "../player-prefs.js";
 import * as PB from "../player-prefs_pb.js";
 
 // This has to be kept in sync with ../player-prefs.ts
@@ -53,89 +51,65 @@ export class PlayerPrefsUI {
 
         // Protection
         if (PROTECTION.length != Object.entries(prefs.protection).length)
-            throw new Error("Internal error: protection not in sync");
-        for (const protection of PROTECTION) {
+            throw new Error("Internal error: PROTECTION not in sync with proto");
+        for (const prot of PROTECTION) {
             // @ts-ignore: TypeScript obviously doesn't like this
-            const current: boolean|undefined = prefs.protection[protection];
+            const current: boolean|undefined = prefs.protection[prot];
             if (current == undefined)
-                throw new Error(`Internal error: unknown protection: ${protection}`);
+                throw new Error(`Internal error: unknown protection: ${prot}`);
 
-            form.toggle({translate: langKeyForProtection(protection)}, current);
+            form.toggle(prot, {translate: langKeyForProtection(prot)}, current);
         }
 
         // Mode
         form.dropdown(
-            {translate: "ui.quick-mining.prefs.mode.label"},
-            [ {translate: "ui.quick-mining.prefs.mode.item.when-sneaking"},
-              {translate: "ui.quick-mining.prefs.mode.item.unless-sneaking"},
-              {translate: "ui.quick-mining.prefs.mode.item.always-enabled"},
-              {translate: "ui.quick-mining.prefs.mode.item.always-disabled"}
+            "mode", {translate: "ui.quick-mining.prefs.mode.label"},
+            [ [ QuickMiningMode.WhenSneaking,
+                {translate: "ui.quick-mining.prefs.mode.item.when-sneaking"}
+              ],
+              [ QuickMiningMode.UnlessSneaking,
+                {translate: "ui.quick-mining.prefs.mode.item.unless-sneaking"}
+              ],
+              [ QuickMiningMode.AlwaysEnabled,
+                {translate: "ui.quick-mining.prefs.mode.item.always-enabled"}
+              ],
+              [ QuickMiningMode.AlwaysDisabled,
+                {translate: "ui.quick-mining.prefs.mode.item.always-disabled"}
+              ]
             ], prefs.mode);
 
         // Coverage
         if (COVERAGE.length != Object.entries(prefs.coverage).length)
-            throw new Error("Internal error: coverage not in sync");
-        for (const coverage of COVERAGE) {
+            throw new Error("Internal error: COVERAGE not in sync with proto");
+        for (const cover of COVERAGE) {
             // @ts-ignore: TypeScript obviously doesn't like this
-            const current: boolean|undefined = prefs.coverage[coverage];
+            const current: boolean|undefined = prefs.coverage[cover];
             if (current == undefined)
-                throw new Error(`Internal error: unknown coverage: ${coverage}`);
+                throw new Error(`Internal error: unknown coverage: ${cover}`);
 
-            form.toggle({translate: langKeyForCoverage(coverage)}, current);
+            form.toggle(cover, {translate: langKeyForCoverage(cover)}, current);
         }
 
-        // When the player is on the chat screen (or probably on the pause
-        // screen too?), the game immediately cancels the form without even
-        // displaying it. We detect this by measuring the time it takes to
-        // cancel the form and retry.
-        const timer = new Timer();
-        let resp;
-        while (true) {
-            resp = await form.show(player);
-            if (!resp.formValues) {
-                if (timer.elapsedMs <= 300) {
-                    // It's highly likely that the form didn't even show
-                    // up.
-                    await delay(0.2);
-                    timer.reset();
-                    continue;
-                }
-            }
-            break;
-        }
-
-        if (resp.formValues) {
+        const res = await form.show(player, {retryWhenBusy: true});
+        if (res.formValues) {
             // Protection
-            let i = 0;
-            const minProt = i;
-            const maxProt = i + PROTECTION.length;
-            for (; i < maxProt; i++) {
-                if (typeof resp.formValues[i] !== "boolean")
-                    throw new Error(`Internal error: formValues[${i}] is not a boolean`);
+            for (const prot of PROTECTION) {
+                const value = res.formValues.getBoolean(prot);
 
                 // @ts-ignore: TypeScript obviously doesn't like this
-                prefs.protection[PROTECTION[i - minProt]] = resp.formValues[i];
+                prefs.protection[prot] = value;
             }
 
             // Mode
-            if (typeof resp.formValues[i] !== "number")
-                throw new Error(`Internal error: formValues[${i}] is not a number`);
-            prefs.mode = resp.formValues[i] as number;
-            i++;
+            prefs.mode = res.formValues.getNumber("mode");
 
             // Coverage
-            const minCover = i;
-            const maxCover = i + COVERAGE.length;
-            for (; i < maxCover; i++) {
-                if (typeof resp.formValues[i] !== "boolean")
-                    throw new Error(`Internal error: formValues[${i}] is not a boolean`);
+            for (const cover of COVERAGE) {
+                const value = res.formValues.getBoolean(cover);
 
                 // @ts-ignore: TypeScript obviously doesn't like this
-                prefs.coverage[COVERAGE[i - minCover]] = resp.formValues[i];
+                prefs.coverage[cover] = value;
             }
-
-            if (i != resp.formValues.length)
-                throw new Error(`Internal error: ${i} != ${resp.formValues.length}`);
 
             player.setPreferences(PB.PlayerPrefs, prefs);
         }

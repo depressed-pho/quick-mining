@@ -2,19 +2,22 @@ import { IPlayerSession, Player } from "cicada-lib/player.js";
 import { MinerThread } from "./miner-thread.js";
 import { PlayerPrefs, populateDefaults } from "./player-prefs.js";
 import { PlayerPrefsUI } from "./player-prefs/ui.js";
+import { WorldPrefsUI } from "./world-prefs/ui.js";
 import * as PB from "./player-prefs_pb.js";
 
 export class PlayerSession implements IPlayerSession {
     public runningMiner: MinerThread|null;
     #player: Player;
-    #playerPrefsUI: Promise<void>|null;
     #playerPrefs: PlayerPrefs;
+    #playerPrefsUI: Promise<void>|null;
+    #worldPrefsUI: Promise<void>|null;
 
     public constructor(player: Player) {
         this.runningMiner   = null;
         this.#player        = player;
-        this.#playerPrefsUI = null;
         this.#playerPrefs   = populateDefaults(player.getPreferences(PB.PlayerPrefs));
+        this.#playerPrefsUI = null;
+        this.#worldPrefsUI  = null;
     }
 
     public get playerPrefs(): PlayerPrefs {
@@ -23,9 +26,25 @@ export class PlayerSession implements IPlayerSession {
 
     public async openPlayerPrefsUI(): Promise<void> {
         if (!this.#playerPrefsUI) {
-            this.#playerPrefsUI = PlayerPrefsUI.open(this.#player, this.#playerPrefs);
-            await this.#playerPrefsUI;
-            this.#playerPrefsUI = null;
+            try {
+                this.#playerPrefsUI = PlayerPrefsUI.open(this.#player, this.#playerPrefs);
+                await this.#playerPrefsUI;
+            }
+            finally {
+                this.#playerPrefsUI = null;
+            }
+        }
+    }
+
+    public async openWorldPrefsUI(): Promise<void> {
+        if (!this.#worldPrefsUI) {
+            try {
+                this.#worldPrefsUI = WorldPrefsUI.open(this.#player);
+                await this.#worldPrefsUI;
+            }
+            finally {
+                this.#worldPrefsUI = null;
+            }
         }
     }
 

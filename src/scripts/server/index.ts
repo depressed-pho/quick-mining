@@ -4,8 +4,8 @@ import { world } from "cicada-lib/world.js";
 import * as Fmt from "cicada-lib/fmt-code.js";
 import { blockProps } from "./block-properties.js";
 import { MinerThread } from "./miner-thread.js";
+import { QuickMiningMode } from "./player-prefs.js";
 import { PlayerSession } from "./player-session.js";
-import { QuickMiningMode } from "./player-prefs_pb.js";
 import pkg from "package.json";
 import "./commands.js";
 

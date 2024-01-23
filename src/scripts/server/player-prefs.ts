@@ -39,7 +39,7 @@ export function populateDefaults(prefs: PB.PlayerPrefs): PlayerPrefs {
     return populate(prefs, DEFAULTS);
 }
 
-function populate<T>(prefs: T, defaults: DeepRequired<T>): DeepRequired<T> {
+export function populate<T>(prefs: T, defaults: DeepRequired<T>): DeepRequired<T> {
     // @ts-ignore: TypeScript isn't smart enough to typecheck this code,
     // and I don't complain. We would have a hard time writing type-safe
     // code doing this even in PureScript.

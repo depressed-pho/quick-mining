@@ -11,12 +11,10 @@ import { Thread } from "cicada-lib/thread.js";
 import { world } from "cicada-lib/world.js";
 import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
 import { PlayerSession } from "./player-session.js";
+import { worldPrefs } from "./world-prefs.js";
 import "./block-properties/minecraft.js";
 
 export class MinerThread extends Thread {
-    static readonly TIME_BUDGET_IN_MS_PER_TICK = 30; // Max 50
-    static readonly MAX_BLOCKS_TO_MINE = 1024;
-
     readonly #player: Player;
     readonly #tool: ItemStack;
     readonly #dimension: Dimension;
@@ -52,9 +50,9 @@ export class MinerThread extends Thread {
                    ba.z < bb.z ? -1 :
                    0;
         };
-        this.#scanned   = new LocationSet();
-        this.#toScan    = new LocationSet();
-        this.#toMine    = new OrdMap(ordBlock);
+        this.#scanned = new LocationSet();
+        this.#toScan  = new LocationSet();
+        this.#toMine  = new OrdMap(ordBlock);
 
         this.#loots        = new ItemBag();
         this.#soundsPlayed = new Set();
@@ -72,11 +70,9 @@ export class MinerThread extends Thread {
         this.#scan(this.#origLoc);
         while (this.#toScan.size > 0) {
             const loc = this.#toScan.deleteAny()!;
-            if (this.#scan(loc))
-                if (this.#toMine.size >= MinerThread.MAX_BLOCKS_TO_MINE)
-                    break;
+            this.#scan(loc);
 
-            if (timer.elapsedMs >= MinerThread.TIME_BUDGET_IN_MS_PER_TICK) {
+            if (timer.elapsedMs >= worldPrefs.timeBudgetInMsPerTick) {
                 yield;
                 timer.reset();
             }
@@ -88,7 +84,7 @@ export class MinerThread extends Thread {
                 if (!this.#tryMining(block, way, perm))
                     break;
 
-                if (timer.elapsedMs >= MinerThread.TIME_BUDGET_IN_MS_PER_TICK) {
+                if (timer.elapsedMs >= worldPrefs.timeBudgetInMsPerTick) {
                     this.#flushLoots();
                     this.#soundsPlayed.clear();
                     yield;
@@ -106,6 +102,16 @@ export class MinerThread extends Thread {
             return this.#player.gameMode == GameMode.creative;
         else
             return false;
+    }
+
+    #horizDist(x: number, z: number): number {
+        return Math.sqrt(
+                   Math.pow(this.#origLoc.x - x, 2) +
+                   Math.pow(this.#origLoc.z - z, 2));
+    }
+
+    #vertDist(y: number): number {
+        return Math.abs(this.#origLoc.y - y);
     }
 
     // Return `true` iff it actually scheduled the block for mining.
@@ -129,12 +135,21 @@ export class MinerThread extends Thread {
             case MiningWay.MineAsABonus:
                 this.#toMine.set(block, [way, block.permutation]);
                 this.#scanned.add(loc);
-                for (let x = -1; x <= 1; x++) {
-                    for (let y = -1; y <= 1; y++) {
+                // This is one of the slowest part of this entire addon. We
+                // must optimize this very carefully.
+                for (let y = -1; y <= 1; y++) {
+                    if (this.#vertDist(loc.y + y) > worldPrefs.maxVerticalDistance)
+                        continue;
+
+                    for (let x = -1; x <= 1; x++) {
                         for (let z = -1; z <= 1; z++) {
                             const loc1 = loc.offset(x, y, z);
-                            if (!this.#scanned.has(loc1))
-                                this.#toScan.add(loc1);
+                            if (!this.#scanned.has(loc1) && !this.#toScan.has(loc1)) {
+                                if (this.#horizDist(loc.x + x, loc.z + z) > worldPrefs.maxHorizontalDistance)
+                                    this.#scanned.add(loc1);
+                                else
+                                    this.#toScan.add(loc1);
+                            }
                         }
                     }
                 }

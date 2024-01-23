@@ -1,4 +1,5 @@
 game.quick-mining.message.close-chat=Please close the chat screen so that GUI can show up
+
 game.quick-mining.message.welcome.installed= is installed,
 game.quick-mining.message.welcome.mode.when-sneaking= activated when sneaking.
 game.quick-mining.message.welcome.mode.unless-sneaking= activated when not sneaking.
@@ -8,6 +9,11 @@ game.quick-mining.message.welcome.prefs-cmd.0=Type "
 game.quick-mining.message.welcome.prefs-cmd.1=" in the chat screen to change your preferences.
 game.quick-mining.message.welcome.admin-cmd.0=Type "
 game.quick-mining.message.welcome.admin-cmd.1=" in the chat screen to change the world settings.
+
+ui.quick-mining.admin.title=Quick Mining: World Preferences
+ui.quick-mining.admin.timeBudgetInMsPerTick=Time budget for quick-mining in milliseconds per tick
+ui.quick-mining.admin.maxHorizontalDistance=Maximum horizontal distance for blocks to quick-mine
+ui.quick-mining.admin.maxVerticalDistance=Maximum vertical distance for blocks to quick-mine
 
 ui.quick-mining.prefs.title=Quick Mining: User Preferences
 ui.quick-mining.prefs.mode.label=Enable quick mining:

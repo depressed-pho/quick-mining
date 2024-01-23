@@ -3,7 +3,10 @@ import { Player } from "cicada-lib/player.js";
 import { spawn } from "cicada-lib/thread.js";
 import { PlayerSession } from "./player-session.js";
 
-type QuickMineSubCommand = QuickMinePrefsCommand;
+type QuickMineSubCommand = QuickMineAdminCommand|QuickMinePrefsCommand;
+
+@subcommand("administer")
+class QuickMineAdminCommand {}
 
 @subcommand("preferences", {aliases: ["prefs"]})
 class QuickMinePrefsCommand {}
@@ -11,16 +14,26 @@ class QuickMinePrefsCommand {}
 @command("qmine", {aliases: ["qm"]})
 // @ts-ignore: TypeScript thinks this is unused while it's not.
 class QuickMineCommand {
-    @subcommand([QuickMinePrefsCommand])
-    // @ts-ignore: TypeScript thinks this is unused while it's not.
-    readonly #sub!: QuickMineSubCommand;
+    @subcommand([QuickMineAdminCommand, QuickMinePrefsCommand])
+    readonly #subcmd!: QuickMineSubCommand;
 
     public run(runner: Player) {
-        // We must open it in a separate thread because we're in the
-        // read-only mode right now.
-        spawn(async function* () {
-            runner.sendMessage({translate: "game.quick-mining.message.close-chat"});
-            await runner.getSession<PlayerSession>().openPlayerPrefsUI();
-        });
+        if (this.#subcmd instanceof QuickMineAdminCommand) {
+            // We must open it in a separate thread because we're in the
+            // read-only mode right now.
+            spawn(async function* () {
+                runner.sendMessage({translate: "game.quick-mining.message.close-chat"});
+                await runner.getSession<PlayerSession>().openWorldPrefsUI();
+            });
+        }
+        else if (this.#subcmd instanceof QuickMinePrefsCommand) {
+            spawn(async function* () {
+                runner.sendMessage({translate: "game.quick-mining.message.close-chat"});
+                await runner.getSession<PlayerSession>().openPlayerPrefsUI();
+            });
+        }
+        else {
+            throw new Error(`Internal error: unknown subcommand: ${this.#subcmd}`);
+        }
     }
 }
