@@ -17,6 +17,7 @@ enum QuickMiningMode {
 
 message Protection {
   optional bool abortBeforeToolBreaks = 1;
+  optional bool leaveGroundUntouched = 2;
 }
 
 message Loots {

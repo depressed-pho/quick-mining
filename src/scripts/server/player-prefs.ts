@@ -11,6 +11,7 @@ const DEFAULTS: PlayerPrefs = {
     mode: QuickMiningMode.WhenSneaking,
     protection: {
         abortBeforeToolBreaks: true,
+        leaveGroundUntouched:  true,
     },
     loots: {
         autoCollect: true,

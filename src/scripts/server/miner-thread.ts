@@ -10,12 +10,14 @@ import { Timer } from "cicada-lib/timer.js";
 import { Thread } from "cicada-lib/thread.js";
 import { world } from "cicada-lib/world.js";
 import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
+import { PlayerPrefs } from "./player-prefs.js";
 import { PlayerSession } from "./player-session.js";
 import { worldPrefs } from "./world-prefs.js";
 import "./block-properties/minecraft.js";
 
 export class MinerThread extends Thread {
     readonly #player: Player;
+    readonly #playerPrefs: PlayerPrefs;
     readonly #tool: ItemStack;
     readonly #dimension: Dimension;
     readonly #origLoc: Location;
@@ -30,12 +32,13 @@ export class MinerThread extends Thread {
 
     public constructor(player: Player, tool: ItemStack, origin: Block, perm: BlockPermutation) {
         super();
-        this.#player    = player;
-        this.#tool      = tool;
-        this.#dimension = origin.dimension;
-        this.#origLoc   = origin.location;
-        this.#origPerm  = perm;
-        this.#origProps = blockProps.get(perm);
+        this.#player      = player;
+        this.#playerPrefs = player.getSession<PlayerSession>().playerPrefs;
+        this.#tool        = tool;
+        this.#dimension   = origin.dimension;
+        this.#origLoc     = origin.location;
+        this.#origPerm    = perm;
+        this.#origProps   = blockProps.get(perm);
 
         const ordBlock  = (ba: Block, bb: Block) => {
             // We sort scheduled blocks by Y, then X, and then Z, and mine
@@ -81,6 +84,15 @@ export class MinerThread extends Thread {
         // The second path: mine all blocks that we have decided to mine.
         try {
             for (const [block, [way, perm]] of this.#toMine.entries().reverse()) {
+                if (this.#playerPrefs.protection.leaveGroundUntouched) {
+                    if (this.#player.isValid) {
+                        const ground = this.#player.location.floor();
+                        ground.y--;
+                        if (block.location.equals(ground))
+                            continue;
+                    }
+                }
+
                 if (!this.#tryMining(block, way, perm))
                     break;
 
@@ -170,8 +182,6 @@ export class MinerThread extends Thread {
         if (!props.isEquivalentTo(perm, block.permutation))
             return true;
 
-        const prefs = this.#player.getSession<PlayerSession>().playerPrefs;
-
         let toolWithstood = true;
         if (way === MiningWay.MineRegularly) {
             // Play a breaking sound only once per tick.
@@ -195,7 +205,7 @@ export class MinerThread extends Thread {
 
                 const tool = this.#player.equipments.get(EquipmentSlot.Mainhand);
                 if (tool && tool.durability) {
-                    if (prefs.protection.abortBeforeToolBreaks) {
+                    if (this.#playerPrefs.protection.abortBeforeToolBreaks) {
                         if (tool.durability.current <= 1)
                             return false;
                     }
@@ -221,7 +231,7 @@ export class MinerThread extends Thread {
         const tool  = way === MiningWay.MineRegularly ? this.#tool : undefined;
         const loots = props.lootTable(perm).execute(tool);
         const xp    = props.experience(perm, this.#tool);
-        if (prefs.loots.autoCollect) {
+        if (this.#playerPrefs.loots.autoCollect) {
             this.#loots.merge(loots);
             this.#experience += xp;
         }

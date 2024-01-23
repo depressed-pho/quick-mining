@@ -7,8 +7,8 @@
 * DONE [#B] Restrict the number of blocks based on horiz/vert distances
 * DONE [#B] MinerThread.TIME_BUDGET_IN_MS_PER_TICK should be world-configurable
 * DONE [#B] Creative players shouldn't receive blocks they mine
-* TODO [#C] Auto-collection should be toggleable
-* TODO [#C] Ground protection
-* TODO [#C] Budding amethyst protection
-* TODO [#C] Show an indicator when the pointer is on a block that is going to be quick-mined
+* DONE [#C] Auto-collection should be toggleable
+* DONE [#C] Ground protection
 * TODO [#C] Simulate Mending and don't spawn XP orbs
+* TODO [#C] Budding amethyst protection (this could be slow)
+* TODO [#C] Show an indicator when the pointer is on a block that is going to be quick-mined (this would be very slow)
