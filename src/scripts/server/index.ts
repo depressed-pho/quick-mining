@@ -1,4 +1,5 @@
 import "cicada-lib/shims/console.js";
+import { setTimeout } from "cicada-lib/delay.js";
 import { Player } from "cicada-lib/player.js";
 import { world } from "cicada-lib/world.js";
 import * as Fmt from "cicada-lib/fmt-code.js";
@@ -6,6 +7,7 @@ import { blockProps } from "./block-properties.js";
 import { MinerThread } from "./miner-thread.js";
 import { QuickMiningMode } from "./player-prefs.js";
 import { PlayerSession } from "./player-session.js";
+import { isStandingOn } from "./utils.js";
 import pkg from "package.json";
 import "./commands.js";
 
@@ -45,6 +47,20 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     // blocks in our own way, so we first need to cancel the regular
     // breakage before leaving this event handler.
     ev.cancel();
+
+    // When a player initiates a quick-mining by breaking a block they are
+    // standing on, the block briefly disappears on the client side
+    // (because it's broken) and then the server immediately puts it
+    // back. Since the client predicts the movement, this causes the player
+    // to start falling and then get pushed to a side and fall after
+    // all. Work around the issue by teleporting the player to the location
+    // where they initially were.
+    if (isStandingOn(player, block)) {
+        // But of course we can only do it after exiting the read-only
+        // mode.
+        const loc = player.location;
+        setTimeout(() => player.teleport(loc));
+    }
 
     // We are going to use async/await from here. The event handler itself
     // cannot be asynchronous because it has to call ev.cancel()

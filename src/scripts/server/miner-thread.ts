@@ -11,7 +11,8 @@ import { Thread } from "cicada-lib/thread.js";
 import { world } from "cicada-lib/world.js";
 import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
 import { PlayerPrefs } from "./player-prefs.js";
-import { PlayerSession } from "./player-session.js";
+import { type PlayerSession } from "./player-session.js";
+import { isStandingOn } from "./utils.js";
 import { worldPrefs } from "./world-prefs.js";
 import "./block-properties/minecraft.js";
 
@@ -85,12 +86,8 @@ export class MinerThread extends Thread {
         try {
             for (const [block, [way, perm]] of this.#toMine.entries().reverse()) {
                 if (this.#playerPrefs.protection.leaveGroundUntouched) {
-                    if (this.#player.isValid) {
-                        const ground = this.#player.location.floor();
-                        ground.y--;
-                        if (block.location.equals(ground))
-                            continue;
-                    }
+                    if (this.#player.isValid && isStandingOn(this.#player, block))
+                        continue;
                 }
 
                 if (!this.#tryMining(block, way, perm))
