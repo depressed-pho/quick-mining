@@ -12,6 +12,9 @@ const DEFAULTS: PlayerPrefs = {
     protection: {
         abortBeforeToolBreaks: true,
     },
+    loots: {
+        autoCollect: true,
+    },
     coverage: {
         clayLike:      true,
         crystals:      true,

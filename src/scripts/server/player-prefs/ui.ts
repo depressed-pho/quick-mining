@@ -9,6 +9,11 @@ const PROTECTION = [
 ];
 
 // This has to be kept in sync with ../player-prefs.ts
+const LOOTS = [
+    "autoCollect",
+];
+
+// This has to be kept in sync with ../player-prefs.ts
 const COVERAGE = [
     "clayLike",
     "crystals",
@@ -28,23 +33,6 @@ const COVERAGE = [
     "wartBlocks",
 ];
 
-function snakeToKebab(snakeCased: string) {
-    return snakeCased.replaceAll(/[A-Z]/g, (match, offset) => {
-        if (offset > 0)
-            return "-" + match.toLowerCase();
-        else
-            return match.toLowerCase();
-    });
-}
-
-function langKeyForProtection(protection: string) {
-    return "ui.quick-mining.prefs.protection." + snakeToKebab(protection);
-}
-
-function langKeyForCoverage(coverage: string) {
-    return "ui.quick-mining.prefs.coverage." + snakeToKebab(coverage);
-}
-
 export class PlayerPrefsUI {
     public static async open(player: Player, prefs: PlayerPrefs): Promise<void> {
         const form = new ModalFormData().title({translate: "ui.quick-mining.prefs.title"});
@@ -58,23 +46,41 @@ export class PlayerPrefsUI {
             if (current == undefined)
                 throw new Error(`Internal error: unknown protection: ${prot}`);
 
-            form.toggle(prot, {translate: langKeyForProtection(prot)}, current);
+            form.toggle(
+                prot,
+                {translate: "ui.quick-mining.prefs.protection." + prot},
+                current);
+        }
+
+        // Loots
+        if (LOOTS.length != Object.entries(prefs.loots).length)
+            throw new Error("Internal error: LOOTS not in sync with proto");
+        for (const loots of LOOTS) {
+            // @ts-ignore: TypeScript obviously doesn't like this
+            const current: boolean|undefined = prefs.loots[loots];
+            if (current == undefined)
+                throw new Error(`Internal error: unknown loots: ${loots}`);
+
+            form.toggle(
+                loots,
+                {translate: "ui.quick-mining.prefs.loots." + loots},
+                current);
         }
 
         // Mode
         form.dropdown(
             "mode", {translate: "ui.quick-mining.prefs.mode.label"},
             [ [ QuickMiningMode.WhenSneaking,
-                {translate: "ui.quick-mining.prefs.mode.item.when-sneaking"}
+                {translate: "ui.quick-mining.prefs.mode.item.whenSneaking"}
               ],
               [ QuickMiningMode.UnlessSneaking,
-                {translate: "ui.quick-mining.prefs.mode.item.unless-sneaking"}
+                {translate: "ui.quick-mining.prefs.mode.item.unlessSneaking"}
               ],
               [ QuickMiningMode.AlwaysEnabled,
-                {translate: "ui.quick-mining.prefs.mode.item.always-enabled"}
+                {translate: "ui.quick-mining.prefs.mode.item.alwaysEnabled"}
               ],
               [ QuickMiningMode.AlwaysDisabled,
-                {translate: "ui.quick-mining.prefs.mode.item.always-disabled"}
+                {translate: "ui.quick-mining.prefs.mode.item.alwaysDisabled"}
               ]
             ], prefs.mode);
 
@@ -87,7 +93,10 @@ export class PlayerPrefsUI {
             if (current == undefined)
                 throw new Error(`Internal error: unknown coverage: ${cover}`);
 
-            form.toggle(cover, {translate: langKeyForCoverage(cover)}, current);
+            form.toggle(
+                cover,
+                {translate: "ui.quick-mining.prefs.coverage." + cover},
+                current);
         }
 
         const res = await form.show(player, {retryWhenBusy: true});
@@ -98,6 +107,14 @@ export class PlayerPrefsUI {
 
                 // @ts-ignore: TypeScript obviously doesn't like this
                 prefs.protection[prot] = value;
+            }
+
+            // Loots
+            for (const loots of LOOTS) {
+                const value = res.formValues.getBoolean(loots);
+
+                // @ts-ignore: TypeScript obviously doesn't like this
+                prefs.loots[loots] = value;
             }
 
             // Mode

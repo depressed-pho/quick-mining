@@ -4,6 +4,7 @@ package quickMining;
 message PlayerPrefs {
   optional QuickMiningMode mode = 1;
   optional Protection protection = 3;
+  optional Loots loots = 4;
   Coverage coverage = 2;
 }
 
@@ -16,6 +17,10 @@ enum QuickMiningMode {
 
 message Protection {
   optional bool abortBeforeToolBreaks = 1;
+}
+
+message Loots {
+  optional bool autoCollect = 1;
 }
 
 message Coverage {

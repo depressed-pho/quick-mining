@@ -170,6 +170,8 @@ export class MinerThread extends Thread {
         if (!props.isEquivalentTo(perm, block.permutation))
             return true;
 
+        const prefs = this.#player.getSession<PlayerSession>().playerPrefs;
+
         let toolWithstood = true;
         if (way === MiningWay.MineRegularly) {
             // Play a breaking sound only once per tick.
@@ -193,7 +195,6 @@ export class MinerThread extends Thread {
 
                 const tool = this.#player.equipments.get(EquipmentSlot.Mainhand);
                 if (tool && tool.durability) {
-                    const prefs = this.#player.getSession<PlayerSession>().playerPrefs;
                     if (prefs.protection.abortBeforeToolBreaks) {
                         if (tool.durability.current <= 1)
                             return false;
@@ -217,9 +218,26 @@ export class MinerThread extends Thread {
         }
 
         // Tool enchantments should not apply to bonus mining.
-        const tool = way === MiningWay.MineRegularly ? this.#tool : undefined;
-        this.#loots.merge(props.lootTable(perm).execute(tool));
-        this.#experience += props.experience(perm, this.#tool);
+        const tool  = way === MiningWay.MineRegularly ? this.#tool : undefined;
+        const loots = props.lootTable(perm).execute(tool);
+        const xp    = props.experience(perm, this.#tool);
+        if (prefs.loots.autoCollect) {
+            this.#loots.merge(loots);
+            this.#experience += xp;
+        }
+        else {
+            // The player asked us to cause server lag by not automatically
+            // collecting loots for them. Okay then. Spam the server with a
+            // fabulous amount of item entities.
+            if (!this.#isCreative) {
+                for (const stack of loots)
+                    this.#dimension.spawnItem(stack, block.location);
+
+                // We cannot spawn experience orbs with custom values. Shit.
+                for (let i = 0; i < xp; i++)
+                    this.#dimension.spawnEntity("minecraft:xp_orb", block.location);
+            }
+        }
         props.break(block, tool);
 
         return toolWithstood;
@@ -240,9 +258,8 @@ export class MinerThread extends Thread {
                 // values. Shit. We should not directly add experience to
                 // the player also, because that would bypass Mending
                 // tools.
-                for (let i = 0; i < this.#experience; i++) {
-                    this.#dimension.spawnEntity("minecraft:xp_orb", this.#player.location);
-                }
+                for (let i = 0; i < this.#experience; i++)
+                    this.#player.dimension.spawnEntity("minecraft:xp_orb", this.#player.location);
             }
         }
         else {
@@ -251,9 +268,8 @@ export class MinerThread extends Thread {
                 this.#dimension.spawnItem(stack, this.#origLoc);
 
             // We cannot spawn experience orbs with custom values. Shit.
-            for (let i = 0; i < this.#experience; i++) {
+            for (let i = 0; i < this.#experience; i++)
                 this.#dimension.spawnEntity("minecraft:xp_orb", this.#origLoc);
-            }
         }
         this.#loots.clear();
         this.#experience = 0;
