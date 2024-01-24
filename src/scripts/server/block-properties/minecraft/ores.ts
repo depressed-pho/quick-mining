@@ -105,10 +105,11 @@ blockProps.addBlockProps(
         new ItemStack("minecraft:raw_copper")) {});
 
 // Diamond
+// https://minecraft.fandom.com/wiki/Experience#Experience_amounts_by_source
 blockProps.addBlockProps(
     "minecraft:diamond_ore",
     class extends MultiplicativeDrops(
-        IronTier(StoneBased(OreBlockProperties)),
+        IronTier(StoneBased(YieldsExperience(OreBlockProperties, 3, 7))),
         new ItemStack("minecraft:diamond_ore"),
         1, 1,
         new ItemStack("minecraft:diamond")) {});
@@ -116,7 +117,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:deepslate_diamond_ore",
     class extends MultiplicativeDrops(
-        IronTier(DeepslateBased(OreBlockProperties)),
+        IronTier(DeepslateBased(YieldsExperience(OreBlockProperties, 3, 7))),
         new ItemStack("minecraft:deepslate_diamond_ore"),
         1, 1,
         new ItemStack("minecraft:diamond")) {});
@@ -234,14 +235,13 @@ blockProps.addBlockProps(
     });
 
 // Redstone
-// FIXME: The exact amount of experience is not known:
-// https://minecraft.fandom.com/wiki/Redstone_Ore
+// https://minecraft.fandom.com/wiki/Experience#Experience_amounts_by_source
 blockProps.addBlockProps(
     "minecraft:redstone_ore",
     class extends DiscreteUniformDrops(
         IronTier(
             StoneBased(
-                Lit(YieldsExperience(OreBlockProperties, 2, 5),
+                Lit(YieldsExperience(OreBlockProperties, 1, 5),
                     "minecraft:lit_redstone_ore", "minecraft:redstone_ore"))),
         new ItemStack("minecraft:redstone_ore"),
         4, 5, undefined,
@@ -252,7 +252,7 @@ blockProps.addBlockProps(
     class extends DiscreteUniformDrops(
         IronTier(
             StoneBased(
-                Lit(YieldsExperience(OreBlockProperties, 2, 5),
+                Lit(YieldsExperience(OreBlockProperties, 1, 5),
                     "minecraft:lit_redstone_ore", "minecraft:redstone_ore"))),
         new ItemStack("minecraft:redstone_ore"),
         4, 5, undefined,
@@ -263,7 +263,7 @@ blockProps.addBlockProps(
     class extends DiscreteUniformDrops(
         IronTier(
             DeepslateBased(
-                Lit(YieldsExperience(OreBlockProperties, 2, 3),
+                Lit(YieldsExperience(OreBlockProperties, 1, 5),
                     "minecraft:lit_deepslate_redstone_ore", "minecraft:deepslate_redstone_ore"))),
         new ItemStack("minecraft:deepslate_redstone_ore"),
         4, 5, undefined,
@@ -274,7 +274,7 @@ blockProps.addBlockProps(
     class extends DiscreteUniformDrops(
         IronTier(
             DeepslateBased(
-                Lit(YieldsExperience(OreBlockProperties, 2, 3),
+                Lit(YieldsExperience(OreBlockProperties, 1, 5),
                     "minecraft:lit_deepslate_redstone_ore", "minecraft:deepslate_redstone_ore"))),
         new ItemStack("minecraft:deepslate_redstone_ore"),
         4, 5, undefined,

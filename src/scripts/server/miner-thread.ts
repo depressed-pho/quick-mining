@@ -166,6 +166,18 @@ export class MinerThread extends Thread {
         }
     }
 
+    #playSound(soundId: string, at?: Location): void {
+        if (this.#soundsPlayed.has(soundId))
+            return;
+
+        if (at)
+            world.playSound(soundId, at);
+        else
+            this.#player.playSound(soundId);
+
+        this.#soundsPlayed.add(soundId);
+    }
+
     /// Return `true` if we should continue mining blocks. `false` otherwise.
     #tryMining(block: Block, way: MiningWay, perm: BlockPermutation): boolean {
         console.assert(
@@ -182,11 +194,7 @@ export class MinerThread extends Thread {
         let toolWithstood = true;
         if (way === MiningWay.MineRegularly) {
             // Play a breaking sound only once per tick.
-            const soundId = props.breakingSoundId(perm);
-            if (!this.#soundsPlayed.has(soundId)) {
-                world.playSound(soundId, block.location);
-                this.#soundsPlayed.add(soundId);
-            }
+            this.#playSound(props.breakingSoundId(perm), block.location);
 
             // Consume the durability unless the player is in creative.
             if (!this.#isCreative) {
@@ -261,12 +269,52 @@ export class MinerThread extends Thread {
                 for (const stack of this.#loots)
                     this.#player.dimension.spawnItem(stack, this.#player.location);
 
-                // We cannot spawn experience orbs with custom
-                // values. Shit. We should not directly add experience to
-                // the player also, because that would bypass Mending
-                // tools.
-                for (let i = 0; i < this.#experience; i++)
-                    this.#player.dimension.spawnEntity("minecraft:xp_orb", this.#player.location);
+                if (this.#experience > 0) {
+                    // If the user has any equipped items that have Mending,
+                    // consume the XP for repairing them.
+                    const toMend: [EquipmentSlot, ItemStack][] = [];
+                    this.#player.equipments.forEach((item, slot) => {
+                        if (item.enchantments.has("mending")) {
+                            const dur = item.durability;
+                            if (dur && dur.current < dur.maximum)
+                                toMend.push([slot, item]);
+                        }
+                    });
+                    while (toMend.length > 0 && this.#experience > 0) {
+                        const idx          = Math.floor(Math.random() * toMend.length);
+                        const [slot, item] = toMend[idx]!;
+                        const dur          = item.durability!;
+                        if (dur.maximum - dur.current >= 2) {
+                            dur.current += 2;
+                            this.#experience--;
+                        }
+                        else {
+                            // The tool has only 1 durability to repair. No
+                            // XP is consumed in this case.
+                            dur.current++;
+                        }
+                        this.#player.equipments.set(slot, item);
+
+                        if (dur.current >= dur.maximum)
+                            // This tool is now fully repaired.
+                            toMend.splice(idx, 1);
+                    }
+                }
+
+                // And if we still have XP to dispense, put it directly
+                // into the player.
+                while (this.#experience > 0) {
+                    const toNextLevel = this.#player.totalXpNeededForNextLevel - this.#player.xpEarnedAtCurrentLevel;
+                    const toAbsorb    = Math.min(this.#experience, toNextLevel);
+
+                    this.#player.addExperience(toAbsorb);
+                    if (toAbsorb >= toNextLevel)
+                        this.#playSound("random.levelup");
+                    else
+                        this.#playSound("random.orb");
+
+                    this.#experience -= toAbsorb;
+                }
             }
         }
         else {
