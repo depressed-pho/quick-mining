@@ -1,10 +1,7 @@
 module.exports = {
     common: {
         name: "Quick Mining Addon",
-
-        // FIXME
-        //icon: "quick-mining.png",
-
+        icon: "quick-mining.png",
         min_engine_version: "1.20.50"
     },
     packs: [
