@@ -1,4 +1,5 @@
 import { Block, BlockPermutation } from "cicada-lib/block.js";
+import { Player } from "cicada-lib/player.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { LootTable, LootPool } from "./loot-table.js";
 import { PlayerPrefs } from "./player-prefs.js";
@@ -24,6 +25,12 @@ export abstract class BlockProperties {
     /** The ID of the sound to be played when breaking the block.
      */
     public abstract breakingSoundId(perm: BlockPermutation): string;
+
+    /** See if the block should be protected from getting mined.
+     */
+    public isProtected(_player: Player, _prefs: PlayerPrefs): boolean {
+        return false;
+    }
 
     /** See if a quick mining should be initiated by mining the block using
      * a given tool.
@@ -103,10 +110,12 @@ const DEFAULT_BLOCK_PROPERTIES = new DefaultBlockProperties();
 export class BlockPropertyRegistry {
     readonly #tags: Map<string, BlockProperties>;
     readonly #blocks: Map<string, BlockProperties>;
+    readonly #cache: Map<string, BlockProperties>;
 
     private constructor() {
-        this.#tags = new Map();
+        this.#tags   = new Map();
         this.#blocks = new Map();
+        this.#cache  = new Map();
     }
 
     public addTaggedProps(tag: string, propClass: new () => BlockProperties): this {
@@ -129,15 +138,24 @@ export class BlockPropertyRegistry {
      * because the latter does not have tags. It's not like the returned
      * `BlockProperties` will retain the permutation.
      */
-    public "get"(perm: BlockPermutation): BlockProperties {
+    public "get"(block: Block|BlockPermutation): BlockProperties {
+        let props = this.#cache.get(block.typeId);
+        if (!props) {
+            props = this.#getUncached(block);
+            this.#cache.set(block.typeId, props);
+        }
+        return props;
+    }
+
+    #getUncached(block: Block|BlockPermutation): BlockProperties {
         // Block tags are always preferred over individual IDs.
-        for (const tag of perm.tags) {
+        for (const tag of block.tags) {
             const props = this.#tags.get(tag);
             if (props)
                 return props;
         }
 
-        const props = this.#blocks.get(perm.typeId);
+        const props = this.#blocks.get(block.typeId);
         if (props)
             return props;
 

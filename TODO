@@ -10,5 +10,5 @@
 * DONE [#C] Auto-collection should be toggleable
 * DONE [#C] Ground protection
 * DONE [#C] Simulate Mending and don't spawn XP orbs
-* TODO [#C] Budding amethyst protection (this could be slow)
+* DONE [#C] Budding amethyst protection (this could be slow)
 * TODO [#C] Show an indicator when the pointer is on a block that is going to be quick-mined (this would be very slow)

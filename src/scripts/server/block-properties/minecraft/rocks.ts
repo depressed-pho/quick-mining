@@ -1,4 +1,5 @@
 import { BlockPermutation } from "cicada-lib/block.js";
+import { GameMode, Player } from "cicada-lib/player.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, blockProps } from "../../block-properties.js";
 import { PlayerPrefs } from "../../player-prefs.js";
@@ -47,6 +48,26 @@ blockProps.addBlockProps(
     class extends TuffLikeProperties {
         public breakingSoundId(): string {
             return "break.amethyst_block";
+        }
+    });
+
+// Budding Amethyst
+blockProps.addBlockProps(
+    "minecraft:budding_amethyst",
+    class extends BlockProperties {
+        public breakingSoundId(): string {
+            return "break.amethyst_block";
+        }
+
+        public override isProtected(player: Player, prefs: PlayerPrefs): boolean {
+            if (player.gameMode === GameMode.survival)
+                return prefs.protection.keepBuddingAmethystFromBroken;
+            else
+                return false;
+        }
+
+        public isToolSuitable() {
+            return false;
         }
     });
 

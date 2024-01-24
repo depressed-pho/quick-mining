@@ -14,7 +14,6 @@ import { PlayerPrefs } from "./player-prefs.js";
 import { type PlayerSession } from "./player-session.js";
 import { isStandingOn } from "./utils.js";
 import { worldPrefs } from "./world-prefs.js";
-import "./block-properties/minecraft.js";
 
 export class MinerThread extends Thread {
     readonly #player: Player;
@@ -85,7 +84,7 @@ export class MinerThread extends Thread {
         // The second path: mine all blocks that we have decided to mine.
         try {
             for (const [block, [way, perm]] of this.#toMine.entries().reverse()) {
-                if (this.#playerPrefs.protection.leaveGroundUntouched) {
+                if (this.#playerPrefs.protection.keepGroundFromQuickMined) {
                     if (this.#player.isValid && isStandingOn(this.#player, block))
                         continue;
                 }
