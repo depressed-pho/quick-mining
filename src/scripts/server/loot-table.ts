@@ -213,7 +213,7 @@ export namespace LootCondition {
 
         public evaluate(tool?: ItemStack): boolean {
             if (tool) {
-                const fortune = tool.enchantments.get("fortune")?.level ?? 0;
+                const fortune = tool.enchantments.get("fortune") ?? 0;
                 const chance  = this.#chances[fortune >= 4 ? 4 : fortune]!;
                 return Math.random() < chance;
             }
@@ -368,7 +368,7 @@ export namespace LootEntry {
             }
             else if (this.#isMultiplicative) {
                 // https://minecraft.fandom.com/wiki/Fortune#Ore
-                const fortune = tool?.enchantments.get("fortune")?.level ?? 0;
+                const fortune = tool?.enchantments.get("fortune") ?? 0;
                 const dice    = randomIntInClosedInterval(1, fortune + 2);
                 const mult    = Math.max(1, dice - 1);
                 const items   = new ItemBag();
@@ -380,7 +380,7 @@ export namespace LootEntry {
                 return items;
             }
             else if (this.#isDiscreteUniform) {
-                const fortune = tool?.enchantments.get("fortune")?.level ?? 0;
+                const fortune = tool?.enchantments.get("fortune") ?? 0;
                 const dice    = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + fortune);
                 const items   = new ItemBag();
 
@@ -391,7 +391,7 @@ export namespace LootEntry {
                 return items;
             }
             else if (this.#binomial !== undefined) {
-                const fortune = tool?.enchantments.get("fortune")?.level ?? 0;
+                const fortune = tool?.enchantments.get("fortune") ?? 0;
                 const rolls   = randomIntInClosedInterval(this.#rolls.min, this.#rolls.max + fortune);
                 const items   = new ItemBag();
 
@@ -431,7 +431,7 @@ export namespace LootEntry {
                 return new ItemBag();
             }
             else {
-                const fortune = tool?.enchantments.get("fortune")?.level ?? 0;
+                const fortune = tool?.enchantments.get("fortune") ?? 0;
                 const maximum = 1 + fortune * 2;
                 const items   = new ItemBag();
 
@@ -456,7 +456,7 @@ export namespace LootEntry {
 
         public execute(tool?: ItemStack): ItemBag {
             const silkTouch    = tool?.enchantments.has("silk_touch") ?? false;
-            const fortune      = tool?.enchantments.get("fortune")?.level ?? 0;
+            const fortune      = tool?.enchantments.get("fortune") ?? 0;
             const decompChance =
                 silkTouch    ? 0    :
                 fortune == 0 ? 0.1  :

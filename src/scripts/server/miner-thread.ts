@@ -245,11 +245,11 @@ export class MinerThread extends Thread {
             // fabulous amount of item entities.
             if (!this.#isCreative) {
                 for (const stack of loots)
-                    this.#dimension.spawnItem(stack, block.location);
+                    this.#dimension.spawnItem(stack, block.location.offset(0.5));
 
                 // We cannot spawn experience orbs with custom values. Shit.
                 for (let i = 0; i < xp; i++)
-                    this.#dimension.spawnEntity("minecraft:xp_orb", block.location);
+                    this.#dimension.spawnEntity("minecraft:xp_orb", block.location.offset(0.5));
             }
         }
         props.break(block, tool);
@@ -319,11 +319,11 @@ export class MinerThread extends Thread {
         else {
             // But the player is invalid. Maybe the they have left?
             for (const stack of this.#loots)
-                this.#dimension.spawnItem(stack, this.#origLoc);
+                this.#dimension.spawnItem(stack, this.#origLoc.offset(0.5));
 
             // We cannot spawn experience orbs with custom values. Shit.
             for (let i = 0; i < this.#experience; i++)
-                this.#dimension.spawnEntity("minecraft:xp_orb", this.#origLoc);
+                this.#dimension.spawnEntity("minecraft:xp_orb", this.#origLoc.offset(0.5));
         }
         this.#loots.clear();
         this.#experience = 0;

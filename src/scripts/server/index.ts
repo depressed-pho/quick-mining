@@ -26,10 +26,12 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
 
     if (SHOW_DEBUG_INFO) {
         console.debug("==========");
-        console.debug(`${player.name} is breaking a block ${block.typeId}`,
-                      tool ? `using ${tool.typeId}` : "by hand");
-        console.debug("Tool:", tool);
+        if (tool)
+            console.debug("%s is breaking a block %o using %o", player.name, block.typeId, tool.typeId);
+        else
+            console.debug("%s is breaking a block %o by hand", player.name, block.typeId);
         console.debug("Block:", block);
+        console.debug("Tool:", tool);
     }
 
     if (props.isProtected(player, prefs)) {
