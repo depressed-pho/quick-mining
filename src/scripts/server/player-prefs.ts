@@ -10,7 +10,7 @@ export type PlayerPrefs = DeepRequired<PB.PlayerPrefs>;
 const DEFAULTS: PlayerPrefs = {
     mode: QuickMiningMode.WhenSneaking,
     protection: {
-        abortBeforeToolBreaks:         true,
+        abortBeforeNamedToolBreaks:    true,
         keepGroundFromQuickMined:      true,
         keepBuddingAmethystFromBroken: false,
     },

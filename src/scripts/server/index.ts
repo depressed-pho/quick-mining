@@ -1,6 +1,6 @@
 import "cicada-lib/shims/console.js";
 import { setTimeout } from "cicada-lib/delay.js";
-import { Player } from "cicada-lib/player.js";
+import { GameMode, Player } from "cicada-lib/player.js";
 import { world } from "cicada-lib/world.js";
 import * as Fmt from "cicada-lib/fmt-code.js";
 import { blockProps } from "./block-properties.js";
@@ -49,6 +49,17 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     // of tool. It can therefore never be a bare hand.
     if (!tool)
         return;
+
+    // Tool protection should happen regardless of whether quick-mining is
+    // enabled.
+    if (prefs.protection.abortBeforeNamedToolBreaks &&
+        player.gameMode !== GameMode.creative &&
+        tool.nameTag !== undefined &&
+        (tool.durability?.current ?? Infinity) <= 0) {
+
+        ev.cancel();
+        return;
+    }
 
     if (!isQuickMiningEnabled(player))
         return;

@@ -209,13 +209,12 @@ export class MinerThread extends Thread {
 
                 const tool = this.#player.equipments.get(EquipmentSlot.Mainhand);
                 if (tool && tool.durability) {
-                    if (this.#playerPrefs.protection.abortBeforeToolBreaks) {
-                        if (tool.durability.current <= 1)
+                    if (this.#playerPrefs.protection.abortBeforeNamedToolBreaks) {
+                        if (tool.nameTag !== undefined && tool.durability.current <= 0)
                             return false;
                     }
 
-                    tool.durability.damage(1);
-                    if (tool.durability.current <= 0) {
+                    if (tool.durability.damage(1)) {
                         world.playSound("random.break", this.#player.location);
                         // THINKME: This would be wrong for things like
                         // tools leaving scraps upon breaking, but there is
@@ -304,7 +303,7 @@ export class MinerThread extends Thread {
                 // into the player.
                 while (this.#experience > 0) {
                     const toNextLevel = this.#player.totalXpNeededForNextLevel - this.#player.xpEarnedAtCurrentLevel;
-                    const toAbsorb    = Math.min(this.#experience, toNextLevel);
+                    const toAbsorb    = Math.max(1, Math.min(this.#experience, toNextLevel));
 
                     this.#player.addExperience(toAbsorb);
                     if (toAbsorb >= toNextLevel)

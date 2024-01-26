@@ -5,7 +5,7 @@ import * as PB from "../player-prefs_pb.js";
 
 // This has to be kept in sync with ../player-prefs.ts
 const PROTECTION = [
-    "abortBeforeToolBreaks",
+    "abortBeforeNamedToolBreaks",
     "keepGroundFromQuickMined",
     "keepBuddingAmethystFromBroken",
 ];
