@@ -28,11 +28,12 @@ const DEFAULTS: PlayerPrefs = {
         obsidian:      true,
         ores:          true,
         plants:        true,
+        rocksCommon:   false,
+        rocksUncommon: false,
         sandLike:      true,
         sculkFamily:   true,
         soulSandLike:  true,
         terracotta:    false,
-        tuffLike:      false,
         wartBlocks:    true,
     }
 };

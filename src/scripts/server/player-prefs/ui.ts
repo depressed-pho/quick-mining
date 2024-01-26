@@ -27,11 +27,12 @@ const COVERAGE = [
     "obsidian",
     "ores",
     "plants",
+    "rocksCommon",
+    "rocksUncommon",
     "sandLike",
     "sculkFamily",
     "soulSandLike",
     "terracotta",
-    "tuffLike",
     "wartBlocks",
 ];
 

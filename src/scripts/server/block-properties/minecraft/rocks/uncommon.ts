@@ -1,42 +1,23 @@
 import { BlockPermutation } from "cicada-lib/block.js";
 import { GameMode, Player } from "cicada-lib/player.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
-import { BlockProperties, blockProps } from "../../block-properties.js";
-import { PlayerPrefs } from "../../player-prefs.js";
-import { IgnoringState } from "../mixins.js";
+import { BlockProperties, blockProps } from "../../../block-properties.js";
+import { PlayerPrefs } from "../../../player-prefs.js";
 
-/// Base class for tuff-like blocks.
-abstract class TuffLikeProperties extends BlockProperties {
+/// Base class for uncommon stone rocks.
+abstract class UncommonRockProperties extends BlockProperties {
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
-        if (prefs.coverage.tuffLike)
+        if (prefs.coverage.rocksUncommon)
             return tool.tags.has("minecraft:is_pickaxe");
         else
             return false;
     }
 }
 
-// Andesite
-blockProps.addBlockProps(
-    "minecraft:andesite",
-    class extends TuffLikeProperties {
-        public breakingSoundId(): string {
-            return "dig.stone";
-        }
-    });
-
-// Basalt
-blockProps.addBlockProps(
-    "minecraft:basalt",
-    class extends IgnoringState(TuffLikeProperties, "pillar_axis") {
-        public breakingSoundId(): string {
-            return "dig.basalt";
-        }
-    });
-
 // Blackstone
 blockProps.addBlockProps(
     "minecraft:blackstone",
-    class extends TuffLikeProperties {
+    class extends UncommonRockProperties {
         public breakingSoundId(): string {
             return "dig.stone";
         }
@@ -45,7 +26,7 @@ blockProps.addBlockProps(
 // Block of amethyst
 blockProps.addBlockProps(
     "minecraft:amethyst_block",
-    class extends TuffLikeProperties {
+    class extends UncommonRockProperties {
         public breakingSoundId(): string {
             return "break.amethyst_block";
         }
@@ -67,6 +48,7 @@ blockProps.addBlockProps(
         }
 
         public isToolSuitable() {
+            // Never quick-mine them.
             return false;
         }
     });
@@ -74,44 +56,26 @@ blockProps.addBlockProps(
 // Calcite
 blockProps.addBlockProps(
     "minecraft:calcite",
-    class extends TuffLikeProperties {
+    class extends UncommonRockProperties {
         public breakingSoundId(): string {
             return "break.calcite";
         }
     });
 
-// Diorite
+// Dripstone block
 blockProps.addBlockProps(
-    "minecraft:diorite",
-    class extends TuffLikeProperties {
+    "minecraft:dripstone_block",
+    class extends UncommonRockProperties {
         public breakingSoundId(): string {
-            return "dig.stone";
-        }
-    });
-
-// Granite
-blockProps.addBlockProps(
-    "minecraft:granite",
-    class extends TuffLikeProperties {
-        public breakingSoundId(): string {
-            return "dig.stone";
+            return "break.dripstone_block";
         }
     });
 
 // Magma block
 blockProps.addBlockProps(
     "minecraft:magma",
-    class extends TuffLikeProperties {
+    class extends UncommonRockProperties {
         public breakingSoundId(): string {
             return "dig.stone";
-        }
-    });
-
-// Tuff
-blockProps.addBlockProps(
-    "minecraft:tuff",
-    class extends TuffLikeProperties {
-        public breakingSoundId(): string {
-            return "break.tuff";
         }
     });

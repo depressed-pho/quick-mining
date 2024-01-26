@@ -98,16 +98,10 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
 function isQuickMiningEnabled(player: Player): boolean {
     switch (player.getSession<PlayerSession>().playerPrefs.mode) {
         case QuickMiningMode.WhenSneaking:
-            if (player.isSneaking)
-                return true;
-            else
-                return false;
+            return player.isSneaking;
 
         case QuickMiningMode.UnlessSneaking:
-            if (player.isSneaking)
-                return true;
-            else
-                return false;
+            return !player.isSneaking;
 
         case QuickMiningMode.AlwaysEnabled:
             return true;
