@@ -257,15 +257,23 @@ export class MinerThread extends Thread {
     }
 
     #flushLoots() {
-        // Spawn item entities and experience orbs at the location of the
-        // player who initiated the quick-mining. We could place items
-        // directly in their inventory, but it's easier this way as we
-        // don't need to handle cases like when their inventory is full.
+        // Place items directly in the player inventory.
         if (this.#player.isValid) {
             // But creative players should not receive items or XPs.
             if (!this.#isCreative) {
-                for (const stack of this.#loots)
-                    this.#player.dimension.spawnItem(stack, this.#player.location);
+                for (const stack of this.#loots) {
+                    const leftover = this.#player.inventory.add(stack);
+                    if (leftover) {
+                        if (leftover.amount < stack.amount)
+                            this.#playSound("random.pop", this.#player.location);
+                        // Items that didn't fit in their inventory should
+                        // be spawned as item entities.
+                        this.#player.dimension.spawnItem(leftover, this.#player.location);
+                    }
+                    else {
+                        this.#playSound("random.pop", this.#player.location);
+                    }
+                }
 
                 if (this.#experience > 0) {
                     // If the user has any equipped items that have Mending,
