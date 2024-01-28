@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/depressed-pho/quick-mining-addon.git"
+    "url": "git+https://github.com/depressed-pho/quick-mining.git"
   },
   "keywords": [
     "Minecraft",
@@ -21,9 +21,9 @@
   "author": "PHO",
   "license": "CC0-1.0",
   "bugs": {
-    "url": "https://github.com/depressed-pho/quick-mining-addon/issues"
+    "url": "https://github.com/depressed-pho/quick-mining/issues"
   },
-  "homepage": "https://github.com/depressed-pho/quick-mining-addon#readme",
+  "homepage": "https://github.com/depressed-pho/quick-mining#readme",
   "devDependencies": {
     "@protobuf-ts/plugin": "^2.9.3",
     "cicada-build": "github:depressed-pho/cicada-build",
