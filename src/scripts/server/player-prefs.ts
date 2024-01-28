@@ -30,7 +30,7 @@ const DEFAULTS: PlayerPrefs = {
         plants:        true,
         rocksCommon:   false,
         rocksUncommon: false,
-        sandLike:      true,
+        sandLike:      false,
         sculkFamily:   true,
         soulSandLike:  true,
         terracotta:    false,
