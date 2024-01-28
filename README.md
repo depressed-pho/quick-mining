@@ -1,21 +1,28 @@
 # Quick Mining Addon
 
-<img src="src/quick-mining.png" width="64" height="64" />
+![Quick Mining Addon logo](doc/logo.png)
 
 This is a Minecraft Bedrock addon for quickly mining ore veins and cutting
-the entire trees down.
+the entire trees down. With this addon enabled, when a player mines a
+block, all the surrounding blocks with the same type break, which in turn
+causes other blocks surrounding them with the same type to break in a chain
+reaction.
+
+![Screen shot of cutting trees down](doc/screenshot-00.jpg)
+![Screen shot of mining coal vein](doc/screenshot-01.jpg)
 
 There are already many similar addons out there, and this is yet another
 one joining the party. Why do we need more? What makes it different from
 others?
 
 1. **It respects tool enchantments.** Mining ores with *Fortune* pickaxes
-   yields more. *Unbreaking* tools last longer. XP-producing blocks repair
-   your *Mending* tools. *Silk Touch* may produce different kind of items.
+   yields more. *Unbreaking* tools last longer. XP-producing blocks like
+   Coal ores repair your *Mending* tools. *Silk Touch* may produce
+   different kind of items depending on the block type.
 2. **It consumes durability of your tools correctly.** Most vein-mining
-   addons let you mine so many blocks with consuming only one durability
-   point of your tool. This addon consumes 1 durability for each block you
-   mine, making it less overpowered.
+   addons let you mine the entire vein with consuming durability worth only
+   one use of your tool. This addon consumes durability worth one use per
+   block you mine, making it less overpowered.
 3. **It decays leaves fast.** Cutting logs with an axe also breaks leaves
    immediately, with no additional consumption of tool durability.
 4. **It collects items and XP orbs for you.** Items produced by mining
@@ -24,9 +31,9 @@ others?
 5. **It is customizable.** It has a configuration UI to let you customize
    the behavior of the addon, such as when to enable quick-mining, what
    kind of blocks should be quick-mined, and more.
-6. **It is compatible with other addons.** Modifying `player.json` is one
-   of the greatest ways to make an addon incompatible with others. This
-   addon doesn't do anything like that.
+6. **It can coexist with other addons.** Modifying `player.json` is one of
+   the greatest ways to make an addon incompatible with others. This addon
+   doesn't do anything like that.
 
 # Installation
 
@@ -216,16 +223,16 @@ typing `;qmine admin` on the chat screen.
 
 * **Time budget for quick-mining in milliseconds per tick**: Setting this
   to high values may speed up the process of quick-mining, but can cause
-  server lags. MCBE addons are single-threaded, that is, addon scripts run
-  on the same thread that ticks the server. This means addons cannot spend
-  too much time in each game tick, so this addon measures the time it's
-  taking and reschedules its work on the next tick if it's going to take
-  longer than this value. It is not recommended to change this value unless
-  you know what you are doing.
+  severe server lags. MCBE addons are single-threaded, that is, addon
+  scripts run on the same thread that ticks the server. This means addons
+  cannot spend too much time in each game tick, so this addon measures the
+  time it's taking and reschedules its remaining work for the next tick if
+  it's going to take longer than this value. It is not recommended to
+  change this value unless you know what you are doing.
 * **Maximum horizontal distance for blocks to quick-mine**, **Maximum
   vertical distance for blocks to quick-mine**: The range of blocks to be
   quick-mined is limited by these values. Setting them to higher values
-  would allow players to cause a great destruction.
+  would allow players to cause a massive destruction.
 
 # Known issues
 
@@ -236,8 +243,15 @@ typing `;qmine admin` on the chat screen.
   mushrooms. This happens because we don't know their drop rate accurately.
 * Tall variants of [Grass and
   Fern](https://minecraft.fandom.com/wiki/Grass) cannot be quick-mined due
-  to the way how they are implemented in the game. The same goes for [tall
+  to the way how they are implemented in the game. That is, replacing their
+  upper half with `minecraft:air` causes their lower half to break, and we
+  cannot collect loots from their lower halves. The same goes for [tall
   flowers](https://minecraft.fandom.com/wiki/Flower).
+* The addon lets players mine many blocks without consuming their
+  [Hunger](https://minecraft.fandom.com/wiki/Hunger) value. This is because
+  the scripting API is currently not capable of allowing addons to
+  manipulate hunger. You might consider it overpowered but you have to live
+  with that.
 * Custom ores added by add-ons aren't quick-mined. This is because:
   1. There are no standard block tags for ore blocks representing the
      required tool tier,
