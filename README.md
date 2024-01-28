@@ -25,8 +25,8 @@ others?
    the behavior of the addon, such as when to enable quick-mining, what
    kind of blocks should be quick-mined, and more.
 6. **It is compatible with other addons.** Modifying `player.json` is one
-   of the great ways to make an addon incompatible with others. This addon
-   doesn't do anything like that.
+   of the greatest ways to make an addon incompatible with others. This
+   addon doesn't do anything like that.
 
 # Installation
 
@@ -39,28 +39,26 @@ others?
 Quick-mining happens when you mine blocks with a suitable tool while
 *sneaking*, such as cutting logs with an axe and mining ores with a
 pickaxe. You must use a correct tool for your task, that is, cutting trees
-with your bare hand will not trigger quick-mining.
+with bare hand will not trigger quick-mining.
 
 ## Special cases
 
 * **[Log-like blocks](https://minecraft.fandom.com/wiki/Log)**: Cutting
-  logs and woods (stripped or not) with an axe also breaks
-  non-player-placed leaves surrounding them. This is a fast simulation of
-  decaying so the axe don't lose durability for this, and its enchantments
-  don't apply. If you want to gather leaf blocks, mine them with shears or
-  a Silk Touch hoe.
+  logs and woods (stripped or not) also breaks non-player-placed leaves
+  surrounding them. This is a fast simulation of decaying so the axe don't
+  lose durability for this, and its enchantments don't apply. If you want
+  to gather leaf blocks, mine them with shears or a Silk Touch hoe.
 * **[Mangrove trees](https://minecraft.fandom.com/wiki/Mangrove)**: Cutting
-  mangrove logs or roots with an axe mines the entire mangrove tree,
-  including moss carpets touching them.
+  mangrove logs or roots cuts the entire mangrove tree down, including moss
+  carpets touching them.
 * **[Azalea leaves](https://minecraft.fandom.com/wiki/Azalea_tree)**:
-  Breaking azalea leaves (flowering or not) with a hoe or shears also
-  breaks the other variants.
+  Breaking azalea leaves (flowering or not) also breaks the other variants.
 * **[Huge Mushrooms](https://minecraft.fandom.com/wiki/Huge_mushroom)**:
-  Mining mushroom blocks (red or brown) with an axe also mines mushroom
-  stems and vice versa.
+  Mining mushroom blocks (red or brown) also mines mushroom stems and vice
+  versa.
 * **[Huge Nether Fungi](https://minecraft.fandom.com/wiki/Huge_fungus)**:
-  Mining nether wart blocks (warped or not) with a hoe also mines
-  surrounding shroomlights and vice versa.
+  Mining nether wart blocks (warped or not) also mines surrounding
+  shroomlights and vice versa.
 
 # Customization
 
