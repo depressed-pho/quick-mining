@@ -47,7 +47,7 @@ with bare hand will not trigger quick-mining.
   logs and woods (stripped or not) also breaks non-player-placed leaves
   surrounding them. This is a fast simulation of decaying so your axe don't
   lose durability for this, and its enchantments don't apply. If you want
-  to gather leaf blocks, mine them with shears or a Silk Touch hoe.
+  to gather leaf blocks, break them with shears or a Silk Touch hoe.
 * **[Mangrove trees](https://minecraft.fandom.com/wiki/Mangrove)**: Cutting
   mangrove logs or roots cuts the entire mangrove tree down, including moss
   carpets touching them.
