@@ -93,7 +93,7 @@ Protection settings:
   tools. This doesn't mean a perfect protection. You can still break them
   with [TNT](https://minecraft.fandom.com/wiki/TNT), and
   [Creepers](https://minecraft.fandom.com/wiki/Creeper) don't care the
-  option at all. **This option is disabled by default.**
+  option at all. *This option is disabled by default.*
 
 Loots settings:
 
@@ -185,7 +185,7 @@ Block coverage:
   [Basalt](https://minecraft.fandom.com/wiki/Basalt),
   [Diorite](https://minecraft.fandom.com/wiki/Diorite), and
   [Tuff](https://minecraft.fandom.com/wiki/Tuff). These require pickaxes to
-  quick-mine. **This option is disabled by default.**
+  quick-mine. *This option is disabled by default.*
 * **Uncommon rocks such as Blackstone, Calcite, and Magma Block**: Enable
   quick-mining for
   [Blackstone](https://minecraft.fandom.com/wiki/Blackstone), [Block of
@@ -193,11 +193,11 @@ Block coverage:
   [Calcite](https://minecraft.fandom.com/wiki/Calcite), [Dripstone
   Block](https://minecraft.fandom.com/wiki/Dripstone_Block), and [Magma
   Block](https://minecraft.fandom.com/wiki/Magma_Block). These require
-  pickaxes to quick-mine. **This option is disabled by default.**
+  pickaxes to quick-mine. *This option is disabled by default.*
 * **Gravel, Sand, and Red Sand**: Enable quick-mining for
   [Gravel](https://minecraft.fandom.com/wiki/Gravel),
   [Sand](https://minecraft.fandom.com/wiki/Sand), and Red Sand. These
-  require shovels to quick-mine. **This option is disabled by default.**
+  require shovels to quick-mine. *This option is disabled by default.*
 * **Sculk Block, Catalyst, Sensor, Shrieker, and Vein**: Enable
   quick-mining for [Sculk](https://minecraft.fandom.com/wiki/Sculk), [Sculk
   Catalyst](https://minecraft.fandom.com/wiki/Sculk_Catalyst), [Sculk
