@@ -139,8 +139,9 @@ Block coverage:
 * **Logs, Woods, Stripped Logs, and Stripped Woods**: Enable quick-mining
   for [log-like blocks](https://minecraft.fandom.com/wiki/Log), including
   the [Nether fungus](https://minecraft.fandom.com/wiki/Huge_fungus)
-  variants. They require [axes](https://minecraft.fandom.com/wiki/Axe) to
-  quick-mine.
+  variants and [Mangrove
+  Roots](https://minecraft.fandom.com/wiki/Mangrove_Roots). These require
+  [axes](https://minecraft.fandom.com/wiki/Axe) to quick-mine.
 * **Mushroom Blocks and Stems**: Enable quick-mining for [Huge
   Mushrooms](https://minecraft.fandom.com/wiki/Huge_mushroom). They require
   axes to quick-mine.
