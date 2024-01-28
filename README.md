@@ -209,6 +209,11 @@ Block coverage:
   Sand](https://minecraft.fandom.com/wiki/Soul_Sand) and [Soul
   Soil](https://minecraft.fandom.com/wiki/Soul_Soil). These require shovels
   to quick-mine.
+* **Terracotta**: Enable quick-mining for
+  [Terracotta](https://minecraft.fandom.com/wiki/Terracotta), colored or
+  not, but not including [glazed
+  one](https://minecraft.fandom.com/wiki/Glazed_Terracotta). These require
+  pickaxes to quick-mine.
 * **Crimson and Warped Wart Blocks, and Shroomlight**: Enable quick-mining
   for [Nether Wart
   Block](https://minecraft.fandom.com/wiki/Nether_Wart_Block), Warped Wart
