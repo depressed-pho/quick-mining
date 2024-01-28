@@ -207,7 +207,7 @@ export class MinerThread extends Thread {
                 if (!this.#player.isValid)
                     return false;
 
-                const tool = this.#player.equipments.get(EquipmentSlot.Mainhand);
+                const tool = this.#player.equipment.get(EquipmentSlot.Mainhand);
                 if (tool && tool.durability) {
                     if (this.#playerPrefs.protection.abortBeforeNamedToolBreaks) {
                         if (tool.nameTag !== undefined && tool.durability.current <= 0)
@@ -220,11 +220,11 @@ export class MinerThread extends Thread {
                         // tools leaving scraps upon breaking, but there is
                         // currently no mechanism available for us to
                         // customise the behaviour.
-                        this.#player.equipments.delete(EquipmentSlot.Mainhand);
+                        this.#player.equipment.delete(EquipmentSlot.Mainhand);
                         toolWithstood = false;
                     }
                     else {
-                        this.#player.equipments.set(EquipmentSlot.Mainhand, tool);
+                        this.#player.equipment.set(EquipmentSlot.Mainhand, tool);
                     }
                 }
             }
@@ -279,7 +279,7 @@ export class MinerThread extends Thread {
                     // If the user has any equipped items that have Mending,
                     // consume the XP for repairing them.
                     const toMend: [EquipmentSlot, ItemStack][] = [];
-                    this.#player.equipments.forEach((item, slot) => {
+                    this.#player.equipment.forEach((item, slot) => {
                         if (item.enchantments.has("mending")) {
                             const dur = item.durability;
                             if (dur && dur.current < dur.maximum)
@@ -299,7 +299,7 @@ export class MinerThread extends Thread {
                             // XP is consumed in this case.
                             dur.current++;
                         }
-                        this.#player.equipments.set(slot, item);
+                        this.#player.equipment.set(slot, item);
 
                         if (dur.current >= dur.maximum)
                             // This tool is now fully repaired.

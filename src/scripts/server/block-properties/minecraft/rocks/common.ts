@@ -4,7 +4,7 @@ import { BlockProperties, blockProps } from "../../../block-properties.js";
 import { PlayerPrefs } from "../../../player-prefs.js";
 import { IgnoringState } from "../../mixins.js";
 
-/// Base class for non-stone common stone rocks.
+/// Base class for non-stone common rocks.
 abstract class CommonRockProperties extends BlockProperties {
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
         if (prefs.coverage.rocksCommon)
@@ -35,6 +35,15 @@ blockProps.addBlockProps(
 // Diorite
 blockProps.addBlockProps(
     "minecraft:diorite",
+    class extends CommonRockProperties {
+        public breakingSoundId(): string {
+            return "dig.stone";
+        }
+    });
+
+// Diorite
+blockProps.addBlockProps(
+    "minecraft:granite",
     class extends CommonRockProperties {
         public breakingSoundId(): string {
             return "dig.stone";

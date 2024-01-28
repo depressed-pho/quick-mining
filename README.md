@@ -28,12 +28,12 @@ others?
 4. **It collects items and XP orbs for you.** Items produced by mining
    blocks are directly placed in your inventory. The same goes for XP orbs,
    unless you have damaged *Mending* tools and armors.
-5. **It is customizable.** It has a configuration UI to let you customize
-   the behavior of the addon, such as when to enable quick-mining, what
-   kind of blocks should be quick-mined, and more.
+5. **It is customizable.** It comes with a configuration UI to let you
+   customize the behavior of the addon, such as when to enable
+   quick-mining, what kind of blocks should be quick-mined, and more.
 6. **It can coexist with other addons.** Modifying `player.json` is one of
    the greatest ways to make an addon incompatible with others. This addon
-   doesn't do anything like that.
+   doesn't do things like that.
 
 # Installation
 
@@ -59,7 +59,7 @@ with bare hand will not trigger quick-mining.
   mangrove logs or roots cuts the entire mangrove tree down, including moss
   carpets touching them.
 * **[Azalea leaves](https://minecraft.fandom.com/wiki/Azalea_tree)**:
-  Breaking azalea leaves (flowering or not) also breaks the other variants.
+  Breaking azalea leaves (flowering or not) also breaks the other variant.
 * **[Huge Mushrooms](https://minecraft.fandom.com/wiki/Huge_mushroom)**:
   Mining mushroom blocks (red or brown) also mines mushroom stems and vice
   versa.
@@ -103,7 +103,7 @@ Loots settings:
   entities](https://minecraft.fandom.com/wiki/Item_(entity)) at the same
   location as the player. [Experience
   orbs](https://minecraft.fandom.com/wiki/Experience) go directly into any
-  [Mending](https://minecraft.fandom.com/wiki/Mending) equipments until
+  [Mending](https://minecraft.fandom.com/wiki/Mending) equipment until
   they are fully repaired, and excess XP will go into the player.
 
 Quick-mining mode:
@@ -121,7 +121,7 @@ Block coverage:
   [Mud](https://minecraft.fandom.com/wiki/Mud), [Snow
   Block](https://minecraft.fandom.com/wiki/Snow_Block), and [Top
   Snow](https://minecraft.fandom.com/wiki/Snow). These require
-  [shovels](https://minecraft.fandom.com/wiki/Shovel).
+  [shovels](https://minecraft.fandom.com/wiki/Shovel) to quick-mine.
 * **Amethyst Buds and Clusters**: Enable quick-mining for [Amethyst
   Buds](https://minecraft.fandom.com/wiki/Amethyst_Cluster) of any size, as
   well as Amethyst Clusters. These require
@@ -162,7 +162,7 @@ Block coverage:
   Raw Iron](https://minecraft.fandom.com/wiki/Block_of_Raw_Iron). They
   require pickaxes of varying tiers. Note that [Gilded
   Blackstone](https://minecraft.fandom.com/wiki/Gilded_Blackstone) does not
-  count as ore and are not eligible for quick-mining.
+  count as ore and is not eligible for quick-mining.
 * **Plants and Crops**: Enable quick-mining for several plants and
   crops. Mining crops with a hoe does not consume its durability.
   * [Melon](https://minecraft.fandom.com/wiki/Melon) and
@@ -170,8 +170,8 @@ Block coverage:
     quick-mine.
   * [Nether Wart](https://minecraft.fandom.com/wiki/Nether_Wart) requires
     hoes to quick-mine, not sure if it's a plant though.
-  * [Grass and Fern](https://minecraft.fandom.com/wiki/Grass) require eiter
-    hoes or shears.
+  * [Grass and Fern](https://minecraft.fandom.com/wiki/Grass) require
+    either hoes or shears.
   * [Beetroot](https://minecraft.fandom.com/wiki/Beetroot),
     [Carrot](https://minecraft.fandom.com/wiki/Carrot),
     [Potato](https://minecraft.fandom.com/wiki/Potato), and
@@ -179,11 +179,13 @@ Block coverage:
   * [Glow Lichen](https://minecraft.fandom.com/wiki/Glow_Lichen) and
     [Vines](https://minecraft.fandom.com/wiki/Vines) require shears. Note
     that [Sculk Vein](https://minecraft.fandom.com/wiki/Sculk_Vein) does
-    not count as a plant.
+    not count as a plant, while Glow Lichen counts although lichens are
+    technically not plants.
 * **Non-stone common rocks such as Andesite, Basalt, and Tuff**: Enable
   quick-mining for [Andesite](https://minecraft.fandom.com/wiki/Andesite),
   [Basalt](https://minecraft.fandom.com/wiki/Basalt),
-  [Diorite](https://minecraft.fandom.com/wiki/Diorite), and
+  [Diorite](https://minecraft.fandom.com/wiki/Diorite),
+  [Granite](https://minecraft.fandom.com/wiki/Granite), and
   [Tuff](https://minecraft.fandom.com/wiki/Tuff). These require pickaxes to
   quick-mine. *This option is disabled by default.*
 * **Uncommon rocks such as Blackstone, Calcite, and Magma Block**: Enable
@@ -213,7 +215,7 @@ Block coverage:
   [Terracotta](https://minecraft.fandom.com/wiki/Terracotta), colored or
   not, but not including [glazed
   one](https://minecraft.fandom.com/wiki/Glazed_Terracotta). These require
-  pickaxes to quick-mine.
+  pickaxes to quick-mine. *This option is disabled by default.*
 * **Crimson and Warped Wart Blocks, and Shroomlight**: Enable quick-mining
   for [Nether Wart
   Block](https://minecraft.fandom.com/wiki/Nether_Wart_Block), Warped Wart
@@ -227,7 +229,7 @@ Players with operator privileges can also change worldwide settings by
 typing `;qmine admin` on the chat screen.
 
 * **Time budget for quick-mining in milliseconds per tick**: Setting this
-  to high values may speed up the process of quick-mining, but can cause
+  to higher values may speed up the process of quick-mining, but can cause
   severe server lags. MCBE addons are single-threaded, that is, addon
   scripts run on the same thread that ticks the server. This means addons
   cannot spend too much time in each game tick, so this addon measures the
@@ -252,7 +254,7 @@ typing `;qmine admin` on the chat screen.
   upper half with `minecraft:air` causes their lower half to break, and we
   cannot collect loots from their lower halves. The same goes for [tall
   flowers](https://minecraft.fandom.com/wiki/Flower).
-* The addon lets players mine many blocks without consuming their
+* The addon lets players mine blocks without consuming their
   [Hunger](https://minecraft.fandom.com/wiki/Hunger) value. This is because
   the scripting API is currently not capable of allowing addons to
   manipulate hunger. You might consider it overpowered but you have to live
