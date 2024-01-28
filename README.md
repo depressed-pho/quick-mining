@@ -73,11 +73,11 @@ Protection settings:
 * **Abort mining blocks when your *named* tool is about to break**: With
   this option enabled, quick-mining will abort or will not trigger when the
   durability of your tool is depleting. This only applies to *named* tools.
-* **Keep your ground blocks from getting quick-mined**: This option protects
-  blocks underneath the player from being quick-mined. Note it's not
-  perfect. The addon does not take account of the type of block you are
-  standing on, so you can still accidentally fall down if you are on
-  gravity-affected blocks such as sand, or ones that require supporting
+* **Keep your ground blocks from getting quick-mined**: This option
+  protects blocks underneath the player from being quick-mined. Note it's
+  not perfect. The addon does not take account of the type of block you are
+  standing on, so you can still accidentally fall down if you are on a
+  gravity-affected block such as sand, or one that requires supporting
   blocks like redstone repeater.
 * **Prevent you from accidentally breaking Budding Amethyst in Survival**:
   [Budding Amethyst](https://minecraft.fandom.com/wiki/Budding_Amethyst) is
