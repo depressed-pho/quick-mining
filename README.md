@@ -11,9 +11,9 @@ reaction.
 ![Screen shot of cutting trees down](doc/screenshot-00.jpg)
 ![Screen shot of mining coal vein](doc/screenshot-01.jpg)
 
-There are already many similar addons out there, and this is yet another
-one joining the party. Why do we need more? What makes it different from
-others?
+There are already plenty of similar addons out there, and this is yet
+another one joining the party. Why do we need more? What makes it different
+from others?
 
 1. **It respects tool enchantments.** Mining ores with *Fortune* pickaxes
    yields more. *Unbreaking* tools last longer. XP-producing blocks like
@@ -50,11 +50,11 @@ with bare hand will not trigger quick-mining.
 
 ## Special cases
 
-* **[Log-like blocks](https://minecraft.fandom.com/wiki/Log)**: Cutting
-  logs and woods (stripped or not) also breaks non-player-placed leaves
-  surrounding them. This is a fast simulation of decaying so your axe don't
-  lose durability for this, and its enchantments don't apply. If you want
-  to gather leaf blocks, break them with shears or a Silk Touch hoe.
+* **[Logs](https://minecraft.fandom.com/wiki/Log)**: Cutting non-stripped
+  logs also breaks non-player-placed leaves surrounding them. This is a
+  fast simulation of decaying so your axe don't lose durability for this,
+  and its enchantments don't apply. If you want to gather leaf blocks,
+  break them with shears or a Silk Touch hoe.
 * **[Mangrove trees](https://minecraft.fandom.com/wiki/Mangrove)**: Cutting
   mangrove logs or roots cuts the entire mangrove tree down, including moss
   carpets touching them.
@@ -143,12 +143,11 @@ Block coverage:
   [Leaves](https://minecraft.fandom.com/wiki/Leaves). They require either
   [Shears](https://minecraft.fandom.com/wiki/Shears) or
   [hoes](https://minecraft.fandom.com/wiki/Hoe).
-* **Logs, Woods, Stripped Logs, and Stripped Woods**: Enable quick-mining
-  for [log-like blocks](https://minecraft.fandom.com/wiki/Log), including
-  the [Nether fungus](https://minecraft.fandom.com/wiki/Huge_fungus)
-  variants and [Mangrove
-  Roots](https://minecraft.fandom.com/wiki/Mangrove_Roots). These require
-  [axes](https://minecraft.fandom.com/wiki/Axe) to quick-mine.
+* **Logs and Nether fungus stems**: Enable quick-mining for non-stripped
+  [Logs](https://minecraft.fandom.com/wiki/Log), including the [Nether
+  fungus](https://minecraft.fandom.com/wiki/Huge_fungus) variants and
+  [Mangrove Roots](https://minecraft.fandom.com/wiki/Mangrove_Roots). These
+  require [axes](https://minecraft.fandom.com/wiki/Axe) to quick-mine.
 * **Mushroom Blocks and Stems**: Enable quick-mining for [Huge
   Mushrooms](https://minecraft.fandom.com/wiki/Huge_mushroom). They require
   axes to quick-mine.

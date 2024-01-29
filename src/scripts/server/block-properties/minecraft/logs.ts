@@ -13,17 +13,8 @@ const LEAF_BLOCK_IDS = new Set([
     "minecraft:azalea_leaves_flowered",
 ]);
 
-const MANGROVE_LOG_IDS = new Set([
-    "minecraft:mangrove_log",
-    "minecraft:stripped_mangrove_log",
-    "minecraft:mangrove_wood",
-    "minecraft:stripped_mangrove_wood",
-]);
-
 // We consider two wood-like blocks be equivalent as long as their block
-// states match, except we ignore their pillar axis. It would be nicer to
-// ignore their strippedness too, but then we lose our ability to
-// automatically support custom trees added by addons.
+// states match, except we ignore their pillar axis.
 class LogLikeBlockProperties extends IgnoringState(BlockProperties, "pillar_axis") {
     public breakingSoundId(): string {
         return "dig.wood";
@@ -51,14 +42,12 @@ class LogLikeBlockProperties extends IgnoringState(BlockProperties, "pillar_axis
         // applied. While roots and carpets don't really decay, they can
         // still be broken with a bare hand and drop themselves, so it
         // would be nice to bonus-mine them as well.
-        if (origin.typeId === "minecraft:mangrove_roots" ||
-            MANGROVE_LOG_IDS.has(origin.typeId)) {
-
+        if (origin.typeId === "minecraft:mangrove_log" || origin.typeId === "minecraft:mangrove_roots") {
             switch (perm.typeId) {
+                case "minecraft:mangrove_log":
+                    return MiningWay.MineRegularly;
                 case "minecraft:mangrove_roots":
                     return MiningWay.MineRegularly;
-                case "minecraft:moss_carpet":
-                    return MiningWay.MineAsABonus;
                 case "minecraft:mangrove_propagule":
                     // FIXME: The wiki page
                     // (https://minecraft.fandom.com/wiki/Mangrove_Propagule)
@@ -67,20 +56,25 @@ class LogLikeBlockProperties extends IgnoringState(BlockProperties, "pillar_axis
                     // their loot table at the moment, therefore we cannot
                     // bonus-mine them.
                     return MiningWay.LeaveAlone;
+                case "minecraft:moss_carpet":
+                    return MiningWay.MineAsABonus;
                 default:
-                    // Ignore differences in woodness or strippedness. This
-                    // behaviour may be inconsistent with other logs but
-                    // mangroves are already handled specially.
-                    return MANGROVE_LOG_IDS.has(perm.typeId)
-                        ? MiningWay.MineRegularly
-                        : MiningWay.LeaveAlone;
+                    return MiningWay.LeaveAlone;
             }
         }
 
         return super.miningWay(origin, perm);
     }
 }
-blockProps.addTaggedProps("wood", LogLikeBlockProperties);
+
+blockProps.addTaggedProps("log", LogLikeBlockProperties);
+
+// These logs don't have the "log" tag. Weird.
+blockProps.addBlockProps("minecraft:cherry_log", LogLikeBlockProperties);
+blockProps.addBlockProps("minecraft:mangrove_log", LogLikeBlockProperties);
+blockProps.addBlockProps("minecraft:crimson_stem", LogLikeBlockProperties);
+blockProps.addBlockProps("minecraft:warped_stem", LogLikeBlockProperties);
+
 blockProps.addBlockProps(
     "minecraft:mangrove_roots",
     class extends LogLikeBlockProperties {
