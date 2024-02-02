@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.0.2 -- not released yet
+
+* Fixed a bug where mining crops with a hoe reduces its durability when it
+  shouldn't.
+
 ## 1.0.1 -- 2024-01-29
 
 * Fixed a bug where Granite was missing from the category of non-stone

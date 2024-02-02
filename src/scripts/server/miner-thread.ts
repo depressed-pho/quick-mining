@@ -196,14 +196,15 @@ export class MinerThread extends Thread {
             this.#playSound(props.breakingSoundId(perm), block.location);
 
             // Consume the durability unless the player is in creative.
-            if (!this.#isCreative) {
+            if (!this.#isCreative && props.consumesDurability(perm, this.#tool)) {
                 // The item stack this.#tool is only a snapshot of the tool
                 // the player used to initiate quick-mining. At this point
                 // they might have put it in a chest, handed it to another
                 // player, thrown it in lava, or whatever. So we have no
                 // choice but to just reduce the durability of the tool the
-                // player is currently holding in their main hand. What
-                // else can we do?
+                // player is currently holding in their main hand. Maybe we
+                // can lock the tool in inventory but then we would take a
+                // risk of permanently locking it in case of failure.
                 if (!this.#player.isValid)
                     return false;
 
