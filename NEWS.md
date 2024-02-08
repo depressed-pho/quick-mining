@@ -1,6 +1,6 @@
 # Release notes
 
-## 1.0.2 -- not released yet
+## 1.1.0 -- 2024-02-08
 
 * Updated the addon for Minecraft Bedrock 1.20.60.
 * Added a category for dirt-like blocks, which aren't quick-mined by
