@@ -127,6 +127,16 @@ Block coverage:
   well as Amethyst Clusters. These require
   [pickaxes](https://minecraft.fandom.com/wiki/Pickaxe) with [Silk
   Touch](https://minecraft.fandom.com/wiki/Silk_Touch).
+* **Dirt, Grass Block, and their variants**: Enable quick-mining for
+  [Dirt](https://minecraft.fandom.com/wiki/Dirt), [Coarse
+  Dirt](https://minecraft.fandom.com/wiki/Coarse_Dirt), [Dirt
+  Path](https://minecraft.fandom.com/wiki/Dirt_Path),
+  [Farmland](https://minecraft.fandom.com/wiki/Farmland), [Grass
+  Block](https://minecraft.fandom.com/wiki/Grass_Block),
+  [Mycelium](https://minecraft.fandom.com/wiki/Mycelium),
+  [Podzol](https://minecraft.fandom.com/wiki/Podzol), and [Rooted
+  Dirt](https://minecraft.fandom.com/wiki/Rooted_Dirt). Moisture level of
+  Farmland is ignored. *This option is disabled by default.*
 * **Glowstone and Sea Lantern**: Enable quick-mining for
   [Glowstone](https://minecraft.fandom.com/wiki/Glowstone) and [Sea
   Lantern](https://minecraft.fandom.com/wiki/Sea_Lantern). These require

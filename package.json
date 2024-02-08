@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "description": "Allow players to mine the entire ore veins, trees, and more",
   "scripts": {
+    "postinstall": "patch-package",
     "build": "cicada-build",
     "clean": "cicada-build clean",
     "distclean": "cicada-build distclean",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@protobuf-ts/plugin": "^2.9.3",
     "cicada-build": "github:depressed-pho/cicada-build",
+    "patch-package": "^8.0.0",
     "typescript": "^5.3.3"
   },
   "dependencies": {

@@ -20,6 +20,7 @@ const DEFAULTS: PlayerPrefs = {
     coverage: {
         clayLike:      true,
         crystals:      true,
+        dirtLike:      false,
         glowstoneLike: true,
         iceLike:       true,
         leaves:        true,

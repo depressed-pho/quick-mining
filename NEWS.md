@@ -2,6 +2,9 @@
 
 ## 1.0.2 -- not released yet
 
+* Updated the addon for Minecraft Bedrock 1.20.60.
+* Added a category for Dirt-like blocks, which aren't quick-mined by
+  default.
 * Fixed a bug where mining crops with a hoe reduces its durability when it
   shouldn't.
 

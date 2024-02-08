@@ -76,7 +76,7 @@ export class MinerThread extends Thread {
             this.#scan(loc);
 
             if (timer.elapsedMs >= worldPrefs.timeBudgetInMsPerTick) {
-                yield;
+                await null;
                 timer.reset();
             }
         }
@@ -95,7 +95,7 @@ export class MinerThread extends Thread {
                 if (timer.elapsedMs >= worldPrefs.timeBudgetInMsPerTick) {
                     this.#flushLoots();
                     this.#soundsPlayed.clear();
-                    yield;
+                    await null;
                     timer.reset();
                 }
             }

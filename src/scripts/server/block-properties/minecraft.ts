@@ -1,5 +1,6 @@
 import "./minecraft/clay.js";
 import "./minecraft/crystals.js";
+import "./minecraft/dirt.js";
 import "./minecraft/fungi.js";
 import "./minecraft/glowstone.js";
 import "./minecraft/ice.js";

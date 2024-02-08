@@ -19,6 +19,7 @@ const LOOTS = [
 const COVERAGE = [
     "clayLike",
     "crystals",
+    "dirtLike",
     "glowstoneLike",
     "iceLike",
     "leaves",

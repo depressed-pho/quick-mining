@@ -49,27 +49,59 @@ export interface IIsToolSuitable {
     isToolSuitable(perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs): boolean;
 }
 
-/// Mixin for blocks requiring a silk-touch tool to drop itself.
+/** Mixin for blocks that drop something other than the mined blocks
+ * themselves.
+ */
+export function Drops<T extends Constructor<BlockProperties>>(base: T, loot: LootPool|ItemStack) {
+    abstract class Drops extends base {
+        readonly #loots = new LootTable().always([
+            loot instanceof LootPool
+                            ? loot
+                            : new LootPool().entry(loot)
+        ]);
+
+        public override lootTable(): LootTable {
+            return this.#loots;
+        }
+    }
+    return Drops;
+}
+
+/** Mixin for blocks requiring a silk-touch tool to drop itself, and drop
+ * nothing otherwise.
+ */
 export function SilkTouchForDrop<T extends Constructor<BlockProperties>>(base: T) {
-    abstract class SilkTouchForDrop extends base {
+    return Fragile(base, new LootPool());
+}
+
+/** Combination of `SilkTouchForQuickMining` and `SilkTouchForDrop`. */
+export function SilkTouchRequired<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
+    return SilkTouchForQuickMining(SilkTouchForDrop(base));
+}
+
+/** Mixin for blocks that uses a different loot table when mined with a
+ * non-silk-touch tool. This is a generalisation of {@link
+ * SilkTouchForDrop}.
+ */
+export function Fragile<T extends Constructor<BlockProperties>>(base: T, degraded: LootPool|ItemStack) {
+    abstract class Fragile extends base {
         public override lootTable(perm: BlockPermutation): LootTable {
             const stack = perm.getItemStack(1);
             if (stack)
                 return new LootTable()
                     .when(
                         LootCondition.matchTool().enchantment("silk_touch"),
-                        [ new LootPool().entry(stack) ]); // 100% drop
+                        [ new LootPool().entry(stack) ]) // 100% drop
+                    .otherwise(
+                        [ degraded instanceof LootPool
+                            ? degraded
+                            : new LootPool().entry(degraded) ]); // 100% drop
             else
                 // No corresponding items exist for this block. Drop nothing.
                 return new LootTable();
         }
     }
-    return SilkTouchForDrop;
-}
-
-/** Combination of `SilkTouchForQuickMining` and `SilkTouchForDrop`. */
-export function SilkTouchRequired<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
-    return SilkTouchForQuickMining(SilkTouchForDrop(base));
+    return Fragile;
 }
 
 /// Mixin for blocks that yield experience when mined with a non-silk-touch tool.
