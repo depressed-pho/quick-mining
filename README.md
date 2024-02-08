@@ -161,6 +161,10 @@ Block coverage:
 * **Mushroom Blocks and Stems**: Enable quick-mining for [Huge
   Mushrooms](https://minecraft.fandom.com/wiki/Huge_mushroom). They require
   axes to quick-mine.
+* **Netherrack, Crimson and Warped Nylium**: Enable quick-mining for
+  [Netherrack](https://minecraft.fandom.com/wiki/Netherrack) and
+  [Nylium](https://minecraft.fandom.com/wiki/Nylium). *This option is
+  disabled by default.*
 * **Obsidian and Crying Obsidian**: Enable quick-mining for
   [Obsidian](https://minecraft.fandom.com/wiki/Obsidian) and [Crying
   Obsidian](https://minecraft.fandom.com/wiki/Crying_Obsidian). These

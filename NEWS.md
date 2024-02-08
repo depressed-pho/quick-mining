@@ -7,6 +7,8 @@
   default.
 * Added a category for stone-like abundant rocks, which aren't quick-mined
   by default.
+* Added a category for netherrack-like blocks, which aren't quick-mined by
+  default.
 * Fixed a bug where mining crops with a hoe reduces its durability when it
   shouldn't.
 
