@@ -33,7 +33,9 @@ from others?
    quick-mining, what kind of blocks should be quick-mined, and more.
 6. **It can coexist with other addons.** Modifying `player.json` is one of
    the greatest ways to make an addon incompatible with others. This addon
-   doesn't do things like that.
+   doesn't do things like that. Custom tools added by other addons should
+   also work as long as they have vanilla-compatible [item
+   tags](https://learn.microsoft.com/en-us/minecraft/creator/reference/content/recipereference/examples/recipetaglist).
 
 # Installation
 
