@@ -28,6 +28,7 @@ const COVERAGE = [
     "obsidian",
     "ores",
     "plants",
+    "rocksAbundant",
     "rocksCommon",
     "rocksUncommon",
     "sandLike",

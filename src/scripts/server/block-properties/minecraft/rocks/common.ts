@@ -41,7 +41,7 @@ blockProps.addBlockProps(
         }
     });
 
-// Diorite
+// Granite
 blockProps.addBlockProps(
     "minecraft:granite",
     class extends CommonRockProperties {

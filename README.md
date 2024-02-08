@@ -190,6 +190,13 @@ Block coverage:
     that [Sculk Vein](https://minecraft.fandom.com/wiki/Sculk_Vein) does
     not count as a plant, while Glow Lichen counts although lichens are
     technically not plants.
+* **Stone, Cobblestone, Deepslate, and Cobbled Deepslate**: Enable
+  quick-mining for [Stone](https://minecraft.fandom.com/wiki/Stone),
+  [Cobblestone](https://minecraft.fandom.com/wiki/Cobblestone), [Mossy
+  Cobblestone](https://minecraft.fandom.com/wiki/Mossy_Cobblestone),
+  [Deepslate](https://minecraft.fandom.com/wiki/Deepslate), and [Cobbled
+  Deepslate](https://minecraft.fandom.com/wiki/Cobbled_Deepslate). *This
+  option is disabled by default.*
 * **Non-stone common rocks such as Andesite, Basalt, and Tuff**: Enable
   quick-mining for [Andesite](https://minecraft.fandom.com/wiki/Andesite),
   [Basalt](https://minecraft.fandom.com/wiki/Basalt),

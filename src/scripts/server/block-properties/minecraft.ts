@@ -9,6 +9,7 @@ import "./minecraft/logs.js";
 import "./minecraft/obsidian.js";
 import "./minecraft/ores.js";
 import "./minecraft/plants.js";
+import "./minecraft/rocks/abundant.js";
 import "./minecraft/rocks/common.js";
 import "./minecraft/rocks/uncommon.js";
 import "./minecraft/sand.js";

@@ -36,6 +36,7 @@ ui.quick-mining.prefs.coverage.mushrooms=Mushroom Blocks and Stems
 ui.quick-mining.prefs.coverage.obsidian=Obsidian and Crying Obsidian
 ui.quick-mining.prefs.coverage.ores=Ores
 ui.quick-mining.prefs.coverage.plants=Plants and Crops
+ui.quick-mining.prefs.coverage.rocksAbundant=Stone, Cobblestone, Deepslate, and Cobbled Deepslate
 ui.quick-mining.prefs.coverage.rocksCommon=Non-stone common rocks such as Andesite, Basalt, and Tuff
 ui.quick-mining.prefs.coverage.rocksUncommon=Uncommon rocks such as Blackstone, Calcite, and Magma Block
 ui.quick-mining.prefs.coverage.sandLike=Gravel, Sand, and Red Sand

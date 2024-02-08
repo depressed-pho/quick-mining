@@ -37,6 +37,7 @@ message Coverage {
   optional bool obsidian = 8;
   optional bool ores = 9;
   optional bool plants = 10;
+  optional bool rocksAbundant = 19;
   optional bool rocksCommon = 17;
   optional bool rocksUncommon = 14;
   optional bool sandLike = 11;

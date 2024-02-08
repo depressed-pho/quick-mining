@@ -29,6 +29,7 @@ const DEFAULTS: PlayerPrefs = {
         obsidian:      true,
         ores:          true,
         plants:        true,
+        rocksAbundant: false,
         rocksCommon:   false,
         rocksUncommon: false,
         sandLike:      false,
