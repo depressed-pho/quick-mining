@@ -1,5 +1,17 @@
 # Release notes
 
+## 1.1.1 -- 2024-02-28
+
+* Fixed an issue where quick-mining a large amount of blocks with a single
+  click could crash the game. The issue was caused by an undocumented
+  change in how scheduled promises are executed on Bedrock 1.20.60. Prior
+  to the change the game engine would postpone running scheduled tasks when
+  they were going to exceed the time budget (50 ms per tick), but now it
+  appears to run all the tasks before entering the next game tick, and can
+  trigger the watchdog when there are too many tasks even if they are small
+  individually. C'mon Mojang, was the change really intentional? It doesn't
+  make sense to me.
+
 ## 1.1.0 -- 2024-02-08
 
 * Updated the addon for Minecraft Bedrock 1.20.60.

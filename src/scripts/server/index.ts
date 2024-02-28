@@ -1,5 +1,5 @@
 import "cicada-lib/shims/console.js";
-import { setTimeout } from "cicada-lib/delay.js";
+import "cicada-lib/shims/timeout.js";
 import { GameMode, Player } from "cicada-lib/player.js";
 import { world } from "cicada-lib/world.js";
 import * as Fmt from "cicada-lib/fmt-code.js";
