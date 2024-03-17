@@ -5,8 +5,12 @@ import { PlayerPrefs } from "../../player-prefs.js";
 import { IgnoringState } from "../mixins.js";
 
 const LEAF_BLOCK_IDS = new Set([
-    "minecraft:leaves",
-    "minecraft:leaves2",
+    "minecraft:oak_leaves",
+    "minecraft:spruce_leaves",
+    "minecraft:birch_leaves",
+    "minecraft:jungle_leaves",
+    "minecraft:acacia_leaves",
+    "minecraft:dark_oak_leaves",
     "minecraft:mangrove_leaves",
     "minecraft:cherry_leaves",
     "minecraft:azalea_leaves",

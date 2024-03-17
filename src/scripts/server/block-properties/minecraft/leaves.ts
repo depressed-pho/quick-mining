@@ -11,86 +11,6 @@ const AZALEA_LEAVES_IDS = new Set([
     "minecraft:azalea_leaves_flowered",
 ]);
 
-// Oak leaves; they can drop apples.
-const OAK_LOOTS = lootOfLeaves(
-    new ItemStack("minecraft:leaves", {old_leaf_type: "oak"}),
-    [ new LootPool()
-        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
-        .entry(new ItemStack("minecraft:sapling", {sapling_type: "oak"})),
-      new LootPool()
-        .condition(LootCondition.randomChance(1/200, 1/180, 1/160, 1/120, 1/40))
-        .entry(new ItemStack("minecraft:apple"))
-    ]);
-
-// Spruce leaves
-const SPRUCE_LOOTS = lootOfLeaves(
-    new ItemStack("minecraft:leaves", {old_leaf_type: "spruce"}),
-    [ new LootPool()
-        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
-        .entry(new ItemStack("minecraft:sapling", {sapling_type: "spruce"}))
-    ]);
-
-// Birch leaves
-const BIRCH_LOOTS = lootOfLeaves(
-    new ItemStack("minecraft:leaves", {old_leaf_type: "birch"}),
-    [ new LootPool()
-        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
-        .entry(new ItemStack("minecraft:sapling", {sapling_type: "birch"}))
-    ]);
-
-// Jungle leaves; they have a much lower chance of dropping sapplings.
-const JUNGLE_LOOTS = lootOfLeaves(
-    new ItemStack("minecraft:leaves", {old_leaf_type: "jungle"}),
-    [ new LootPool()
-        .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
-        .entry(new ItemStack("minecraft:sapling", {sapling_type: "jungle"}))
-    ]);
-
-// Acacia leaves
-const ACACIA_LOOTS = lootOfLeaves(
-    new ItemStack("minecraft:leaves2", {new_leaf_type: "acacia"}),
-    [ new LootPool()
-        .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
-        .entry(new ItemStack("minecraft:sapling", {sapling_type: "acacia"}))
-    ]);
-
-// Dark oak leaves; they can drop apples.
-const DARK_OAK_LOOTS = lootOfLeaves(
-    new ItemStack("minecraft:leaves2", {new_leaf_type: "dark_oak"}),
-    [ new LootPool()
-        .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
-        .entry(new ItemStack("minecraft:sapling", {sapling_type: "dark_oak"})),
-      new LootPool()
-        .condition(LootCondition.randomChance(1/200, 1/180, 1/160, 1/120, 1/40))
-        .entry(new ItemStack("minecraft:apple"))
-    ]);
-
-// Mangrove leaves; they don't drop saplings.
-const MANGROVE_LOOTS = lootOfLeaves(
-    new ItemStack("minecraft:mangrove_leaves"), []);
-
-// Cherry leaves
-const CHERRY_LOOTS = lootOfLeaves(
-    new ItemStack("minecraft:cherry_leaves"),
-    [ new LootPool()
-        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
-        .entry(new ItemStack("minecraft:cherry_sapling"))
-    ]);
-
-// Azalea leaves
-const AZALEA_LOOTS = lootOfLeaves(
-    new ItemStack("minecraft:azalea_leaves"),
-    [ new LootPool()
-        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
-        .entry(new ItemStack("minecraft:azalea"))
-    ]);
-const FLOWERING_AZALEA_LOOTS = lootOfLeaves(
-    new ItemStack("minecraft:azalea_leaves_flowered"),
-    [ new LootPool()
-        .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
-        .entry(new ItemStack("minecraft:flowering_azalea"))
-    ]);
-
 function lootOfLeaves(leafBlock: ItemStack, extraPools: LootPool[]): LootTable {
     return new LootTable()
         .when(
@@ -147,68 +67,167 @@ function AzaleaLike<T extends Constructor<LeavesProperties>>(base: T) {
     return AzaleaLike;
 }
 
+// Oak leaves; they can drop apples.
 blockProps.addBlockProps(
-    "minecraft:leaves",
+    "minecraft:oak_leaves",
     class extends LeavesProperties {
-        public override lootTable(perm: BlockPermutation): LootTable {
-            const leafType = perm.states.get("old_leaf_type");
-            switch (leafType) {
-                case "oak":    return OAK_LOOTS;
-                case "spruce": return SPRUCE_LOOTS;
-                case "birch":  return BIRCH_LOOTS;
-                case "jungle": return JUNGLE_LOOTS;
-                default:
-                    throw new Error(`Unknown leaf type for \`minecraft:leaves': ${leafType}`);
-            }
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:oak_leaves"),
+            [ new LootPool()
+                .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+                .entry(new ItemStack("minecraft:sapling", {sapling_type: "oak"})),
+              new LootPool()
+                  .condition(LootCondition.randomChance(1/200, 1/180, 1/160, 1/120, 1/40))
+                  .entry(new ItemStack("minecraft:apple"))
+            ]);
+
+        public override lootTable(): LootTable {
+            return this.#loots;
         }
     });
 
+// Spruce leaves
 blockProps.addBlockProps(
-    "minecraft:leaves2",
+    "minecraft:spruce_leaves",
     class extends LeavesProperties {
-        public override lootTable(perm: BlockPermutation): LootTable {
-            const leafType = perm.states.get("new_leaf_type");
-            switch (leafType) {
-                case "acacia":   return ACACIA_LOOTS;
-                case "dark_oak": return DARK_OAK_LOOTS;
-                default:
-                    throw new Error(`Unknown leaf type for \`minecraft:leaves': ${leafType}`);
-            }
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:spruce_leaves"),
+            [ new LootPool()
+                .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+                .entry(new ItemStack("minecraft:sapling", {sapling_type: "spruce"}))
+            ]);
+
+        public override lootTable(): LootTable {
+            return this.#loots;
         }
     });
 
+// Birch leaves
+blockProps.addBlockProps(
+    "minecraft:birch_leaves",
+    class extends LeavesProperties {
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:birch_leaves"),
+            [ new LootPool()
+                .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+                .entry(new ItemStack("minecraft:sapling", {sapling_type: "birch"}))
+            ]);
+
+        public override lootTable(): LootTable {
+            return this.#loots;
+        }
+    });
+
+// Jungle leaves; they have a much lower chance of dropping sapplings.
+blockProps.addBlockProps(
+    "minecraft:jungle_leaves",
+    class extends LeavesProperties {
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:jungle_leaves"),
+            [ new LootPool()
+                .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
+                .entry(new ItemStack("minecraft:sapling", {sapling_type: "jungle"}))
+            ]);
+
+        public override lootTable(): LootTable {
+            return this.#loots;
+        }
+    });
+
+// Acacia leaves
+blockProps.addBlockProps(
+    "minecraft:acacia_leaves",
+    class extends LeavesProperties {
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:acacia_leaves"),
+            [ new LootPool()
+                .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
+                .entry(new ItemStack("minecraft:sapling", {sapling_type: "acacia"}))
+            ]);
+
+        public override lootTable(): LootTable {
+            return this.#loots;
+        }
+    });
+
+// Dark oak leaves; they can drop apples.
+blockProps.addBlockProps(
+    "minecraft:dark_oak_leaves",
+    class extends LeavesProperties {
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:dark_oak_leaves"),
+            [ new LootPool()
+                .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
+                .entry(new ItemStack("minecraft:sapling", {sapling_type: "dark_oak"})),
+              new LootPool()
+                  .condition(LootCondition.randomChance(1/200, 1/180, 1/160, 1/120, 1/40))
+                  .entry(new ItemStack("minecraft:apple"))
+            ]);
+
+        public override lootTable(): LootTable {
+            return this.#loots;
+        }
+    });
+
+// Mangrove leaves; they don't drop saplings.
 blockProps.addBlockProps(
     "minecraft:mangrove_leaves",
     class extends LeavesProperties {
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:mangrove_leaves"), []);
+
         public override lootTable(): LootTable {
-            return MANGROVE_LOOTS;
+            return this.#loots;
         }
     });
 
+// Cherry leaves
 blockProps.addBlockProps(
     "minecraft:cherry_leaves",
     class extends LeavesProperties {
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:cherry_leaves"),
+            [ new LootPool()
+                .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+                .entry(new ItemStack("minecraft:cherry_sapling"))
+            ]);
+
         public override breakingSoundId(): string {
             return "break.cherry_leaves";
         }
 
         public override lootTable(): LootTable {
-            return CHERRY_LOOTS;
+            return this.#loots;
         }
     });
 
+// Azalea leaves
 blockProps.addBlockProps(
     "minecraft:azalea_leaves",
     class extends AzaleaLike(LeavesProperties) {
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:azalea_leaves"),
+            [ new LootPool()
+                .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+                .entry(new ItemStack("minecraft:azalea"))
+            ]);
+
         public override lootTable(): LootTable {
-            return AZALEA_LOOTS;
+            return this.#loots;
         }
     });
 
 blockProps.addBlockProps(
     "minecraft:azalea_leaves_flowered",
     class extends AzaleaLike(LeavesProperties) {
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:azalea_leaves_flowered"),
+            [ new LootPool()
+                .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+                .entry(new ItemStack("minecraft:flowering_azalea"))
+            ]);
+
         public override lootTable(): LootTable {
-            return FLOWERING_AZALEA_LOOTS;
+            return this.#loots;
         }
     });

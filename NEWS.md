@@ -1,5 +1,11 @@
 # Release notes
 
+## 1.1.2 -- 2024-03-17
+
+* Update the addon for Minecraft Bedrock 1.20.70.
+* Fixed an issue where block breaking and item picking sound could also be
+  heard in other dimensions at the same coordinates.
+
 ## 1.1.1 -- 2024-02-28
 
 * Fixed an issue where quick-mining a large amount of blocks with a single

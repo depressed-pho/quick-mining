@@ -8,7 +8,6 @@ import { Location } from "cicada-lib/location.js";
 import { Player, GameMode } from "cicada-lib/player.js";
 import { Timer } from "cicada-lib/timer.js";
 import { Thread } from "cicada-lib/thread.js";
-import { world } from "cicada-lib/world.js";
 import { BlockProperties, MiningWay, blockProps } from "./block-properties.js";
 import { PlayerPrefs } from "./player-prefs.js";
 import { type PlayerSession } from "./player-session.js";
@@ -170,7 +169,7 @@ export class MinerThread extends Thread {
             return;
 
         if (at)
-            world.playSound(soundId, at);
+            this.#dimension.playSound(soundId, at);
         else
             this.#player.playSound(soundId);
 
@@ -216,7 +215,7 @@ export class MinerThread extends Thread {
                     }
 
                     if (tool.durability.damage(1)) {
-                        world.playSound("random.break", this.#player.location);
+                        this.#dimension.playSound("random.break", this.#player.location);
                         // THINKME: This would be wrong for things like
                         // tools leaving scraps upon breaking, but there is
                         // currently no mechanism available for us to
