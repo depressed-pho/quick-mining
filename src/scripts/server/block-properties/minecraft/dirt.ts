@@ -42,7 +42,7 @@ blockProps.addBlockProps(
 
 // Grass Block
 blockProps.addBlockProps(
-    "minecraft:grass",
+    "minecraft:grass_block",
     class extends Fragile(DirtLikeProperties, new ItemStack("minecraft:dirt")) {
         public override breakingSoundId(): string {
             return "dig.grass";
