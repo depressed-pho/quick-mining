@@ -2,7 +2,7 @@
 
 ## 1.1.2 -- 2024-03-17
 
-* Update the addon for Minecraft Bedrock 1.20.70.
+* Updated the addon for Minecraft Bedrock 1.20.70.
 * Fixed an issue where block breaking and item picking sound could also be
   heard in other dimensions at the same coordinates.
 
