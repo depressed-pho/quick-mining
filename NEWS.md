@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.1.3 -- not released yet
+
+* Updated the addon for Minecraft Bedrock 1.20.80.
+
 ## 1.1.2 -- 2024-03-17
 
 * Updated the addon for Minecraft Bedrock 1.20.70.

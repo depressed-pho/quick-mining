@@ -75,7 +75,7 @@ blockProps.addBlockProps(
             new ItemStack("minecraft:oak_leaves"),
             [ new LootPool()
                 .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
-                .entry(new ItemStack("minecraft:sapling", {sapling_type: "oak"})),
+                .entry(new ItemStack("minecraft:oak_sapling")),
               new LootPool()
                   .condition(LootCondition.randomChance(1/200, 1/180, 1/160, 1/120, 1/40))
                   .entry(new ItemStack("minecraft:apple"))
@@ -94,7 +94,7 @@ blockProps.addBlockProps(
             new ItemStack("minecraft:spruce_leaves"),
             [ new LootPool()
                 .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
-                .entry(new ItemStack("minecraft:sapling", {sapling_type: "spruce"}))
+                .entry(new ItemStack("minecraft:spruce_sapling"))
             ]);
 
         public override lootTable(): LootTable {
@@ -110,7 +110,7 @@ blockProps.addBlockProps(
             new ItemStack("minecraft:birch_leaves"),
             [ new LootPool()
                 .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
-                .entry(new ItemStack("minecraft:sapling", {sapling_type: "birch"}))
+                .entry(new ItemStack("minecraft:birch_sapling"))
             ]);
 
         public override lootTable(): LootTable {
@@ -126,7 +126,7 @@ blockProps.addBlockProps(
             new ItemStack("minecraft:jungle_leaves"),
             [ new LootPool()
                 .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
-                .entry(new ItemStack("minecraft:sapling", {sapling_type: "jungle"}))
+                .entry(new ItemStack("minecraft:jungle_sapling"))
             ]);
 
         public override lootTable(): LootTable {
@@ -142,7 +142,7 @@ blockProps.addBlockProps(
             new ItemStack("minecraft:acacia_leaves"),
             [ new LootPool()
                 .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
-                .entry(new ItemStack("minecraft:sapling", {sapling_type: "acacia"}))
+                .entry(new ItemStack("minecraft:acacia_sapling"))
             ]);
 
         public override lootTable(): LootTable {
@@ -158,7 +158,7 @@ blockProps.addBlockProps(
             new ItemStack("minecraft:dark_oak_leaves"),
             [ new LootPool()
                 .condition(LootCondition.randomChance(1/40, 1/36, 1/32, 1/24, 1/10))
-                .entry(new ItemStack("minecraft:sapling", {sapling_type: "dark_oak"})),
+                .entry(new ItemStack("minecraft:dark_oak_sapling")),
               new LootPool()
                   .condition(LootCondition.randomChance(1/200, 1/180, 1/160, 1/120, 1/40))
                   .entry(new ItemStack("minecraft:apple"))
