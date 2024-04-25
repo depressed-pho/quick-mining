@@ -52,20 +52,20 @@ with bare hand will not trigger quick-mining.
 
 ## Special cases
 
-* **[Logs](https://minecraft.fandom.com/wiki/Log)**: Cutting non-stripped
+* **[Logs](https://minecraft.wiki/w/Log)**: Cutting non-stripped
   logs also breaks non-player-placed leaves surrounding them. This is a
   fast simulation of decaying so your axe don't lose durability for this,
   and its enchantments don't apply. If you want to gather leaf blocks,
   break them with shears or a Silk Touch hoe.
-* **[Mangrove trees](https://minecraft.fandom.com/wiki/Mangrove)**: Cutting
+* **[Mangrove trees](https://minecraft.wiki/w/Mangrove)**: Cutting
   mangrove logs or roots cuts the entire mangrove tree down, including moss
   carpets touching them.
-* **[Azalea leaves](https://minecraft.fandom.com/wiki/Azalea_tree)**:
+* **[Azalea leaves](https://minecraft.wiki/w/Azalea_tree)**:
   Breaking azalea leaves (flowering or not) also breaks the other variant.
-* **[Huge Mushrooms](https://minecraft.fandom.com/wiki/Huge_mushroom)**:
+* **[Huge Mushrooms](https://minecraft.wiki/w/Huge_mushroom)**:
   Mining mushroom blocks (red or brown) also mines mushroom stems and vice
   versa.
-* **[Huge Nether Fungi](https://minecraft.fandom.com/wiki/Huge_fungus)**:
+* **[Huge Nether Fungi](https://minecraft.wiki/w/Huge_fungus)**:
   Mining nether wart blocks (warped or not) also mines surrounding
   shroomlights and vice versa.
 
@@ -89,12 +89,12 @@ Protection settings:
   gravity-affected block such as sand, or one that requires supporting
   blocks like redstone repeater.
 * **Prevent you from accidentally breaking Budding Amethyst in Survival**:
-  [Budding Amethyst](https://minecraft.fandom.com/wiki/Budding_Amethyst) is
+  [Budding Amethyst](https://minecraft.wiki/w/Budding_Amethyst) is
   not eligible for quick-mining in the first place, but this option also
   prevents you from accidentally mining them with or without any
   tools. This doesn't mean a perfect protection. You can still break them
-  with [TNT](https://minecraft.fandom.com/wiki/TNT), and
-  [Creepers](https://minecraft.fandom.com/wiki/Creeper) don't care the
+  with [TNT](https://minecraft.wiki/w/TNT), and
+  [Creepers](https://minecraft.wiki/w/Creeper) don't care the
   option at all. *This option is disabled by default.*
 
 Loots settings:
@@ -102,10 +102,10 @@ Loots settings:
 * **Automatically collect items and XP orbs**: Items produced by mining
   blocks are directly placed in your inventory as long as they
   fit. Overflowed items will be spawned as [item
-  entities](https://minecraft.fandom.com/wiki/Item_(entity)) at the same
+  entities](https://minecraft.wiki/w/Item_(entity)) at the same
   location as the player. [Experience
-  orbs](https://minecraft.fandom.com/wiki/Experience) go directly into any
-  [Mending](https://minecraft.fandom.com/wiki/Mending) equipment until
+  orbs](https://minecraft.wiki/w/Experience) go directly into any
+  [Mending](https://minecraft.wiki/w/Mending) equipment until
   they are fully repaired, and excess XP will go into the player.
 
 Quick-mining mode:
@@ -119,131 +119,131 @@ Quick-mining mode:
 Block coverage:
 
 * **Clay, Mud, and Snow**: Enable quick-mining for
-  [Clay](https://minecraft.fandom.com/wiki/Clay),
-  [Mud](https://minecraft.fandom.com/wiki/Mud), [Snow
-  Block](https://minecraft.fandom.com/wiki/Snow_Block), and [Top
-  Snow](https://minecraft.fandom.com/wiki/Snow). These require
-  [shovels](https://minecraft.fandom.com/wiki/Shovel) to quick-mine.
+  [Clay](https://minecraft.wiki/w/Clay),
+  [Mud](https://minecraft.wiki/w/Mud), [Snow
+  Block](https://minecraft.wiki/w/Snow_Block), and [Top
+  Snow](https://minecraft.wiki/w/Snow). These require
+  [shovels](https://minecraft.wiki/w/Shovel) to quick-mine.
 * **Amethyst Buds and Clusters**: Enable quick-mining for [Amethyst
-  Buds](https://minecraft.fandom.com/wiki/Amethyst_Cluster) of any size, as
+  Buds](https://minecraft.wiki/w/Amethyst_Cluster) of any size, as
   well as Amethyst Clusters. These require
-  [pickaxes](https://minecraft.fandom.com/wiki/Pickaxe) with [Silk
-  Touch](https://minecraft.fandom.com/wiki/Silk_Touch).
+  [pickaxes](https://minecraft.wiki/w/Pickaxe) with [Silk
+  Touch](https://minecraft.wiki/w/Silk_Touch).
 * **Dirt, Grass Block, and their variants**: Enable quick-mining for
-  [Dirt](https://minecraft.fandom.com/wiki/Dirt), [Coarse
-  Dirt](https://minecraft.fandom.com/wiki/Coarse_Dirt), [Dirt
-  Path](https://minecraft.fandom.com/wiki/Dirt_Path),
-  [Farmland](https://minecraft.fandom.com/wiki/Farmland), [Grass
-  Block](https://minecraft.fandom.com/wiki/Grass_Block),
-  [Mycelium](https://minecraft.fandom.com/wiki/Mycelium),
-  [Podzol](https://minecraft.fandom.com/wiki/Podzol), and [Rooted
-  Dirt](https://minecraft.fandom.com/wiki/Rooted_Dirt). Moisture level of
+  [Dirt](https://minecraft.wiki/w/Dirt), [Coarse
+  Dirt](https://minecraft.wiki/w/Coarse_Dirt), [Dirt
+  Path](https://minecraft.wiki/w/Dirt_Path),
+  [Farmland](https://minecraft.wiki/w/Farmland), [Grass
+  Block](https://minecraft.wiki/w/Grass_Block),
+  [Mycelium](https://minecraft.wiki/w/Mycelium),
+  [Podzol](https://minecraft.wiki/w/Podzol), and [Rooted
+  Dirt](https://minecraft.wiki/w/Rooted_Dirt). Moisture level of
   Farmland is ignored. *This option is disabled by default.*
 * **Glowstone and Sea Lantern**: Enable quick-mining for
-  [Glowstone](https://minecraft.fandom.com/wiki/Glowstone) and [Sea
-  Lantern](https://minecraft.fandom.com/wiki/Sea_Lantern). These require
+  [Glowstone](https://minecraft.wiki/w/Glowstone) and [Sea
+  Lantern](https://minecraft.wiki/w/Sea_Lantern). These require
   pickaxes.
 * **Ice, Packed Ice, and Blue Ice**: Enable quick-mining for
-  [Ice](https://minecraft.fandom.com/wiki/Ice), [Packed
-  Ice](https://minecraft.fandom.com/wiki/Packed_Ice), and [Blue
-  Ice](https://minecraft.fandom.com/wiki/Blue_Ice). Ice requires pickaxes
+  [Ice](https://minecraft.wiki/w/Ice), [Packed
+  Ice](https://minecraft.wiki/w/Packed_Ice), and [Blue
+  Ice](https://minecraft.wiki/w/Blue_Ice). Ice requires pickaxes
   to quick-mine, and the latter two additionally requires Silk
   Touch. Breaking ice with a non-silk-touch tool will turn it into
-  [Water](https://minecraft.fandom.com/wiki/Water) if certain conditions
+  [Water](https://minecraft.wiki/w/Water) if certain conditions
   are met.
 * **Leaves**: Enable quick-mining for
-  [Leaves](https://minecraft.fandom.com/wiki/Leaves). They require either
-  [Shears](https://minecraft.fandom.com/wiki/Shears) or
-  [hoes](https://minecraft.fandom.com/wiki/Hoe).
+  [Leaves](https://minecraft.wiki/w/Leaves). They require either
+  [Shears](https://minecraft.wiki/w/Shears) or
+  [hoes](https://minecraft.wiki/w/Hoe).
 * **Logs and Nether fungus stems**: Enable quick-mining for non-stripped
-  [Logs](https://minecraft.fandom.com/wiki/Log), including the [Nether
-  fungus](https://minecraft.fandom.com/wiki/Huge_fungus) variants and
-  [Mangrove Roots](https://minecraft.fandom.com/wiki/Mangrove_Roots). These
-  require [axes](https://minecraft.fandom.com/wiki/Axe) to quick-mine.
+  [Logs](https://minecraft.wiki/w/Log), including the [Nether
+  fungus](https://minecraft.wiki/w/Huge_fungus) variants and
+  [Mangrove Roots](https://minecraft.wiki/w/Mangrove_Roots). These
+  require [axes](https://minecraft.wiki/w/Axe) to quick-mine.
 * **Mushroom Blocks and Stems**: Enable quick-mining for [Huge
-  Mushrooms](https://minecraft.fandom.com/wiki/Huge_mushroom). They require
+  Mushrooms](https://minecraft.wiki/w/Huge_mushroom). They require
   axes to quick-mine.
 * **Netherrack, Crimson and Warped Nylium**: Enable quick-mining for
-  [Netherrack](https://minecraft.fandom.com/wiki/Netherrack) and
-  [Nylium](https://minecraft.fandom.com/wiki/Nylium). *This option is
+  [Netherrack](https://minecraft.wiki/w/Netherrack) and
+  [Nylium](https://minecraft.wiki/w/Nylium). *This option is
   disabled by default.*
 * **Obsidian and Crying Obsidian**: Enable quick-mining for
-  [Obsidian](https://minecraft.fandom.com/wiki/Obsidian) and [Crying
-  Obsidian](https://minecraft.fandom.com/wiki/Crying_Obsidian). These
+  [Obsidian](https://minecraft.wiki/w/Obsidian) and [Crying
+  Obsidian](https://minecraft.wiki/w/Crying_Obsidian). These
   require pickaxes of at least diamond-tier.
 * **Ores**: Enable quick-mining for [Ore
-  blocks](https://minecraft.fandom.com/wiki/Ore) as well as [Ancient
-  Debris](https://minecraft.fandom.com/wiki/Ancient_Debris) and [Block of
-  Raw Iron](https://minecraft.fandom.com/wiki/Block_of_Raw_Iron). They
+  blocks](https://minecraft.wiki/w/Ore) as well as [Ancient
+  Debris](https://minecraft.wiki/w/Ancient_Debris) and [Block of
+  Raw Iron](https://minecraft.wiki/w/Block_of_Raw_Iron). They
   require pickaxes of varying tiers. Note that [Gilded
-  Blackstone](https://minecraft.fandom.com/wiki/Gilded_Blackstone) does not
+  Blackstone](https://minecraft.wiki/w/Gilded_Blackstone) does not
   count as ore and is not eligible for quick-mining.
 * **Plants and Crops**: Enable quick-mining for several plants and
   crops. Mining crops with a hoe does not consume its durability.
   * [Cocoa pods](https://minecraft.wiki/w/Cocoa_Beans),
-    [Melon](https://minecraft.fandom.com/wiki/Melon), and
-    [Pumpkin](https://minecraft.fandom.com/wiki/Pumpkin) require axes to
+    [Melon](https://minecraft.wiki/w/Melon), and
+    [Pumpkin](https://minecraft.wiki/w/Pumpkin) require axes to
     quick-mine.
-  * [Nether Wart](https://minecraft.fandom.com/wiki/Nether_Wart) requires
+  * [Nether Wart](https://minecraft.wiki/w/Nether_Wart) requires
     hoes to quick-mine, not sure if it's a plant though.
-  * [Grass and Fern](https://minecraft.fandom.com/wiki/Grass) require
+  * [Grass and Fern](https://minecraft.wiki/w/Grass) require
     either hoes or shears.
-  * [Beetroot](https://minecraft.fandom.com/wiki/Beetroot),
-    [Carrot](https://minecraft.fandom.com/wiki/Carrot),
-    [Potato](https://minecraft.fandom.com/wiki/Potato), and
-    [Wheat](https://minecraft.fandom.com/wiki/Wheat) require hoes.
-  * [Glow Lichen](https://minecraft.fandom.com/wiki/Glow_Lichen) and
-    [Vines](https://minecraft.fandom.com/wiki/Vines) require shears. Note
-    that [Sculk Vein](https://minecraft.fandom.com/wiki/Sculk_Vein) does
+  * [Beetroot](https://minecraft.wiki/w/Beetroot),
+    [Carrot](https://minecraft.wiki/w/Carrot),
+    [Potato](https://minecraft.wiki/w/Potato), and
+    [Wheat](https://minecraft.wiki/w/Wheat) require hoes.
+  * [Glow Lichen](https://minecraft.wiki/w/Glow_Lichen) and
+    [Vines](https://minecraft.wiki/w/Vines) require shears. Note
+    that [Sculk Vein](https://minecraft.wiki/w/Sculk_Vein) does
     not count as a plant, while Glow Lichen counts although lichens are
     technically not plants.
 * **Stone, Cobblestone, Deepslate, and Cobbled Deepslate**: Enable
-  quick-mining for [Stone](https://minecraft.fandom.com/wiki/Stone),
-  [Cobblestone](https://minecraft.fandom.com/wiki/Cobblestone), [Mossy
-  Cobblestone](https://minecraft.fandom.com/wiki/Mossy_Cobblestone),
-  [Deepslate](https://minecraft.fandom.com/wiki/Deepslate), and [Cobbled
-  Deepslate](https://minecraft.fandom.com/wiki/Cobbled_Deepslate). *This
+  quick-mining for [Stone](https://minecraft.wiki/w/Stone),
+  [Cobblestone](https://minecraft.wiki/w/Cobblestone), [Mossy
+  Cobblestone](https://minecraft.wiki/w/Mossy_Cobblestone),
+  [Deepslate](https://minecraft.wiki/w/Deepslate), and [Cobbled
+  Deepslate](https://minecraft.wiki/w/Cobbled_Deepslate). *This
   option is disabled by default.*
 * **Non-stone common rocks such as Andesite, Basalt, and Tuff**: Enable
-  quick-mining for [Andesite](https://minecraft.fandom.com/wiki/Andesite),
-  [Basalt](https://minecraft.fandom.com/wiki/Basalt),
-  [Diorite](https://minecraft.fandom.com/wiki/Diorite),
-  [Granite](https://minecraft.fandom.com/wiki/Granite), and
-  [Tuff](https://minecraft.fandom.com/wiki/Tuff). These require pickaxes to
+  quick-mining for [Andesite](https://minecraft.wiki/w/Andesite),
+  [Basalt](https://minecraft.wiki/w/Basalt),
+  [Diorite](https://minecraft.wiki/w/Diorite),
+  [Granite](https://minecraft.wiki/w/Granite), and
+  [Tuff](https://minecraft.wiki/w/Tuff). These require pickaxes to
   quick-mine. *This option is disabled by default.*
 * **Uncommon rocks such as Blackstone, Calcite, and Magma Block**: Enable
   quick-mining for
-  [Blackstone](https://minecraft.fandom.com/wiki/Blackstone), [Block of
-  Amethyst](https://minecraft.fandom.com/wiki/Block_of_Amethyst),
-  [Calcite](https://minecraft.fandom.com/wiki/Calcite), [Dripstone
-  Block](https://minecraft.fandom.com/wiki/Dripstone_Block), and [Magma
-  Block](https://minecraft.fandom.com/wiki/Magma_Block). These require
+  [Blackstone](https://minecraft.wiki/w/Blackstone), [Block of
+  Amethyst](https://minecraft.wiki/w/Block_of_Amethyst),
+  [Calcite](https://minecraft.wiki/w/Calcite), [Dripstone
+  Block](https://minecraft.wiki/w/Dripstone_Block), and [Magma
+  Block](https://minecraft.wiki/w/Magma_Block). These require
   pickaxes to quick-mine. *This option is disabled by default.*
 * **Gravel, Sand, and Red Sand**: Enable quick-mining for
-  [Gravel](https://minecraft.fandom.com/wiki/Gravel),
-  [Sand](https://minecraft.fandom.com/wiki/Sand), and Red Sand. These
+  [Gravel](https://minecraft.wiki/w/Gravel),
+  [Sand](https://minecraft.wiki/w/Sand), and Red Sand. These
   require shovels to quick-mine. *This option is disabled by default.*
 * **Sculk Block, Catalyst, Sensor, Shrieker, and Vein**: Enable
-  quick-mining for [Sculk](https://minecraft.fandom.com/wiki/Sculk), [Sculk
-  Catalyst](https://minecraft.fandom.com/wiki/Sculk_Catalyst), [Sculk
-  Sensor](https://minecraft.fandom.com/wiki/Sculk_Sensor), [Sculk
-  Shrieker](https://minecraft.fandom.com/wiki/Sculk_Shrieker), and [Sculk
-  Vein](https://minecraft.fandom.com/wiki/Sculk_Vein). These require hoes
+  quick-mining for [Sculk](https://minecraft.wiki/w/Sculk), [Sculk
+  Catalyst](https://minecraft.wiki/w/Sculk_Catalyst), [Sculk
+  Sensor](https://minecraft.wiki/w/Sculk_Sensor), [Sculk
+  Shrieker](https://minecraft.wiki/w/Sculk_Shrieker), and [Sculk
+  Vein](https://minecraft.wiki/w/Sculk_Vein). These require hoes
   to quick-mine.
 * **Soul Sand and Soul Soil**: Enable quick-mining for [Soul
-  Sand](https://minecraft.fandom.com/wiki/Soul_Sand) and [Soul
-  Soil](https://minecraft.fandom.com/wiki/Soul_Soil). These require shovels
+  Sand](https://minecraft.wiki/w/Soul_Sand) and [Soul
+  Soil](https://minecraft.wiki/w/Soul_Soil). These require shovels
   to quick-mine.
 * **Terracotta**: Enable quick-mining for
-  [Terracotta](https://minecraft.fandom.com/wiki/Terracotta), colored or
+  [Terracotta](https://minecraft.wiki/w/Terracotta), colored or
   not, but not including [glazed
-  one](https://minecraft.fandom.com/wiki/Glazed_Terracotta). These require
+  one](https://minecraft.wiki/w/Glazed_Terracotta). These require
   pickaxes to quick-mine. *This option is disabled by default.*
 * **Crimson and Warped Wart Blocks, and Shroomlight**: Enable quick-mining
   for [Nether Wart
-  Block](https://minecraft.fandom.com/wiki/Nether_Wart_Block), Warped Wart
+  Block](https://minecraft.wiki/w/Nether_Wart_Block), Warped Wart
   Block, and
-  [Shroomlight](https://minecraft.fandom.com/wiki/Shroomlight). These
+  [Shroomlight](https://minecraft.wiki/w/Shroomlight). These
   require hoes to quick-mine.
 
 ## For server admins
@@ -272,13 +272,13 @@ typing `;qmine admin` on the chat screen.
 * Quick-mining huge mushrooms with a non-silk-touch axe yields too many
   mushrooms. This happens because we don't know their drop rate accurately.
 * Tall variants of [Grass and
-  Fern](https://minecraft.fandom.com/wiki/Grass) cannot be quick-mined due
+  Fern](https://minecraft.wiki/w/Grass) cannot be quick-mined due
   to the way how they are implemented in the game. That is, replacing their
   upper half with `minecraft:air` causes their lower half to break, and we
   cannot collect loots from their lower halves. The same goes for [tall
-  flowers](https://minecraft.fandom.com/wiki/Flower).
+  flowers](https://minecraft.wiki/w/Flower).
 * The addon lets players mine blocks without consuming their
-  [Hunger](https://minecraft.fandom.com/wiki/Hunger) value. This is because
+  [Hunger](https://minecraft.wiki/w/Hunger) value. This is because
   the scripting API is currently not capable of allowing addons to
   manipulate hunger. You might consider it overpowered but you have to live
   with that.

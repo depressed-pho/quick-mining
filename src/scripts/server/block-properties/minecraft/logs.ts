@@ -54,7 +54,7 @@ class LogLikeBlockProperties extends IgnoringState(BlockProperties, "pillar_axis
                     return MiningWay.MineRegularly;
                 case "minecraft:mangrove_propagule":
                     // FIXME: The wiki page
-                    // (https://minecraft.fandom.com/wiki/Mangrove_Propagule)
+                    // (https://minecraft.wiki/w/Mangrove_Propagule)
                     // doesn't tell us the probability of age=4 hanging
                     // propagules dropping themselves. We cannot simulate
                     // their loot table at the moment, therefore we cannot

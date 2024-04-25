@@ -19,7 +19,7 @@ const BROWN_MUSHROOM_BLOCK_LOOTS =
 const RED_MUSHROOM_STEM_LOOTS =
     lootOfShrooms(
         // This isn't an error. See
-        // https://minecraft.fandom.com/wiki/Mushroom_Block
+        // https://minecraft.wiki/w/Mushroom_Block
         "minecraft:brown_mushroom_block",
         new ItemStack("minecraft:red_mushroom"),
         true);

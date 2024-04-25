@@ -304,7 +304,7 @@ export abstract class LootEntry {
         return new LootEntry.Item(stack);
     }
 
-    /// https://minecraft.fandom.com/wiki/Fortune#Grass,_ferns_and_large_flowers%E2%80%8C[Bedrock_Edition_only]
+    /// https://minecraft.wiki/w/Fortune#Grass,_ferns_and_large_flowers%E2%80%8C[Bedrock_Edition_only]
     public static grassLike(seed: ItemStack): LootEntry.GrassLike {
         return new LootEntry.GrassLike(seed);
     }
@@ -367,7 +367,7 @@ export namespace LootEntry {
                 return new ItemBag();
             }
             else if (this.#isMultiplicative) {
-                // https://minecraft.fandom.com/wiki/Fortune#Ore
+                // https://minecraft.wiki/w/Fortune#Ore
                 const fortune = tool?.enchantments.get("fortune") ?? 0;
                 const dice    = randomIntInClosedInterval(1, fortune + 2);
                 const mult    = Math.max(1, dice - 1);

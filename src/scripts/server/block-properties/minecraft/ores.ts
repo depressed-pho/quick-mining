@@ -105,7 +105,7 @@ blockProps.addBlockProps(
         new ItemStack("minecraft:raw_copper")) {});
 
 // Diamond
-// https://minecraft.fandom.com/wiki/Experience#Experience_amounts_by_source
+// https://minecraft.wiki/w/Experience#Experience_amounts_by_source
 blockProps.addBlockProps(
     "minecraft:diamond_ore",
     class extends MultiplicativeDrops(
@@ -235,7 +235,7 @@ blockProps.addBlockProps(
     });
 
 // Redstone
-// https://minecraft.fandom.com/wiki/Experience#Experience_amounts_by_source
+// https://minecraft.wiki/w/Experience#Experience_amounts_by_source
 blockProps.addBlockProps(
     "minecraft:redstone_ore",
     class extends DiscreteUniformDrops(
