@@ -180,7 +180,8 @@ Block coverage:
   count as ore and is not eligible for quick-mining.
 * **Plants and Crops**: Enable quick-mining for several plants and
   crops. Mining crops with a hoe does not consume its durability.
-  * [Melon](https://minecraft.fandom.com/wiki/Melon) and
+  * [Cocoa pods](https://minecraft.wiki/w/Cocoa_Beans),
+    [Melon](https://minecraft.fandom.com/wiki/Melon), and
     [Pumpkin](https://minecraft.fandom.com/wiki/Pumpkin) require axes to
     quick-mine.
   * [Nether Wart](https://minecraft.fandom.com/wiki/Nether_Wart) requires

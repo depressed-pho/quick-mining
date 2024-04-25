@@ -4,7 +4,8 @@ import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, blockProps } from "../../block-properties.js";
 import { LootTable, LootCondition, LootEntry, LootPool } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
-import { DiscreteUniformDrops, IIsToolSuitable, IgnoringState } from "../mixins.js";
+import { DiscreteUniformDrops, IIsToolSuitable, IgnoringState
+       } from "../mixins.js";
 
 /// Base class for all plants.
 abstract class PlantProperties extends BlockProperties {
@@ -161,6 +162,32 @@ function VineLike<T extends Constructor<BlockProperties>>(base: T) {
     // Ignore the difference in direction bits.
     return IgnoringState(base, "vine_direction_bits");
 }
+
+// Cocoa Beans
+blockProps.addBlockProps(
+    "minecraft:cocoa",
+    class extends IgnoringState(
+        MinedWithAxe(PlantProperties), "direction") {
+
+        readonly #immatureLoots = new LootTable()
+            .always(
+                // Only one bean.
+                [ new LootPool().entry(new ItemStack("minecraft:cocoa_beans", 1))
+                ]);
+
+        readonly #matureLoots = new LootTable()
+            .always(
+                // Always 3 beans regardless of Fortune.
+                [ new LootPool().entry(new ItemStack("minecraft:cocoa_beans", 3))
+                ]);
+
+        public override lootTable(perm: BlockPermutation): LootTable {
+            if ((perm.states.get("age") ?? 2) === 2)
+                return this.#matureLoots;
+            else
+                return this.#immatureLoots;
+        }
+    });
 
 // Melon
 blockProps.addBlockProps(
