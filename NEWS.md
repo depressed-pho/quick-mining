@@ -1,12 +1,12 @@
 # Release notes
 
-## 1.1.3 -- not released yet
+## 1.1.3 -- 2024-04-25
 
 * Updated the addon for Minecraft Bedrock 1.20.80.
 * Cocoa pods can now be quick-mined too. It's under the "Plants and Crops"
   category. They require axes to quick-mine. Immature pods yield 1 bean,
-  and mature ones yield 3 beans. Tool enchantments do not affect them at
-  all.
+  and mature ones yield 3 beans. Neither RNG nor tool enchantments affect
+  their drop rate.
 
 ## 1.1.2 -- 2024-03-17
 
