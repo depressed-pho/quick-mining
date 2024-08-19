@@ -264,8 +264,11 @@ export class MinerThread extends Thread {
                 for (const stack of this.#loots) {
                     const leftover = this.#player.inventory.add(stack);
                     if (leftover) {
+                        // We should still play the "pop" sound if at least
+                        // a part of the stack could be picked up.
                         if (leftover.amount < stack.amount)
                             this.#playSound("random.pop", this.#player.location);
+
                         // Items that didn't fit in their inventory should
                         // be spawned as item entities.
                         this.#player.dimension.spawnItem(leftover, this.#player.location);

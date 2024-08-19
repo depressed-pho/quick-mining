@@ -269,8 +269,6 @@ typing `;qmine admin` on the chat screen.
 * Hanging mangrove propagules aren't auto-collected. This is currently
   unfixable because their drop rate is not known to the community and thus
   we cannot simulate its loot table.
-* Quick-mining huge mushrooms with a non-silk-touch axe yields too many
-  mushrooms. This happens because we don't know their drop rate accurately.
 * Tall variants of [Grass and
   Fern](https://minecraft.wiki/w/Grass) cannot be quick-mined due
   to the way how they are implemented in the game. That is, replacing their

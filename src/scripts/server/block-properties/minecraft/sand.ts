@@ -35,9 +35,18 @@ blockProps.addBlockProps(
         }
     });
 
-// Sand and Red Sand: both share the same block ID.
+// Sand
 blockProps.addBlockProps(
     "minecraft:sand",
+    class extends SandLikeProperties {
+        public breakingSoundId(): string {
+            return "dig.sand";
+        }
+    });
+
+// Red Sand
+blockProps.addBlockProps(
+    "minecraft:red_sand",
     class extends SandLikeProperties {
         public breakingSoundId(): string {
             return "dig.sand";

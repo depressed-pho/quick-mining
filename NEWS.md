@@ -1,5 +1,15 @@
 # Release notes
 
+## 1.1.5 -- 2024-08-19
+
+* Updated the addon for Minecraft Bedrock 1.21.21.
+* Corrected the dropping rate of mushrooms from Mushroom Blocks. Previously
+  there was a 33.33% chance of dropping 0, 1, or 2 mushrooms
+  respectively. Now they have a chance of 77.77% of dropping nothing, and
+  respectively a chance of 11.11% to drop 1 or 2 mushrooms.
+* Mushroom Stem Blocks no longer drop anything when mined with a
+  non-silk-touch axe.
+
 ## 1.1.4 -- 2024-06-21
 
 * Updated the addon for Minecraft Bedrock 1.21.0.

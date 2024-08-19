@@ -18,9 +18,13 @@ abstract class DirtLikeProperties extends BlockProperties {
     }
 }
 
-// Dirt and Coarse Dirt: these share the same block ID.
+// Dirt
 blockProps.addBlockProps(
     "minecraft:dirt", DirtLikeProperties);
+
+// Coarse Dirt
+blockProps.addBlockProps(
+    "minecraft:coarse_dirt", DirtLikeProperties);
 
 // Dirt Path
 blockProps.addBlockProps(

@@ -1,13 +1,13 @@
 import { BlockPermutation } from "cicada-lib/block.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, MiningWay, blockProps } from "../../block-properties.js";
-import { LootCondition, LootTable, LootPool } from "../../loot-table.js";
+import { LootCondition, LootEntry, LootTable, LootPool } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
 
 const BROWN_MUSHROOM_STEM_LOOTS =
     lootOfShrooms(
         "minecraft:brown_mushroom_block",
-        new ItemStack("minecraft:brown_mushroom"),
+        null,
         true);
 
 const BROWN_MUSHROOM_BLOCK_LOOTS =
@@ -21,7 +21,7 @@ const RED_MUSHROOM_STEM_LOOTS =
         // This isn't an error. See
         // https://minecraft.wiki/w/Mushroom_Block
         "minecraft:brown_mushroom_block",
-        new ItemStack("minecraft:red_mushroom"),
+        null,
         true);
 
 const RED_MUSHROOM_BLOCK_LOOTS =
@@ -30,7 +30,7 @@ const RED_MUSHROOM_BLOCK_LOOTS =
         new ItemStack("minecraft:red_mushroom"),
         false);
 
-function lootOfShrooms(blockId: string, item: ItemStack, isStem: boolean): LootTable {
+function lootOfShrooms(blockId: string, item: ItemStack|null, isStem: boolean): LootTable {
     return new LootTable()
         .when(
             LootCondition.matchTool().enchantment("silk_touch"),
@@ -39,13 +39,7 @@ function lootOfShrooms(blockId: string, item: ItemStack, isStem: boolean): LootT
                     new ItemStack(blockId, { huge_mushroom_bits: isStem ? 15 : 14 }))
             ])
         .otherwise(
-            [ new LootPool()
-                // FIXME: This is most likely incorrect but we don't know
-                // the exact formula. Someone please analyze the actual
-                // code.
-                .rolls(0, 2)
-                .entry(item)
-            ]);
+            item ? [ new LootPool().entry(LootEntry.shroomLike(item)) ] : []);
 }
 
 // A class factory for mushroom blocks.

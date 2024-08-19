@@ -312,6 +312,11 @@ export abstract class LootEntry {
     public static gravelLike(original: ItemStack, decomposed: ItemStack): LootEntry.GravelLike {
         return new LootEntry.GravelLike(original, decomposed);
     }
+
+    /// https://minecraft.wiki/w/Mushroom_Block
+    public static shroomLike(shroom: ItemStack): LootEntry.ShroomLike {
+        return new LootEntry.ShroomLike(shroom);
+    }
 }
 export namespace LootEntry {
     export class Item extends LootEntry {
@@ -468,6 +473,29 @@ export namespace LootEntry {
                 Math.random() < decompChance
                     ? this.#decomposed
                     : this.#original);
+
+            return items;
+        }
+    }
+
+    export class ShroomLike extends LootEntry {
+        readonly #shroom: ItemStack;
+
+        public constructor(shroom: ItemStack) {
+            super();
+            this.#shroom = shroom;
+        }
+
+        public execute(): ItemBag {
+            const items = new ItemBag();
+            const dice  = Math.random();
+
+            if (dice < 0.1111) {
+                items.add(this.#shroom, 1);
+            }
+            else if (dice < 0.2222) {
+                items.add(this.#shroom, 2);
+            }
 
             return items;
         }
