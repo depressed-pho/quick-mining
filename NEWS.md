@@ -3,6 +3,11 @@
 ## 1.1.6 -- not released yet
 
 * Updated the addon for Minecraft Bedrock 1.21.30.
+* Quick-mining [Snow](https://minecraft.wiki/w/Snow) with a silk-touch
+  shovel now yields Snow in an amount corresponding to the number of layers
+  of the block, except for 8 layers of Snow, which drops a [Snow
+  Block](https://minecraft.wiki/w/Snow_Block). Previously silk touch didn't
+  have any effects on Snow.
 
 ## 1.1.5 -- 2024-08-19
 

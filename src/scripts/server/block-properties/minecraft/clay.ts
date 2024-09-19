@@ -96,27 +96,52 @@ blockProps.addBlockProps(
                 return super.isToolSuitable(perm, tool, prefs);
         }
 
+        readonly #silkPoolFor: LootPool[]
+            = new Array(8).fill(0).map(
+                (_, height) => {
+                    if (height == 7)
+                        return new LootPool().entry(new ItemStack("minecraft:snow"));
+                    else
+                        return new LootPool().entry(new ItemStack("minecraft:snow_layer", height + 1));
+                });
+        readonly #nonSilkPoolFor: LootPool[]
+            = new Array(8).fill(0).map(
+                (_, height) => {
+                    switch (height) {
+                        case 0:
+                        case 1:
+                        case 2:
+                            return new LootPool().entry(new ItemStack("minecraft:snowball", 1));
+                        case 3:
+                        case 4:
+                            return new LootPool().entry(new ItemStack("minecraft:snowball", 2));
+                        case 5:
+                        case 6:
+                            return new LootPool().entry(new ItemStack("minecraft:snowball", 3));
+                        case 7:
+                            return new LootPool().entry(new ItemStack("minecraft:snowball", 4));
+                        default:
+                            throw new Error(`impossible case`);
+                    }
+                });
+        readonly #lootsFor: LootTable[]
+            = new Array(8).fill(0).map(
+                (_, height) => {
+                    return new LootTable()
+                        .when(
+                            LootCondition.matchTool().enchantment("silk_touch"),
+                            [ this.#silkPoolFor[height]! ])
+                        .otherwise(
+                            [ this.#nonSilkPoolFor[height]! ]);
+                });
+
         public override lootTable(perm: BlockPermutation): LootTable {
-            const height = perm.states.get("height");
-            switch (height) {
-                case 0:
-                case 1:
-                case 2:
-                    return new LootTable().always(
-                        [ new LootPool().entry(new ItemStack("minecraft:snowball", 1)) ]);
-                case 3:
-                case 4:
-                    return new LootTable().always(
-                        [ new LootPool().entry(new ItemStack("minecraft:snowball", 2)) ]);
-                case 5:
-                case 6:
-                    return new LootTable().always(
-                        [ new LootPool().entry(new ItemStack("minecraft:snowball", 3)) ]);
-                case 7:
-                    return new LootTable().always(
-                        [ new LootPool().entry(new ItemStack("minecraft:snowball", 4)) ]);
-                default:
-                    throw new Error(`Unknown height of snow layer: ${height}`);
-            }
+            const height = perm.states.get("height") as number;
+            const loots  = this.#lootsFor[height];
+
+            if (!loots)
+                throw new Error(`Unknown height of snow layer: ${height}`);
+
+            return loots;
         }
     });
