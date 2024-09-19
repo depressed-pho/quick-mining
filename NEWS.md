@@ -8,6 +8,10 @@
   of the block, except for 8 layers of Snow, which drops a [Snow
   Block](https://minecraft.wiki/w/Snow_Block). Previously silk touch didn't
   have any effects on Snow.
+* When the named tool protection is enabled, the addon now aborts mining
+  blocks when the durability of the tool goes down to 4. Previously it
+  allowed tool durability to go down to 0, which meant the tool would break
+  when you hit a mob with it just once. Now it will break on the 5th hit.
 
 ## 1.1.5 -- 2024-08-19
 

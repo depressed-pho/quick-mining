@@ -29,6 +29,8 @@ export class MinerThread extends Thread {
     readonly #soundsPlayed: Set<string>;
     #experience: number;
 
+    public static readonly TOOL_PROTECTION_MARGIN = 4;
+
     public constructor(player: Player, tool: ItemStack, origin: Block, perm: BlockPermutation) {
         super();
         this.#player      = player;
@@ -210,7 +212,8 @@ export class MinerThread extends Thread {
                 const tool = this.#player.equipment.get(EquipmentSlot.Mainhand);
                 if (tool && tool.durability) {
                     if (this.#playerPrefs.protection.abortBeforeNamedToolBreaks) {
-                        if (tool.nameTag !== undefined && tool.durability.current <= 0)
+                        if (tool.nameTag !== undefined &&
+                            tool.durability.current <= MinerThread.TOOL_PROTECTION_MARGIN)
                             return false;
                     }
 

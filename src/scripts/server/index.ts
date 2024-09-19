@@ -55,7 +55,7 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     if (prefs.protection.abortBeforeNamedToolBreaks &&
         player.gameMode !== GameMode.creative &&
         tool.nameTag !== undefined &&
-        (tool.durability?.current ?? Infinity) <= 0) {
+        (tool.durability?.current ?? Infinity) <= MinerThread.TOOL_PROTECTION_MARGIN) {
 
         ev.cancel();
         return;
