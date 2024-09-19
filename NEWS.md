@@ -12,6 +12,11 @@
   blocks when the durability of the tool goes down to 4. Previously it
   allowed tool durability to go down to 0, which meant the tool would break
   when you hit a mob with it just once. Now it will break on the 5th hit.
+* Falling protection no longer takes place when a player is standing inside
+  a non-solid block (i.e. blocks with no collisions) and the player tries
+  to quick-mine the block. Previously the protection took place when you
+  harvested a batch of plants while being inside it, which wasn't the
+  protection was meant for.
 
 ## 1.1.5 -- 2024-08-19
 

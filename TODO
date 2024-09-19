@@ -1,5 +1,6 @@
 # -*- org -*-
 
+* DONE [#A] Fix the falling protection that doesn't work well when the player is harvesting plants
 * DONE [#A] Consume tool durability unless the player is in creative mode
 * DONE [#A] Show messages when a player joins
 * DONE [#A] Implement =;qm admin=
