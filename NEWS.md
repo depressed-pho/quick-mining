@@ -1,6 +1,6 @@
 # Release notes
 
-## 1.1.6 -- not released yet
+## 1.1.6 -- 2024-09-19
 
 * Updated the addon for Minecraft Bedrock 1.21.30.
 * Quick-mining [Snow](https://minecraft.wiki/w/Snow) with a silk-touch
