@@ -287,6 +287,11 @@ typing `;qmine admin` on the chat screen.
   the scripting API is currently not capable of allowing addons to
   manipulate hunger. You might consider it overpowered but you have to live
   with that.
+* Using the [/reload](https://minecraft.wiki/w/Commands/reload) command
+  makes the addon temporarily non-working until the server is
+  restarted. This is because addons aren't notified when they are about to
+  be reloaded so they cannot save their internal state to survive
+  reloading. `/reload all` works fine though.
 * Custom ores added by add-ons aren't quick-mined. This is because:
   1. There are no standard block tags for ore blocks representing the
      required tool tier,
