@@ -38,11 +38,11 @@ blockProps.addBlockProps(
 // Farmland
 blockProps.addBlockProps(
     "minecraft:farmland",
-    class extends IgnoringState(
+    IgnoringState(
         Drops(
             DirtLikeProperties,
             new ItemStack("minecraft:dirt")),
-        "moisturized_amount") {});
+        "moisturized_amount"));
 
 // Grass Block
 blockProps.addBlockProps(

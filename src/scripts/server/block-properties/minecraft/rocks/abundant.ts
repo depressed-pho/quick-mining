@@ -21,7 +21,7 @@ abstract class AbundantRockProperties extends BlockProperties {
 // Stone
 blockProps.addBlockProps(
     "minecraft:stone",
-    class extends Fragile(AbundantRockProperties, new ItemStack("minecraft:cobblestone")) {});
+    Fragile(AbundantRockProperties, new ItemStack("minecraft:cobblestone")));
 
 // Cobblestone
 blockProps.addBlockProps(

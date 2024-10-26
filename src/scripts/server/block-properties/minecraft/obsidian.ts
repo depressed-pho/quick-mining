@@ -21,9 +21,9 @@ abstract class ObsidianLikeProperties extends BlockProperties {
 // Crying obsidian
 blockProps.addBlockProps(
     "minecraft:crying_obsidian",
-    class extends DiamondTier(ObsidianLikeProperties) {});
+    DiamondTier(ObsidianLikeProperties));
 
 // Obsidian
 blockProps.addBlockProps(
     "minecraft:obsidian",
-    class extends DiamondTier(ObsidianLikeProperties) {});
+    DiamondTier(ObsidianLikeProperties));

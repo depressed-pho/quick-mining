@@ -192,24 +192,24 @@ blockProps.addBlockProps(
 // Melon
 blockProps.addBlockProps(
     "minecraft:melon_block",
-    class extends DiscreteUniformDrops(
+    DiscreteUniformDrops(
         MinedWithAxe(PlantProperties),
         new ItemStack("minecraft:melon_block"),
         3, 7, 9,
-        new ItemStack("minecraft:melon_slice")) {});
+        new ItemStack("minecraft:melon_slice")));
 
 // Pumpkin
 blockProps.addBlockProps(
     "minecraft:pumpkin",
-    class extends MinedWithAxe(PlantProperties) {});
+    MinedWithAxe(PlantProperties));
 
 blockProps.addBlockProps(
     "minecraft:carved_pumpkin",
-    class extends MinedWithAxe(PlantProperties) {});
+    MinedWithAxe(PlantProperties));
 
 blockProps.addBlockProps(
     "minecraft:lit_pumpkin",
-    class extends MinedWithAxe(PlantProperties) {});
+    MinedWithAxe(PlantProperties));
 
 // Hay bales
 blockProps.addBlockProps(
@@ -318,27 +318,27 @@ blockProps.addBlockProps(
 // Carrot
 blockProps.addBlockProps(
     "minecraft:carrots",
-    class extends Crop(
+    Crop(
         MinedWithHoe(PlantProperties),
         new ItemStack("minecraft:carrot"),
-        new ItemStack("minecraft:carrot")) {});
+        new ItemStack("minecraft:carrot")));
 
 // Glow Lichen
 blockProps.addBlockProps(
     "minecraft:glow_lichen",
-    class extends GlowLichenLike(MinedWithShears(PlantProperties)) {});
+    GlowLichenLike(MinedWithShears(PlantProperties)));
 
 // Potato
 blockProps.addBlockProps(
     "minecraft:potatoes",
-    class extends Crop(
+    Crop(
         MinedWithHoe(PlantProperties),
         new ItemStack("minecraft:potato"),
         new ItemStack("minecraft:potato"),
         [ new LootPool()
             .condition(LootCondition.randomChance(0.02))
             .entry(new ItemStack("minecraft:poisonous_potato"))
-        ]) {});
+        ]));
 
 // Vines
 blockProps.addBlockProps(
@@ -352,7 +352,7 @@ blockProps.addBlockProps(
 // Wheat
 blockProps.addBlockProps(
     "minecraft:wheat",
-    class extends Crop(
+    Crop(
         MinedWithHoe(PlantProperties),
         new ItemStack("minecraft:wheat"),
-        new ItemStack("minecraft:wheat_seeds")) {});
+        new ItemStack("minecraft:wheat_seeds")));

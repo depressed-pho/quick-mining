@@ -38,7 +38,5 @@ const TERRACOTTA_IDS = new Set([
     "minecraft:black_terracotta",
 ]);
 for (const blockId of TERRACOTTA_IDS) {
-    blockProps.addBlockProps(
-        blockId,
-        class extends TerracottaProperties {});
+    blockProps.addBlockProps(blockId, TerracottaProperties);
 }

@@ -42,9 +42,9 @@ blockProps.addBlockProps(
 // Packed ice
 blockProps.addBlockProps(
     "minecraft:packed_ice",
-    class extends SilkTouchRequired(IceLikeProperties) {});
+    SilkTouchRequired(IceLikeProperties));
 
 // Blue ice
 blockProps.addBlockProps(
     "minecraft:blue_ice",
-    class extends SilkTouchRequired(IceLikeProperties) {});
+    SilkTouchRequired(IceLikeProperties));
