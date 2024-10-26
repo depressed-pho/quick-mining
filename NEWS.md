@@ -1,5 +1,18 @@
 # Release notes
 
+## 1.1.7 -- 2024-10-26
+
+* Updated the addon for Minecraft Bedrock 1.21.40.
+* The way how the game internally represents [Huge
+  mushrooms](https://minecraft.wiki/w/Huge_mushroom) has significantly
+  changed. Due to this change this addon can no longer differentiate red
+  mushrooms from brown ones when it comes to determining whether to
+  propagate quick-mining or not. That is, when a red mushroom and a brown
+  mushroom have grown right next to each other with their caps touching,
+  and when you mine the stem of one of them, the addon now takes both
+  mushrooms down at once. This shouldn't be a problem in practice but it's
+  still a behavioral change.
+
 ## 1.1.6 -- 2024-09-19
 
 * Updated the addon for Minecraft Bedrock 1.21.30.

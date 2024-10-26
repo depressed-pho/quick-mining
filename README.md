@@ -275,9 +275,9 @@ typing `;qmine admin` on the chat screen.
   upper half with `minecraft:air` causes their lower half to break, and we
   cannot collect loots from their lower halves. The same goes for [tall
   flowers](https://minecraft.wiki/w/Flower).
-* [Snowlogged](https://minecraft.wiki/w/Snowlogging) plants aren't eligible
-  for quick-mining, neither with hoes nor shovels. This is because
-  snowlogged blocks seem to be represented in a very ad-hoc way, that is,
+* [Snowlogged](https://minecraft.wiki/w/Snowlogging) plants cannot be
+  quick-mined, neither with hoes nor shovels. This is because snowlogged
+  blocks seem to be internally represented in a very ad-hoc way, that is,
   they are represented as [snow layers](https://minecraft.wiki/w/Snow) with
   a block state indicating that they are covering *something*, but the
   thing they cover is not accessible from the scripting API. Addons can
