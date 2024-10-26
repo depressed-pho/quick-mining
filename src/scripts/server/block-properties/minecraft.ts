@@ -1,3 +1,4 @@
+import "./minecraft/bone.js";
 import "./minecraft/clay.js";
 import "./minecraft/crystals.js";
 import "./minecraft/dirt.js";

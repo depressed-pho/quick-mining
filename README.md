@@ -118,6 +118,9 @@ Quick-mining mode:
 
 Block coverage:
 
+* **Bones**: Enable quick-mining for [Bone
+  blocks](https://minecraft.wiki/w/Bone_Block). They require pickaxes to
+  quick-mine. *This option is disabled by default.*
 * **Clay, Mud, and Snow**: Enable quick-mining for
   [Clay](https://minecraft.wiki/w/Clay),
   [Mud](https://minecraft.wiki/w/Mud), [Snow

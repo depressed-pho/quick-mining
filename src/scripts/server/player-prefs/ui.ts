@@ -17,6 +17,7 @@ const LOOTS = [
 
 // This has to be kept in sync with ../player-prefs.ts
 const COVERAGE = [
+    "bones",
     "clayLike",
     "crystals",
     "dirtLike",

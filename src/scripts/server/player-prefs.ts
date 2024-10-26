@@ -18,6 +18,7 @@ const DEFAULTS: PlayerPrefs = {
         autoCollect: true,
     },
     coverage: {
+        bones:          false,
         clayLike:       true,
         crystals:       true,
         dirtLike:       false,
