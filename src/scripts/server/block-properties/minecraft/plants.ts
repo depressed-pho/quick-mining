@@ -4,7 +4,7 @@ import { ItemStack } from "cicada-lib/item/stack.js";
 import { BlockProperties, blockProps } from "../../block-properties.js";
 import { LootTable, LootCondition, LootEntry, LootPool } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
-import { DiscreteUniformDrops, IIsToolSuitable, IgnoringState
+import { DiscreteUniformDrops, IIsToolSuitable, IgnoringAllStates, IgnoringState
        } from "../mixins.js";
 
 /// Base class for all plants.
@@ -32,8 +32,8 @@ function MinedWithAxe<T extends Constructor<BlockProperties & IIsToolSuitable>>(
 }
 
 /// Mixin for plants requiring hoes to quick-mine. These plants don't
-/// consume the tool durability.
-function MinedWithHoe<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
+/// consume the tool durability by default.
+function MinedWithHoe<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T, consumesDurability = false) {
     abstract class MinedWithHoe extends base {
         public breakingSoundId(): string {
             return "dig.grass";
@@ -47,7 +47,7 @@ function MinedWithHoe<T extends Constructor<BlockProperties & IIsToolSuitable>>(
         }
 
         public override consumesDurability(): boolean {
-            return false;
+            return consumesDurability;
         }
     }
     return MinedWithHoe;
@@ -210,6 +210,11 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:lit_pumpkin",
     class extends MinedWithAxe(PlantProperties) {});
+
+// Hay bales
+blockProps.addBlockProps(
+    "minecraft:hay_block",
+    IgnoringAllStates(MinedWithHoe(PlantProperties, true)));
 
 // Nether wart, not sure if it's a plant though.
 blockProps.addBlockProps(

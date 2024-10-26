@@ -197,6 +197,8 @@ Block coverage:
     that [Sculk Vein](https://minecraft.wiki/w/Sculk_Vein) does
     not count as a plant, while Glow Lichen counts although lichens are
     technically not plants.
+  * [Hay bales](https://minecraft.wiki/w/Hay_Bale) require hoes, and they
+    do consume its durability.
 * **Stone, Cobblestone, Deepslate, and Cobbled Deepslate**: Enable
   quick-mining for [Stone](https://minecraft.wiki/w/Stone),
   [Cobblestone](https://minecraft.wiki/w/Cobblestone), [Mossy

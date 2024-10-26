@@ -1,5 +1,11 @@
 # Release notes
 
+## 1.1.8 -- not released yet
+
+* Added [Hay bales](https://minecraft.wiki/w/Hay_Bale) to the category
+  "Plants and Crops", which is enabled by default. They require hoes to
+  quick-mine, and consumes tool durability unlike wheat crops.
+
 ## 1.1.7 -- 2024-10-26
 
 * Updated the addon for Minecraft Bedrock 1.21.40.

@@ -29,6 +29,18 @@ export function IgnoringState<T extends Constructor<BlockProperties>>(base: T, s
     return IgnoringState;
 }
 
+/** Mixin for blocks that should be considered equivalent ignoring any
+ * block states. This mixin overrides `isEquivalentTo`.
+ */
+export function IgnoringAllStates<T extends Constructor<BlockProperties>>(base: T) {
+    abstract class IgnoringAllStates extends base {
+        public override isEquivalentTo(pa: BlockPermutation, pb: BlockPermutation): boolean {
+            return pa.typeId === pb.typeId;
+        }
+    }
+    return IgnoringAllStates;
+}
+
 /// Mixin for blocks requiring a silk-touch tool to quick-mine.
 export function SilkTouchForQuickMining<T extends Constructor<BlockProperties & IIsToolSuitable>>(base: T) {
     abstract class SilkTouchForQuickMining extends base {
