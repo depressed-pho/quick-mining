@@ -4,14 +4,16 @@
 
 * Added [Hay bales](https://minecraft.wiki/w/Hay_Bale) to the category
   "Plants and Crops", which is enabled by default. They require hoes to
-  quick-mine, and consumes tool durability unlike wheat crops.
+  quick-mine, and consumes tool durability unlike wheat crops. Suggested by
+  SLEETYGRAPH5.
 * Added a category for bones, which currently contains only [Bone
   blocks](https://minecraft.wiki/w/Bone_Block). Quick-mining bones is
   disabled by default because (A) bones are typically used as building
   blocks and you don't want to destroy your buildings by accident, and (B)
   players don't usually search for
   [Fossils](https://minecraft.wiki/w/Fossil) to collect bones but they
-  usually produce them by setting up a bonemeal farm.
+  usually produce them by setting up a bonemeal farm. Suggested by
+  SLEETYGRAPH5.
 
 ## 1.1.7 -- 2024-10-26
 
