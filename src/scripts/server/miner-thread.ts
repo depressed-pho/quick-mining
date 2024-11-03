@@ -25,6 +25,7 @@ export class MinerThread extends Thread {
     readonly #scanned: LocationSet; // negative cache for scanning
     readonly #toScan: LocationSet;
     readonly #toMine: OrdMap<Block, [MiningWay, BlockPermutation]>;
+    readonly #toMineFragile: OrdMap<Block, [MiningWay, BlockPermutation]>;
     readonly #loots: ItemBag;
     readonly #soundsPlayed: Set<string>;
     #experience: number;
@@ -54,9 +55,10 @@ export class MinerThread extends Thread {
                    ba.z < bb.z ? -1 :
                    0;
         };
-        this.#scanned = new LocationSet();
-        this.#toScan  = new LocationSet();
-        this.#toMine  = new OrdMap(ordBlock);
+        this.#scanned       = new LocationSet();
+        this.#toScan        = new LocationSet();
+        this.#toMine        = new OrdMap(ordBlock);
+        this.#toMineFragile = new OrdMap(ordBlock);
 
         this.#loots        = new ItemBag();
         this.#soundsPlayed = new Set();
@@ -84,20 +86,23 @@ export class MinerThread extends Thread {
 
         // The second path: mine all blocks that we have decided to mine.
         try {
-            for (const [block, [way, perm]] of this.#toMine.entries().reverse()) {
-                if (this.#playerPrefs.protection.keepGroundFromQuickMined) {
-                    if (this.#player.isValid && isStandingOn(this.#player, block))
-                        continue;
-                }
+            // We must mine fragile blocks first.
+            for (const toMine of [this.#toMineFragile, this.#toMine]) {
+                for (const [block, [way, perm]] of toMine.entries().reverse()) {
+                    if (this.#playerPrefs.protection.keepGroundFromQuickMined) {
+                        if (this.#player.isValid && isStandingOn(this.#player, block))
+                            continue;
+                    }
 
-                if (!this.#tryMining(block, way, perm))
-                    break;
+                    if (!this.#tryMining(block, way, perm))
+                        break;
 
-                if (timer.elapsedMs >= worldPrefs.timeBudgetInMsPerTick) {
-                    this.#flushLoots();
-                    this.#soundsPlayed.clear();
-                    yield;
-                    timer.reset();
+                    if (timer.elapsedMs >= worldPrefs.timeBudgetInMsPerTick) {
+                        this.#flushLoots();
+                        this.#soundsPlayed.clear();
+                        yield;
+                        timer.reset();
+                    }
                 }
             }
         }
@@ -134,7 +139,7 @@ export class MinerThread extends Thread {
             return false;
         }
 
-        const way = this.#origProps.miningWay(this.#origPerm, block.permutation);
+        const way = this.#origProps.miningWay(this.#origPerm, block.permutation, this.#playerPrefs);
         switch (way) {
             case MiningWay.LeaveAlone:
                 this.#scanned.add(loc);
@@ -142,8 +147,15 @@ export class MinerThread extends Thread {
 
             case MiningWay.MineRegularly:
             case MiningWay.MineAsABonus:
-                this.#toMine.set(block, [way, block.permutation]);
+                const perm  = block.permutation;
+                const props = blockProps.get(perm);
+                if (props.isFragile(perm))
+                    this.#toMineFragile.set(block, [way, perm]);
+                else
+                    this.#toMine.set(block, [way, perm]);
+
                 this.#scanned.add(loc);
+
                 // This is one of the slowest part of this entire addon. We
                 // must optimize this very carefully.
                 for (let y = -1; y <= 1; y++) {
@@ -162,6 +174,7 @@ export class MinerThread extends Thread {
                         }
                     }
                 }
+
                 return true;
         }
     }

@@ -34,7 +34,8 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
         console.debug("Tool:", tool);
     }
 
-    if (props.isProtected(player, prefs)) {
+    const perm = block.permutation;
+    if (props.isProtected(perm, player, prefs)) {
         // This block is not meant to be mined. See below for the reason
         // why we teleport the player.
         ev.cancel();
@@ -64,7 +65,6 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     if (!isQuickMiningEnabled(player))
         return;
 
-    const perm = block.permutation;
     if (!props.isToolSuitable(perm, tool, prefs))
         return;
 

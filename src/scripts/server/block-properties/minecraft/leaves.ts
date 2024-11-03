@@ -1,7 +1,7 @@
 import { BlockPermutation } from "cicada-lib/block.js";
 import { Constructor } from "cicada-lib/mixin.js";
 import { ItemStack } from "cicada-lib/item/stack.js";
-import { BlockProperties, blockProps } from "../../block-properties.js";
+import { BlockProperties, MiningWay, blockProps } from "../../block-properties.js";
 import { LootCondition, LootTable, LootPool } from "../../loot-table.js";
 import { PlayerPrefs } from "../../player-prefs.js";
 import { IgnoringState } from "../mixins.js";
@@ -178,6 +178,21 @@ blockProps.addBlockProps(
 
         public override lootTable(): LootTable {
             return this.#loots;
+        }
+
+        public override miningWay(origin: BlockPermutation, perm: BlockPermutation, prefs: PlayerPrefs) {
+            // A special case for hanging propagules. NOTE: There is
+            // similar code in ./tree.ts. Can we somehow unify these?
+            switch (perm.typeId) {
+                case "minecraft:mangrove_propagule":
+                    // Quick mining should only propagate to hanging ones
+                    // but ignore their growth stage. This means immature
+                    // hanging propagules will be mined as a "bonus" but
+                    // will drop nothing.
+                    if (perm.states.get("hanging"))
+                        return MiningWay.MineAsABonus;
+            }
+            return super.miningWay(origin, perm, prefs);
         }
     });
 

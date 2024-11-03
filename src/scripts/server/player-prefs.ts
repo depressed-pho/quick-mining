@@ -37,8 +37,11 @@ const DEFAULTS: PlayerPrefs = {
         sandLike:       false,
         sculkFamily:    true,
         soulSandLike:   true,
+        strippedLogs:   false,
+        strippedWood:   false,
         terracotta:     false,
         wartBlocks:     true,
+        wood:           false,
     }
 };
 

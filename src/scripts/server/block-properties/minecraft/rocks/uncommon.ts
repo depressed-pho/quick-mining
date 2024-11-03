@@ -40,7 +40,7 @@ blockProps.addBlockProps(
             return "break.amethyst_block";
         }
 
-        public override isProtected(player: Player, prefs: PlayerPrefs): boolean {
+        public override isProtected(_perm: BlockPermutation, player: Player, prefs: PlayerPrefs): boolean {
             if (player.gameMode === GameMode.survival)
                 return prefs.protection.keepBuddingAmethystFromBroken;
             else

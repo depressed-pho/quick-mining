@@ -36,8 +36,11 @@ const COVERAGE = [
     "sandLike",
     "sculkFamily",
     "soulSandLike",
+    "strippedLogs",
+    "strippedWood",
     "terracotta",
     "wartBlocks",
+    "wood",
 ];
 
 export class PlayerPrefsUI {

@@ -45,6 +45,9 @@ message Coverage {
   optional bool sandLike = 11;
   optional bool sculkFamily = 12;
   optional bool soulSandLike = 13;
+  optional bool strippedLogs = 23;
+  optional bool strippedWood = 24;
   optional bool terracotta = 16;
   optional bool wartBlocks = 15;
+  optional bool wood = 22;
 }

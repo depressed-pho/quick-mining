@@ -22,13 +22,22 @@ export enum MiningWay {
  * https://github.com/microsoft/TypeScript/issues/34516
  */
 export abstract class BlockProperties {
-    /** The ID of the sound to be played when breaking the block.
+    /** The ID of the sound to be played when the block is broken.
      */
     public abstract breakingSoundId(perm: BlockPermutation): string;
 
     /** See if the block should be protected from getting mined.
      */
-    public isProtected(_player: Player, _prefs: PlayerPrefs): boolean {
+    public isProtected(_perm: BlockPermutation, _player: Player, _prefs: PlayerPrefs): boolean {
+        return false;
+    }
+
+    /** See if the block breaks itself when it's not attached to an
+     * adjacent block. Keep in mind that this isn't perfect, that is,
+     * fragile blocks MUST NOT be quick-mined if their only supporting
+     * blocks are also fragile.
+     */
+    public isFragile(_perm: BlockPermutation): boolean {
         return false;
     }
 
@@ -86,9 +95,9 @@ export abstract class BlockProperties {
     }
 
     /** Determine if or how `perm` should be quick-mined as a consequence
-     * of initiating a quick mining with `origin`.
+     * of initiating a quick mining at `origin`.
      */
-    public miningWay(origin: BlockPermutation, perm: BlockPermutation): MiningWay {
+    public miningWay(origin: BlockPermutation, perm: BlockPermutation, _prefs: PlayerPrefs): MiningWay {
         return this.isEquivalentTo(origin, perm)
             ? MiningWay.MineRegularly
             : MiningWay.LeaveAlone;
@@ -135,7 +144,7 @@ export class BlockPropertyRegistry {
     }
 
     /** This method takes `BlockPermutation` as opposed to `BlockType` only
-     * because the latter does not have tags. It's not like the returned
+     * because the latter does not have tags. It's not that the returned
      * `BlockProperties` will retain the permutation.
      */
     public "get"(block: Block|BlockPermutation): BlockProperties {

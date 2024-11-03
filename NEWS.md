@@ -1,5 +1,20 @@
 # Release notes
 
+## 1.1.9 -- not released yet
+
+* Fully grown [Mangrove
+  Propagules](https://minecraft.wiki/w/Mangrove_Propagule) hanging from
+  mangrove leaves are now automatically collected when the leaves are
+  quick-mined, as long as auto-collection is enabled.
+* Added categories for [Wood](https://minecraft.wiki/w/Wood), [Stripped
+  Logs](https://minecraft.wiki/w/Stripped_Log), and [Stripped
+  Wood](https://minecraft.wiki/w/Stripped_Wood). These are all disabled by
+  default. These, and the Tree category, work in a combining manner. For
+  example, suppose you have enabled options for Logs and Stripped Logs,
+  mining Logs also mines nearby Stripped Logs and vice versa, as long as
+  they share the same wood type (such as
+  [Oak](https://minecraft.wiki/w/Oak)). Suggested by SLEETYGRAPH5.
+
 ## 1.1.8 -- 2024-10-26
 
 * Added [Hay bales](https://minecraft.wiki/w/Hay_Bale) to the category

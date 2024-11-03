@@ -52,14 +52,22 @@ with bare hand will not trigger quick-mining.
 
 ## Special cases
 
-* **[Logs](https://minecraft.wiki/w/Log)**: Cutting non-stripped
-  logs also breaks non-player-placed leaves surrounding them. This is a
-  fast simulation of decaying so your axe don't lose durability for this,
-  and its enchantments don't apply. If you want to gather leaf blocks,
-  break them with shears or a Silk Touch hoe.
-* **[Mangrove trees](https://minecraft.wiki/w/Mangrove)**: Cutting
-  mangrove logs or roots cuts the entire mangrove tree down, including moss
-  carpets touching them.
+* **[Trees](https://minecraft.wiki/w/Tree)**:
+  * Cutting [Logs](https://minecraft.wiki/w/Log) or
+    [Wood](https://minecraft.wiki/w/Wood) also breaks non-player-placed
+    leaves surrounding them. This is a fast simulation of decaying so your
+    axe don't lose durability for this, and its enchantments don't
+    apply. If you want to gather leaf blocks, break them with shears or a
+    Silk Touch hoe.
+  * There are 4 separate options for enabling quick-mining Logs, Stripped
+    Logs, Wood, and Stripped Wood. These options work in a combining
+    manner. For example, suppose you have enabled options for Logs and
+    Stripped Logs, mining Logs also mines nearby Stripped Logs and vice
+    versa, as long as they share the same wood type (such as
+    [Oak](https://minecraft.wiki/w/Oak)).
+* **[Mangrove trees](https://minecraft.wiki/w/Mangrove)**: Cutting mangrove
+  logs or roots cuts the entire tree down, including moss carpets touching
+  them and propagules hanging from leaves.
 * **[Azalea leaves](https://minecraft.wiki/w/Azalea_tree)**:
   Breaking azalea leaves (flowering or not) also breaks the other variant.
 * **[Huge Mushrooms](https://minecraft.wiki/w/Huge_mushroom)**:
@@ -158,7 +166,7 @@ Block coverage:
   [Leaves](https://minecraft.wiki/w/Leaves). They require either
   [Shears](https://minecraft.wiki/w/Shears) or
   [hoes](https://minecraft.wiki/w/Hoe).
-* **Logs and Nether fungus stems**: Enable quick-mining for non-stripped
+* **Logs and Nether Fungus Stems**: Enable quick-mining for non-stripped
   [Logs](https://minecraft.wiki/w/Log), including the [Nether
   fungus](https://minecraft.wiki/w/Huge_fungus) variants and
   [Mangrove Roots](https://minecraft.wiki/w/Mangrove_Roots). These
@@ -239,6 +247,14 @@ Block coverage:
   Sand](https://minecraft.wiki/w/Soul_Sand) and [Soul
   Soil](https://minecraft.wiki/w/Soul_Soil). These require shovels
   to quick-mine.
+* **Stripped Logs and Stripped Nether Fungus Stems**: Enable quick-mining
+  for [Stripped Logs](https://minecraft.wiki/w/Stripped_Log) including the
+  [Nether fungus](https://minecraft.wiki/w/Huge_fungus) variants. These
+  require axes to quick-mine. *This option is disabled by default.*
+* **Stripped Wood and Stripped Hyphae**: Enable quick-mining for [Stripped
+  Wood](https://minecraft.wiki/w/Stripped_Wood) including the [Nether
+  fungus](https://minecraft.wiki/w/Huge_fungus) variants. These require
+  axes to quick-mine. *This option is disabled by default.*
 * **Terracotta**: Enable quick-mining for
   [Terracotta](https://minecraft.wiki/w/Terracotta), colored or
   not, but not including [glazed
@@ -250,6 +266,10 @@ Block coverage:
   Block, and
   [Shroomlight](https://minecraft.wiki/w/Shroomlight). These
   require hoes to quick-mine.
+* **Wood and Hyphae**: Enable quick-mining for
+  [Wood](https://minecraft.wiki/w/Wood) including the [Nether
+  fungus](https://minecraft.wiki/w/Huge_fungus) variants. These require
+  axes to quick-mine. *This option is disabled by default.*
 
 ## For server admins
 
@@ -271,9 +291,6 @@ typing `;qmine admin` on the chat screen.
 
 # Known issues
 
-* Hanging mangrove propagules aren't auto-collected. This is currently
-  unfixable because their drop rate is not known to the community and thus
-  we cannot simulate its loot table.
 * Tall variants of [Grass and
   Fern](https://minecraft.wiki/w/Grass) cannot be quick-mined due
   to the way how they are implemented in the game. That is, replacing their
@@ -297,7 +314,7 @@ typing `;qmine admin` on the chat screen.
   restarted. This is because addons aren't notified when they are about to
   be reloaded so they cannot save their internal state to survive
   reloading. `/reload all` works fine though.
-* Custom ores added by add-ons aren't quick-mined. This is because:
+* Custom ores or wood added by add-ons aren't quick-mined. This is because:
   1. There are no standard block tags for ore blocks representing the
      required tool tier,
   2. Loot tables are not accessible from the scripting API, and
@@ -317,7 +334,7 @@ See [NEWS](NEWS.md).
 
 # Tested on
 
-* Minecraft Bedrock 1.20.51, M1 iPad Pro
+* M1 iPad Pro (iOS)
 
 # Author
 
