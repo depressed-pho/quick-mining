@@ -34,6 +34,7 @@ message Coverage {
   optional bool iceLike = 4;
   optional bool leaves = 5;
   optional bool logs = 6;
+  optional bool minerals = 25;
   optional bool mushrooms = 7;
   optional bool netherrackLike = 20;
   optional bool obsidian = 8;

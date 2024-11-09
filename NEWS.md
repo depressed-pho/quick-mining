@@ -1,6 +1,6 @@
 # Release notes
 
-## 1.1.9 -- not released yet
+## 1.1.9 -- 2024-11-09
 
 * Fully grown [Mangrove
   Propagules](https://minecraft.wiki/w/Mangrove_Propagule) hanging from
@@ -14,6 +14,15 @@
   mining Logs also mines nearby Stripped Logs and vice versa, as long as
   they share the same wood type (such as
   [Oak](https://minecraft.wiki/w/Oak)). Suggested by SLEETYGRAPH5.
+* Added a category for [Mineral
+  Blocks](https://minecraft.wiki/w/Block_of_Mineral) which is disabled by
+  default. This covers blocks of smelted metals and gem-like minerals
+  except for [Block of
+  Amethyst](https://minecraft.wiki/w/Block_of_Amethyst), which is covered
+  by another category "Uncommon Rocks". It ignores variance in oxidization
+  levels and waxing of [Block of
+  Copper](https://minecraft.wiki/w/Block_of_Copper). Suggested by
+  SLEETYGRAPH5.
 
 ## 1.1.8 -- 2024-10-26
 

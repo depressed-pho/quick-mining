@@ -33,6 +33,7 @@ ui.quick-mining.prefs.coverage.glowstoneLike=Glowstone and Sea Lantern
 ui.quick-mining.prefs.coverage.iceLike=Ice, Packed Ice, and Blue Ice
 ui.quick-mining.prefs.coverage.leaves=Leaves
 ui.quick-mining.prefs.coverage.logs=Logs and Nether Fungus Stems
+ui.quick-mining.prefs.coverage.minerals=Mineral Blocks
 ui.quick-mining.prefs.coverage.mushrooms=Mushroom Blocks and Stems
 ui.quick-mining.prefs.coverage.netherrackLike=Netherrack, Crimson and Warped Nylium
 ui.quick-mining.prefs.coverage.obsidian=Obsidian and Crying Obsidian

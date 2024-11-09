@@ -6,6 +6,7 @@ import "./minecraft/fungi.js";
 import "./minecraft/glowstone.js";
 import "./minecraft/ice.js";
 import "./minecraft/leaves.js";
+import "./minecraft/minerals.js";
 import "./minecraft/netherrack.js";
 import "./minecraft/obsidian.js";
 import "./minecraft/ores.js";

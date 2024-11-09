@@ -171,6 +171,13 @@ Block coverage:
   fungus](https://minecraft.wiki/w/Huge_fungus) variants and
   [Mangrove Roots](https://minecraft.wiki/w/Mangrove_Roots). These
   require [axes](https://minecraft.wiki/w/Axe) to quick-mine.
+* **Mineral Blocks**: Enable quick-mining for [Mineral
+  Blocks](https://minecraft.wiki/w/Block_of_Mineral), except for [Block of
+  Amethyst](https://minecraft.wiki/w/Block_of_Amethyst) and Block of [Raw
+  Metals](https://minecraft.wiki/w/Raw_Metal). It ignores variance in
+  oxidization levels and waxing of [Block of
+  Copper](https://minecraft.wiki/w/Block_of_Copper). These require pickaxes
+  of varying tiers. *This option is disabled by default.*
 * **Mushroom Blocks and Stems**: Enable quick-mining for [Huge
   Mushrooms](https://minecraft.wiki/w/Huge_mushroom). They require
   axes to quick-mine.
@@ -184,11 +191,11 @@ Block coverage:
   require pickaxes of at least diamond-tier.
 * **Ores**: Enable quick-mining for [Ore
   blocks](https://minecraft.wiki/w/Ore) as well as [Ancient
-  Debris](https://minecraft.wiki/w/Ancient_Debris) and [Block of
-  Raw Iron](https://minecraft.wiki/w/Block_of_Raw_Iron). They
-  require pickaxes of varying tiers. Note that [Gilded
-  Blackstone](https://minecraft.wiki/w/Gilded_Blackstone) does not
-  count as ore and is not eligible for quick-mining.
+  Debris](https://minecraft.wiki/w/Ancient_Debris) and [Block of Raw
+  Iron](https://minecraft.wiki/w/Block_of_Raw_Iron) and any other blocks of
+  raw metal. They require pickaxes of varying tiers. Note that [Gilded
+  Blackstone](https://minecraft.wiki/w/Gilded_Blackstone) does not count as
+  ore and is not eligible for quick-mining.
 * **Plants and Crops**: Enable quick-mining for several plants and
   crops. Mining crops with a hoe does not consume its durability.
   * [Cocoa pods](https://minecraft.wiki/w/Cocoa_Beans),
@@ -217,14 +224,14 @@ Block coverage:
   [Deepslate](https://minecraft.wiki/w/Deepslate), and [Cobbled
   Deepslate](https://minecraft.wiki/w/Cobbled_Deepslate). *This
   option is disabled by default.*
-* **Non-stone common rocks such as Andesite, Basalt, and Tuff**: Enable
+* **Non-stone Common Rocks such as Andesite, Basalt, and Tuff**: Enable
   quick-mining for [Andesite](https://minecraft.wiki/w/Andesite),
   [Basalt](https://minecraft.wiki/w/Basalt),
   [Diorite](https://minecraft.wiki/w/Diorite),
   [Granite](https://minecraft.wiki/w/Granite), and
   [Tuff](https://minecraft.wiki/w/Tuff). These require pickaxes to
   quick-mine. *This option is disabled by default.*
-* **Uncommon rocks such as Blackstone, Calcite, and Magma Block**: Enable
+* **Uncommon Rocks such as Blackstone, Calcite, and Magma Block**: Enable
   quick-mining for
   [Blackstone](https://minecraft.wiki/w/Blackstone), [Block of
   Amethyst](https://minecraft.wiki/w/Block_of_Amethyst),

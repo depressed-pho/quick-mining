@@ -25,6 +25,7 @@ const COVERAGE = [
     "iceLike",
     "leaves",
     "logs",
+    "minerals",
     "mushrooms",
     "netherrackLike",
     "obsidian",
