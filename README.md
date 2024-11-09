@@ -191,9 +191,9 @@ Block coverage:
   require pickaxes of at least diamond-tier.
 * **Ores**: Enable quick-mining for [Ore
   blocks](https://minecraft.wiki/w/Ore) as well as [Ancient
-  Debris](https://minecraft.wiki/w/Ancient_Debris) and [Block of Raw
-  Iron](https://minecraft.wiki/w/Block_of_Raw_Iron) and any other blocks of
-  raw metal. They require pickaxes of varying tiers. Note that [Gilded
+  Debris](https://minecraft.wiki/w/Ancient_Debris), [Block of Raw
+  Iron](https://minecraft.wiki/w/Block_of_Raw_Iron), and any other blocks
+  of raw metal. They require pickaxes of varying tiers. Note that [Gilded
   Blackstone](https://minecraft.wiki/w/Gilded_Blackstone) does not count as
   ore and is not eligible for quick-mining.
 * **Plants and Crops**: Enable quick-mining for several plants and
