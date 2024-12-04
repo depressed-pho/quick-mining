@@ -1,5 +1,11 @@
 # Release notes
 
+## 1.1.10 -- 2024-12-04
+
+* Updated the addon for Minecraft Bedrock 1.21.50. This is only a quick fix
+  to make the addon compatible with this version. New blocks such as [Pale
+  Oak](https://minecraft.wiki/w/Pale_oak) cannot be quick-mined yet.
+
 ## 1.1.9 -- 2024-11-09
 
 * Fully grown [Mangrove
@@ -9,7 +15,7 @@
 * Added categories for [Wood](https://minecraft.wiki/w/Wood), [Stripped
   Logs](https://minecraft.wiki/w/Stripped_Log), and [Stripped
   Wood](https://minecraft.wiki/w/Stripped_Wood). These are all disabled by
-  default. These, and the Tree category, work in a combining manner. For
+  default. These, and the category "Logs", work in a combining manner. For
   example, suppose you have enabled options for Logs and Stripped Logs,
   mining Logs also mines nearby Stripped Logs and vice versa, as long as
   they share the same wood type (such as

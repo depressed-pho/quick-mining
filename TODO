@@ -1,6 +1,7 @@
 # -*- org -*-
 
-* TODO [#A] Options for wood and stripped wood/logs, as suggested [[https://mcpedl.com/quick-mining-addon/#comment-915683][here]]
+* TODO [#A] Option for quick-mining Moss Blocks and Moss Carpets
+* DONE [#A] Options for wood and stripped wood/logs, as suggested [[https://mcpedl.com/quick-mining-addon/#comment-915683][here]]
 * DONE [#A] Fix the falling protection that doesn't work well when the player is harvesting plants
 * DONE [#A] Consume tool durability unless the player is in creative mode
 * DONE [#A] Show messages when a player joins
