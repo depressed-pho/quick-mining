@@ -19,6 +19,7 @@ const DEFAULTS: PlayerPrefs = {
     },
     coverage: {
         bones:          false,
+        bookshelves:    true,
         clayLike:       true,
         crystals:       true,
         dirtLike:       false,

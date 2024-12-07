@@ -27,6 +27,7 @@ message Loots {
 
 message Coverage {
   optional bool bones = 21;
+  optional bool bookshelves = 26;
   optional bool clayLike = 1;
   optional bool crystals = 2;
   optional bool dirtLike = 18;

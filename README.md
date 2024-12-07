@@ -129,6 +129,11 @@ Block coverage:
 * **Bones**: Enable quick-mining for [Bone
   blocks](https://minecraft.wiki/w/Bone_Block). They require pickaxes to
   quick-mine. *This option is disabled by default.*
+* **Bookshelves**: Enable quick-mining for
+  [Bookshelves](https://minecraft.wiki/w/Bookshelf). This currently does
+  not allow [Chiseled
+  Bookshelf](https://minecraft.wiki/w/Chiseled_Bookshelf) to be quick-mined
+  due to a technical issue.
 * **Clay, Mud, and Snow**: Enable quick-mining for
   [Clay](https://minecraft.wiki/w/Clay),
   [Mud](https://minecraft.wiki/w/Mud), [Snow
@@ -316,6 +321,10 @@ typing `;qmine admin` on the chat screen.
   the scripting API is currently not capable of allowing addons to
   manipulate hunger. You might consider it overpowered but you have to live
   with that.
+* [Chiseled Bookshelf](https://minecraft.wiki/w/Chiseled_Bookshelf) cannot
+  be quick-mined. It is supposed to be a container but it doesn't have a
+  block component `minecraft:inventory` and thus we cannot retrieve books
+  inside it using the scripting API.
 * Using the [/reload](https://minecraft.wiki/w/Commands/reload) command
   makes the addon temporarily non-working until the server is
   restarted. This is because addons aren't notified when they are about to

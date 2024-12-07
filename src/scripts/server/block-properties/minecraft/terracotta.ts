@@ -4,7 +4,7 @@ import { BlockProperties, blockProps } from "../../block-properties.js";
 import { PlayerPrefs } from "../../player-prefs.js";
 
 /// Base class for terracotta
-abstract class TerracottaProperties extends BlockProperties {
+class TerracottaProperties extends BlockProperties {
     public breakingSoundId(): string {
         return "dig.stone";
     }

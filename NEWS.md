@@ -1,5 +1,14 @@
 # Release notes
 
+## 1.2.0 -- not released yet
+
+* Added a category for [Bookshelf](https://minecraft.wiki/w/Bookshelf)
+  which is enabled by default. This currently does not allow [Chiseled
+  Bookshelf](https://minecraft.wiki/w/Chiseled_Bookshelf) to be quick-mined
+  due to a technical issue. That is, although it's supposed to be a
+  container but it doesn't have a block component `minecraft:inventory` and
+  thus we cannot retrieve books inside it using the scripting API.
+
 ## 1.1.10 -- 2024-12-04
 
 * Updated the addon for Minecraft Bedrock 1.21.50. This is only a quick fix

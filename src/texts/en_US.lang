@@ -26,6 +26,7 @@ ui.quick-mining.prefs.protection.keepGroundFromQuickMined=Keep your ground block
 ui.quick-mining.prefs.protection.keepBuddingAmethystFromBroken=Prevent you from accidentally breaking Budding Amethyst in Survival
 ui.quick-mining.prefs.loots.autoCollect=Automatically collect items and XP orbs
 ui.quick-mining.prefs.coverage.bones=Bones
+ui.quick-mining.prefs.coverage.bookshelves=Bookshelves
 ui.quick-mining.prefs.coverage.clayLike=Clay, Mud, and Snow
 ui.quick-mining.prefs.coverage.crystals=Amethyst Buds and Clusters
 ui.quick-mining.prefs.coverage.dirtLike=Dirt, Grass Block, and their variants
