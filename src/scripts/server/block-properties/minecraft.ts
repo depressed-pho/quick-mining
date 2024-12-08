@@ -8,6 +8,7 @@ import "./minecraft/glowstone.js";
 import "./minecraft/ice.js";
 import "./minecraft/leaves.js";
 import "./minecraft/minerals.js";
+import "./minecraft/moss.js";
 import "./minecraft/netherrack.js";
 import "./minecraft/obsidian.js";
 import "./minecraft/ores.js";

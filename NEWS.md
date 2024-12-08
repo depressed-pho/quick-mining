@@ -3,11 +3,17 @@
 ## 1.2.0 -- not released yet
 
 * Added a category for [Bookshelf](https://minecraft.wiki/w/Bookshelf)
-  which is enabled by default. This currently does not allow [Chiseled
+  which is enabled by default, as suggested by SLEETYGRAPH5. This currently
+  does not allow [Chiseled
   Bookshelf](https://minecraft.wiki/w/Chiseled_Bookshelf) to be quick-mined
   due to a technical issue. That is, although it's supposed to be a
   container but it doesn't have a block component `minecraft:inventory` and
   thus we cannot retrieve books inside it using the scripting API.
+* Added a category for [Moss Block](https://minecraft.wiki/w/Moss_Block),
+  [Moss Carpet](https://minecraft.wiki/w/Moss_Carpet), [Pale Moss
+  Block](https://minecraft.wiki/w/Pale_Moss_Block), and [Pale Moss
+  Carpet](https://minecraft.wiki/w/Pale_Moss_Carpet) which is disabled by
+  default. They require hoes to quick-mine.
 * Added [Pale Oak](https://minecraft.wiki/w/Pale_oak) log, stripped log,
   wood, and stripped wood, and leaves to their respective
   categories. [Creaking Heart](https://minecraft.wiki/w/Creaking_Heart)

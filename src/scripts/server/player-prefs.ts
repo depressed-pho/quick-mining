@@ -28,6 +28,7 @@ const DEFAULTS: PlayerPrefs = {
         leaves:         true,
         logs:           true,
         minerals:       false,
+        moss:           false,
         mushrooms:      true,
         netherrackLike: false,
         obsidian:       true,

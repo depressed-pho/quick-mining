@@ -185,6 +185,12 @@ Block coverage:
   oxidization levels and waxing of [Block of
   Copper](https://minecraft.wiki/w/Block_of_Copper). These require pickaxes
   of varying tiers. *This option is disabled by default.*
+* **Moss Blocks and Carpets**: Enable quick-mining for [Moss
+  Block](https://minecraft.wiki/w/Moss_Block), [Moss
+  Carpet](https://minecraft.wiki/w/Moss_Carpet), [Pale Moss
+  Block](https://minecraft.wiki/w/Pale_Moss_Block), and [Pale Moss
+  Carpet](https://minecraft.wiki/w/Pale_Moss_Carpet). These require
+  hoes. *This option is disabled by default.*
 * **Mushroom Blocks and Stems**: Enable quick-mining for [Huge
   Mushrooms](https://minecraft.wiki/w/Huge_mushroom). They require
   axes to quick-mine.
