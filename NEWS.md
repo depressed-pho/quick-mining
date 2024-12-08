@@ -8,6 +8,11 @@
   due to a technical issue. That is, although it's supposed to be a
   container but it doesn't have a block component `minecraft:inventory` and
   thus we cannot retrieve books inside it using the scripting API.
+* Added [Pale Oak](https://minecraft.wiki/w/Pale_oak) log, stripped log,
+  wood, and stripped wood, and leaves to their respective
+  categories. [Creaking Heart](https://minecraft.wiki/w/Creaking_Heart)
+  does not count as a wood-like block, and is not eligible for
+  quick-mining.
 
 ## 1.1.10 -- 2024-12-04
 

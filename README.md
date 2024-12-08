@@ -173,9 +173,11 @@ Block coverage:
   [hoes](https://minecraft.wiki/w/Hoe).
 * **Logs and Nether Fungus Stems**: Enable quick-mining for non-stripped
   [Logs](https://minecraft.wiki/w/Log), including the [Nether
-  fungus](https://minecraft.wiki/w/Huge_fungus) variants and
-  [Mangrove Roots](https://minecraft.wiki/w/Mangrove_Roots). These
-  require [axes](https://minecraft.wiki/w/Axe) to quick-mine.
+  fungus](https://minecraft.wiki/w/Huge_fungus) variants and [Mangrove
+  Roots](https://minecraft.wiki/w/Mangrove_Roots). These require
+  [axes](https://minecraft.wiki/w/Axe) to quick-mine. [Creaking
+  Heart](https://minecraft.wiki/w/Creaking_Heart) does not count as a
+  wood-like block, and is not eligible for quick-mining.
 * **Mineral Blocks**: Enable quick-mining for [Mineral
   Blocks](https://minecraft.wiki/w/Block_of_Mineral), except for [Block of
   Amethyst](https://minecraft.wiki/w/Block_of_Amethyst) and Block of [Raw

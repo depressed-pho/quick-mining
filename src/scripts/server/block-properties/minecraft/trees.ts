@@ -5,7 +5,7 @@ import { LootTable, LootPool } from "../../loot-table.js";
 import { treeProps } from "../../tree-properties.js";
 
 // Regular trees.
-for (const tree of ["spruce", "birch", "jungle", "acacia", "dark_oak", "cherry"]) {
+for (const tree of ["spruce", "birch", "jungle", "acacia", "dark_oak", "cherry", "pale_oak"]) {
     treeProps.add({
         log:          `minecraft:${tree}_log`,
         wood:         `minecraft:${tree}_wood`,

@@ -169,6 +169,22 @@ blockProps.addBlockProps(
         }
     });
 
+// Pale oak leaves
+blockProps.addBlockProps(
+    "minecraft:pale_oak_leaves",
+    class extends LeavesProperties {
+        readonly #loots = lootOfLeaves(
+            new ItemStack("minecraft:pale_oak_leaves"),
+            [ new LootPool()
+                .condition(LootCondition.randomChance(1/20, 1/16, 1/12, 1/10))
+                .entry(new ItemStack("minecraft:pale_oak_sapling"))
+            ]);
+
+        public override lootTable(): LootTable {
+            return this.#loots;
+        }
+    });
+
 // Mangrove leaves; they don't drop saplings.
 blockProps.addBlockProps(
     "minecraft:mangrove_leaves",
