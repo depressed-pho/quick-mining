@@ -1,6 +1,6 @@
 # Release notes
 
-## 1.2.0 -- not released yet
+## 1.2.0 -- 2024-12-08
 
 * Added a category for [Bookshelf](https://minecraft.wiki/w/Bookshelf)
   which is enabled by default, as suggested by SLEETYGRAPH5. This currently
