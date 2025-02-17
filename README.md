@@ -230,13 +230,14 @@ Block coverage:
     technically not plants.
   * [Hay bales](https://minecraft.wiki/w/Hay_Bale) require hoes, and they
     do consume its durability.
-* **Abundant rocks such as Stone and Cobblestone**: Enable
-  quick-mining for [Stone](https://minecraft.wiki/w/Stone),
+* **Abundant rocks such as Stone and Cobblestone**: Enable quick-mining for
+  [Stone](https://minecraft.wiki/w/Stone),
   [Cobblestone](https://minecraft.wiki/w/Cobblestone), [Mossy
   Cobblestone](https://minecraft.wiki/w/Mossy_Cobblestone),
-  [Deepslate](https://minecraft.wiki/w/Deepslate), and [Cobbled
-  Deepslate](https://minecraft.wiki/w/Cobbled_Deepslate). *This
-  option is disabled by default.*
+  [Deepslate](https://minecraft.wiki/w/Deepslate), [Cobbled
+  Deepslate](https://minecraft.wiki/w/Cobbled_Deepslate), and [End
+  Stone](https://minecraft.wiki/w/End_Stone). *This option is disabled by
+  default.*
 * **Non-stone Common Rocks such as Andesite, Basalt, and Tuff**: Enable
   quick-mining for [Andesite](https://minecraft.wiki/w/Andesite),
   [Basalt](https://minecraft.wiki/w/Basalt),
