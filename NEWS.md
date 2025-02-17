@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.3.0 -- not released yet
+
+* Updated the addon for Minecraft Bedrock 1.21.60.
+
 ## 1.2.0 -- 2024-12-08
 
 * Added a category for [Bookshelf](https://minecraft.wiki/w/Bookshelf)

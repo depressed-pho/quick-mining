@@ -15,3 +15,4 @@
 * DONE [#C] Simulate Mending and don't spawn XP orbs
 * DONE [#C] Budding amethyst protection (this could be slow)
 * TODO [#C] Show an indicator when the pointer is on a block that is going to be quick-mined (this would be very slow)
+* TODO [#C] Consider switching over to Flatbuffers from ProtoBuf. Maybe it's worth it?
