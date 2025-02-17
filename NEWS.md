@@ -1,8 +1,15 @@
 # Release notes
 
-## 1.3.0 -- not released yet
+## 1.3.0 -- 2025-02-17
 
 * Updated the addon for Minecraft Bedrock 1.21.60.
+* Renamed the category **Stone, Cobblestone, Deepslate, and Cobbled
+  Deepslate** into **Abundant Rocks such as Stone and Cobblestone**.
+* Added [End Stone](https://minecraft.wiki/w/End_Stone) to the category
+  **Abundant Rocks such as Stone and Cobblestone**, as suggested by
+  snerj. Note that this category is disabled by default. Mass-destructing
+  end stone where it is abundant may entail bad consequences. Care should
+  be taken when doing that.
 
 ## 1.2.0 -- 2024-12-08
 

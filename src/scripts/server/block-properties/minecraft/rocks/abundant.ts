@@ -51,3 +51,7 @@ blockProps.addBlockProps(
             return "dig.deepslate";
         }
     });
+
+// End Stone
+blockProps.addBlockProps(
+    "minecraft:end_stone", AbundantRockProperties);
