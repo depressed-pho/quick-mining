@@ -163,6 +163,16 @@ function VineLike<T extends Constructor<BlockProperties>>(base: T) {
     return IgnoringState(base, "vine_direction_bits");
 }
 
+/// Mixin for bush-like plants. They are insta-mined with shears.
+function BushLike<T extends Constructor<BlockProperties>>(base: T) {
+    class BushLike extends MinedWithShears(base) {
+        public override consumesDurability(): boolean {
+            return false;
+        }
+    }
+    return BushLike;
+}
+
 // Cocoa Beans
 blockProps.addBlockProps(
     "minecraft:cocoa",
@@ -315,6 +325,22 @@ blockProps.addBlockProps(
         }
     });
 
+// Bush and Firefly Bush
+blockProps.addBlockProps(
+    "minecraft:bush",
+    class extends BushLike(PlantProperties) {
+        public override breakingSoundId(): string {
+            return "dig.grass";
+        }
+    });
+blockProps.addBlockProps(
+    "minecraft:firefly_bush",
+    class extends BushLike(PlantProperties) {
+        public override breakingSoundId(): string {
+            return "block.sweet_berry_bush.break";
+        }
+    });
+
 // Carrot
 blockProps.addBlockProps(
     "minecraft:carrots",
@@ -327,6 +353,22 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:glow_lichen",
     GlowLichenLike(MinedWithShears(PlantProperties)));
+
+// Short and Tall Dry Grass
+blockProps.addBlockProps(
+    "minecraft:short_dry_grass",
+    class extends BushLike(PlantProperties) {
+        public override breakingSoundId(): string {
+            return "dig.grass";
+        }
+    });
+blockProps.addBlockProps(
+    "minecraft:tall_dry_grass",
+    class extends BushLike(PlantProperties) {
+        public override breakingSoundId(): string {
+            return "dig.grass";
+        }
+    });
 
 // Potato
 blockProps.addBlockProps(

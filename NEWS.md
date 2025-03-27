@@ -3,6 +3,12 @@
 ## 1.4.0 -- 2025-03-27
 
 * Updated the addon for Minecraft Bedrock 1.21.70.
+* Added [Bush](https://minecraft.wiki/w/Bush), [Firefly
+  Bush](https://minecraft.wiki/w/Firefly_Bush), [Short Dry
+  Grass](https://minecraft.wiki/w/Short_Dry_Grass), and [Tall Dry
+  Grass](https://minecraft.wiki/w/Tall_Dry_Grass) to the category **Plants
+  and Crops**. These require shears to quick-mine, and do not consume
+  durability.
 
 ## 1.3.0 -- 2025-02-17
 
