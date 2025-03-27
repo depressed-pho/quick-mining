@@ -9,6 +9,7 @@
   Grass](https://minecraft.wiki/w/Tall_Dry_Grass) to the category **Plants
   and Crops**. These require shears to quick-mine, and do not consume
   durability.
+* Improved the Player Preferences UI for better readability.
 
 ## 1.3.0 -- 2025-02-17
 

@@ -51,6 +51,7 @@ export class PlayerPrefsUI {
         const form = new ModalFormData().title({translate: "ui.quick-mining.prefs.title"});
 
         // Protection
+        form.label("Protection");
         if (PROTECTION.length != Object.entries(prefs.protection).length)
             throw new Error("Internal error: PROTECTION not in sync with proto");
         for (const prot of PROTECTION) {
@@ -65,7 +66,10 @@ export class PlayerPrefsUI {
                 current);
         }
 
+        form.divider();
+
         // Loots
+        form.label("Loots");
         if (LOOTS.length != Object.entries(prefs.loots).length)
             throw new Error("Internal error: LOOTS not in sync with proto");
         for (const loots of LOOTS) {
@@ -79,6 +83,8 @@ export class PlayerPrefsUI {
                 {translate: "ui.quick-mining.prefs.loots." + loots},
                 current);
         }
+
+        form.divider();
 
         // Mode
         form.dropdown(
@@ -97,7 +103,10 @@ export class PlayerPrefsUI {
               ]
             ], prefs.mode);
 
-        // Coverage
+        form.divider();
+
+        // Block Coverage
+        form.label("Block Coverage");
         if (COVERAGE.length != Object.entries(prefs.coverage).length)
             throw new Error("Internal error: COVERAGE not in sync with proto");
         for (const cover of COVERAGE) {
@@ -133,7 +142,7 @@ export class PlayerPrefsUI {
             // Mode
             prefs.mode = res.formValues.getNumber("mode");
 
-            // Coverage
+            // Block Coverage
             for (const cover of COVERAGE) {
                 const value = res.formValues.getBoolean(cover);
 
