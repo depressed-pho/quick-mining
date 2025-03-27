@@ -1,6 +1,8 @@
 import "cicada-lib/shims/console.js";
 import "cicada-lib/shims/timeout.js";
 import { GameMode, Player } from "cicada-lib/player.js";
+import { Latch } from "cicada-lib/sync/latch.js";
+import { spawn } from "cicada-lib/thread.js";
 import { world } from "cicada-lib/world.js";
 import * as Fmt from "cicada-lib/fmt-code.js";
 import { blockProps } from "./block-properties.js";
@@ -9,12 +11,20 @@ import { QuickMiningMode } from "./player-prefs.js";
 import { PlayerSession } from "./player-session.js";
 import { isStandingOn } from "./utils.js";
 import pkg from "package.json";
-import "./block-properties/minecraft.js";
+import * as MinecraftProps from "./block-properties/minecraft.js";
 import "./commands.js";
 
 const SHOW_DEBUG_INFO = false;
 
-world.usePlayerSessions(PlayerSession);
+const propsLoaded = new Latch(1);
+world.afterEvents.worldLoad.subscribe(_ev => {
+    world.usePlayerSessions(PlayerSession);
+
+    spawn(async function* () {
+        yield* MinecraftProps.load();
+        propsLoaded.countDown();
+    });
+});
 
 world.beforeEvents.playerBreakBlock.subscribe(ev => {
     const player  = ev.player;
@@ -122,9 +132,11 @@ function isQuickMiningEnabled(player: Player): boolean {
     }
 }
 
-world.afterEvents.playerSpawn.subscribe(ev => {
+world.afterEvents.playerSpawn.subscribe(async ev => {
     if (!ev.initialSpawn)
         return;
+
+    await propsLoaded.wait();
 
     ev.player.sendMessage([
         Fmt.toString([ Fmt.setColour(Fmt.Colour.Orange) ]),

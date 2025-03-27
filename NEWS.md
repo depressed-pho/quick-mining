@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.4.0 -- 2025-03-27
+
+* Updated the addon for Minecraft Bedrock 1.21.70.
+
 ## 1.3.0 -- 2025-02-17
 
 * Updated the addon for Minecraft Bedrock 1.21.60.

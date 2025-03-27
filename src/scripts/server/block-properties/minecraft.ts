@@ -1,24 +1,32 @@
-import "./minecraft/bones.js";
-import "./minecraft/bookshelves.js";
-import "./minecraft/clay.js";
-import "./minecraft/crystals.js";
-import "./minecraft/dirt.js";
-import "./minecraft/fungi.js";
-import "./minecraft/glowstone.js";
-import "./minecraft/ice.js";
-import "./minecraft/leaves.js";
-import "./minecraft/minerals.js";
-import "./minecraft/moss.js";
-import "./minecraft/netherrack.js";
-import "./minecraft/obsidian.js";
-import "./minecraft/ores.js";
-import "./minecraft/plants.js";
-import "./minecraft/rocks/abundant.js";
-import "./minecraft/rocks/common.js";
-import "./minecraft/rocks/uncommon.js";
-import "./minecraft/sand.js";
-import "./minecraft/sculk-family.js";
-import "./minecraft/soul-sand.js";
-import "./minecraft/shrooms.js";
-import "./minecraft/terracotta.js";
-import "./minecraft/trees.js";
+const MODULES = [
+    "./minecraft/bones.js",
+    "./minecraft/bookshelves.js",
+    "./minecraft/clay.js",
+    "./minecraft/crystals.js",
+    "./minecraft/dirt.js",
+    "./minecraft/fungi.js",
+    "./minecraft/glowstone.js",
+    "./minecraft/ice.js",
+    "./minecraft/leaves.js",
+    "./minecraft/minerals.js",
+    "./minecraft/moss.js",
+    "./minecraft/netherrack.js",
+    "./minecraft/obsidian.js",
+    "./minecraft/ores.js",
+    "./minecraft/plants.js",
+    "./minecraft/rocks/abundant.js",
+    "./minecraft/rocks/common.js",
+    "./minecraft/rocks/uncommon.js",
+    "./minecraft/sand.js",
+    "./minecraft/sculk-family.js",
+    "./minecraft/soul-sand.js",
+    "./minecraft/shrooms.js",
+    "./minecraft/terracotta.js",
+    "./minecraft/trees.js",
+];
+
+export async function* load() {
+    for (const mod of MODULES) {
+        await import(mod);
+    }
+}
