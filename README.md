@@ -317,6 +317,12 @@ typing `;qmine admin` on the chat screen.
 
 # Known issues
 
+* This addon shows a welcome message when you join a world where the addon
+  is installed. But the message is sometimes not shown as of Minecraft
+  Bedrock 1.21.60. This is because the game spawns players long before it
+  starts rendering the world for them, and addons can't know the real
+  readiness. If this happens to you, you can still see the message by
+  opening the chat screen.
 * Tall variants of [Grass and
   Fern](https://minecraft.wiki/w/Grass) cannot be quick-mined due
   to the way how they are implemented in the game. That is, replacing their

@@ -1,5 +1,11 @@
 # Release notes
 
+## 1.5.0 -- not released yet
+
+* Updated the addon for Minecraft Bedrock 1.21.81.
+* Fixed custom commands `;qmine prefs` and `;qmine admin` that have stopped
+  working since MCBE 1.21.80.
+
 ## 1.4.0 -- 2025-03-27
 
 * Updated the addon for Minecraft Bedrock 1.21.70.

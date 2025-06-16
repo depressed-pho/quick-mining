@@ -11,15 +11,24 @@ export class WorldPrefsUI {
             .slider(
                 "timeBudgetInMsPerTick",
                 {translate: "ui.quick-mining.admin.timeBudgetInMsPerTick"},
-                0, 50, 5, worldPrefs.timeBudgetInMsPerTick)
+                0, 50,
+                { defaultValue: worldPrefs.timeBudgetInMsPerTick,
+                  valueStep:    5
+                })
             .slider(
                 "maxHorizontalDistance",
                 {translate: "ui.quick-mining.admin.maxHorizontalDistance"},
-                0, 64, 4, worldPrefs.maxHorizontalDistance)
+                0, 64,
+                { defaultValue: worldPrefs.maxHorizontalDistance,
+                  valueStep:    4
+                })
             .slider(
                 "maxVerticalDistance",
                 {translate: "ui.quick-mining.admin.maxVerticalDistance"},
-                0, 256, 16, worldPrefs.maxVerticalDistance);
+                0, 256,
+                { defaultValue: worldPrefs.maxVerticalDistance,
+                  valueStep:    16
+                });
 
         const res = await form.show(player, {retryWhenBusy: true});
         if (res.formValues) {

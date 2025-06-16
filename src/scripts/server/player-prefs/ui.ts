@@ -63,7 +63,7 @@ export class PlayerPrefsUI {
             form.toggle(
                 prot,
                 {translate: "ui.quick-mining.prefs.protection." + prot},
-                current);
+                {defaultValue: current});
         }
 
         form.divider();
@@ -81,7 +81,7 @@ export class PlayerPrefsUI {
             form.toggle(
                 loots,
                 {translate: "ui.quick-mining.prefs.loots." + loots},
-                current);
+                {defaultValue: current});
         }
 
         form.divider();
@@ -101,7 +101,8 @@ export class PlayerPrefsUI {
               [ QuickMiningMode.AlwaysDisabled,
                 {translate: "ui.quick-mining.prefs.mode.item.alwaysDisabled"}
               ]
-            ], prefs.mode);
+            ],
+            {defaultValueIndex: prefs.mode});
 
         form.divider();
 
@@ -118,7 +119,7 @@ export class PlayerPrefsUI {
             form.toggle(
                 cover,
                 {translate: "ui.quick-mining.prefs.coverage." + cover},
-                current);
+                {defaultValue: current});
         }
 
         const res = await form.show(player, {retryWhenBusy: true});

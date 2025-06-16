@@ -2,7 +2,7 @@ module.exports = {
     common: {
         name: "Quick Mining Addon",
         icon: "quick-mining.png",
-        min_engine_version: "1.21.70"
+        min_engine_version: "1.21.80"
     },
     packs: [
         {

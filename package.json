@@ -1,6 +1,6 @@
 {
   "name": "quick-mining-addon",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Allow players to mine the entire ore veins, trees, and more",
   "scripts": {
     "postinstall": "patch-package",
@@ -29,7 +29,7 @@
     "@protobuf-ts/plugin": "^2.9.3",
     "cicada-build": "github:depressed-pho/cicada-build",
     "patch-package": "^8.0.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@protobuf-ts/runtime": "^2.9.3",
