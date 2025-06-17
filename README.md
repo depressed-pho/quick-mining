@@ -79,9 +79,8 @@ with bare hand will not trigger quick-mining.
 
 # Customization
 
-Type `;qmine prefs` on the chat screen, then close it. A customization UI
-will show up. These are per-player settings and do not affect any other
-players.
+Type `/qmine:prefs` on the chat screen. A customization UI will show
+up. These are per-player settings and do not affect any other players.
 
 ![Screenshot of preferences UI](doc/prefs-ui.jpg)
 
@@ -300,7 +299,7 @@ Block coverage:
 ## For server admins
 
 Players with operator privileges can also change worldwide settings by
-typing `;qmine admin` on the chat screen.
+typing `/qmine:admin` on the chat screen.
 
 * **Time budget for quick-mining in milliseconds per tick**: Setting this
   to higher values may speed up the process of quick-mining, but can cause

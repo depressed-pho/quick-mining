@@ -13,6 +13,7 @@ import { isStandingOn } from "./utils.js";
 import pkg from "package.json";
 import * as MinecraftProps from "./block-properties/minecraft.js";
 import "./commands.js";
+import "./commands/legacy.js";
 
 const SHOW_DEBUG_INFO = false;
 
@@ -162,7 +163,7 @@ world.afterEvents.playerSpawn.subscribe(async ev => {
         Fmt.toString([ Fmt.setColour(Fmt.Colour.Green) ]),
         { translate: "game.quick-mining.message.welcome.prefs-cmd.0" },
         Fmt.toString([ Fmt.setColour(Fmt.Colour.WarmLightGray) ]),
-        ";qmine prefs",
+        "/qmine:prefs",
         Fmt.toString([ Fmt.setColour(Fmt.Colour.Green) ]),
         { translate: "game.quick-mining.message.welcome.prefs-cmd.1" },
         Fmt.toString([ Fmt.reset ])
@@ -173,7 +174,7 @@ world.afterEvents.playerSpawn.subscribe(async ev => {
             Fmt.toString([ Fmt.setColour(Fmt.Colour.Green) ]),
             { translate: "game.quick-mining.message.welcome.admin-cmd.0" },
             Fmt.toString([ Fmt.setColour(Fmt.Colour.WarmLightGray) ]),
-            ";qmine admin",
+            "/qmine:admin",
             Fmt.toString([ Fmt.setColour(Fmt.Colour.Green) ]),
             { translate: "game.quick-mining.message.welcome.admin-cmd.1" },
             Fmt.toString([ Fmt.reset ])

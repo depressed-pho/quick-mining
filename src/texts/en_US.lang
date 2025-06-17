@@ -1,4 +1,8 @@
+game.quick-mining.command.admin=Open Quick Mining world preferences UI
+game.quick-mining.command.prefs=Open Quick Mining user preferences UI
+
 game.quick-mining.message.close-chat=Please close the chat screen so that GUI can show up
+game.quick-mining.message.not-a-player=This command has to be invoked by players.
 
 game.quick-mining.message.welcome.installed= is installed,
 game.quick-mining.message.welcome.mode.when-sneaking= activated when sneaking.

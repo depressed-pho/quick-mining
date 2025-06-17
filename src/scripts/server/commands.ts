@@ -1,39 +1,54 @@
-import { command, subcommand } from "cicada-lib/command.js";
+import { CommandOrigin, CommandResult, ICommand, command } from "cicada-lib/command.js";
 import { Player } from "cicada-lib/player.js";
 import { spawn } from "cicada-lib/thread.js";
 import { PlayerSession } from "./player-session.js";
 
-type QuickMineSubCommand = QuickMineAdminCommand|QuickMinePrefsCommand;
-
-@subcommand("administer")
-class QuickMineAdminCommand {}
-
-@subcommand("preferences", {aliases: ["prefs"]})
-class QuickMinePrefsCommand {}
-
-@command("qmine", {aliases: ["qm"]})
+@command({
+    name: "qmine:admin",
+    description: "game.quick-mining.command.admin",
+    permissionLevel: "admin"
+})
 // @ts-ignore: TypeScript thinks this is unused while it's not.
-class QuickMineCommand {
-    @subcommand([QuickMineAdminCommand, QuickMinePrefsCommand])
-    readonly #subcmd!: QuickMineSubCommand;
-
-    public run(runner: Player) {
-        if (this.#subcmd instanceof QuickMineAdminCommand) {
+class QuickMineAdminCommand implements ICommand {
+    public run(origin: CommandOrigin): CommandResult {
+        if (origin instanceof Player) {
             // We must open it in a separate thread because we're in the
-            // read-only mode right now.
+            // read-only mode right now. The API documentation does not
+            // state this clearly.
             spawn(async function* () {
-                runner.sendMessage({translate: "game.quick-mining.message.close-chat"});
-                await runner.getSession<PlayerSession>().openWorldPrefsUI();
+                origin.getSession<PlayerSession>().openWorldPrefsUI();
             });
-        }
-        else if (this.#subcmd instanceof QuickMinePrefsCommand) {
-            spawn(async function* () {
-                runner.sendMessage({translate: "game.quick-mining.message.close-chat"});
-                await runner.getSession<PlayerSession>().openPlayerPrefsUI();
-            });
+            return {
+                status: "succeeded"
+            };
         }
         else {
-            throw new Error(`Internal error: unknown subcommand: ${this.#subcmd}`);
+            throw new Error(`Impossible origin: ${origin}`);
+        }
+    }
+}
+
+@command({
+    name: "qmine:prefs",
+    description: "game.quick-mining.command.prefs",
+    permissionLevel: "any"
+})
+// @ts-ignore: TypeScript thinks this is unused while it's not.
+class QuickMinePrefsCommand implements ICommand {
+    public run(origin: CommandOrigin): CommandResult {
+        if (origin instanceof Player) {
+            spawn(async function* () {
+                origin.getSession<PlayerSession>().openPlayerPrefsUI();
+            });
+            return {
+                status: "succeeded"
+            };
+        }
+        else {
+            return {
+                message: "game.quick-mining.message.not-a-player",
+                status: "failed"
+            };
         }
     }
 }
