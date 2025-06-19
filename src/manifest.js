@@ -6,7 +6,7 @@ module.exports = {
     },
     packs: [
         {
-            name: "Quick Mining Addon [BP]",
+            name: "${name} v${version} [BP]",
             uuid: "7e534f24-729f-4091-95f5-f8b530d6ebee",
             modules: [
                 {
@@ -34,7 +34,7 @@ module.exports = {
             ]
         },
         {
-            name: "Quick Mining Addon [RP]",
+            name: "${name} v${version} [RP]",
             uuid: "8273c28f-b128-46bb-a1b3-281f98db5fe0",
             modules: [
                 {

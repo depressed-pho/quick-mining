@@ -3,6 +3,8 @@
 ## 1.6.0 -- not released yet
 
 * Updated the addon for Minecraft Bedrock 1.21.90.
+* The name of the addon shown in the pack list now contains version number,
+  as requested by lycannon [#3].
 
 ## 1.5.0 -- 2025-06-19
 
