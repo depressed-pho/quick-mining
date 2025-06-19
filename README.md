@@ -229,9 +229,10 @@ Block coverage:
     technically not plants.
   * [Bush](https://minecraft.wiki/w/Bush), [Firefly
     Bush](https://minecraft.wiki/w/Firefly_Bush), [Short Dry
-    Grass](https://minecraft.wiki/w/Short_Dry_Grass), and [Tall Dry
-    Grass](https://minecraft.wiki/w/Tall_Dry_Grass) requires shears, and
-    they don't consume durability.
+    Grass](https://minecraft.wiki/w/Short_Dry_Grass), [Tall Dry
+    Grass](https://minecraft.wiki/w/Tall_Dry_Grass), and [Leaf
+    Litter](https://minecraft.wiki/w/Leaf_Litter) require shears, and they
+    don't consume durability.
   * [Hay bales](https://minecraft.wiki/w/Hay_Bale) require hoes, and they
     do consume durability.
 * **Abundant rocks such as Stone and Cobblestone**: Enable quick-mining for

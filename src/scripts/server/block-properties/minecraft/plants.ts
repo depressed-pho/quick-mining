@@ -354,6 +354,27 @@ blockProps.addBlockProps(
     "minecraft:glow_lichen",
     GlowLichenLike(MinedWithShears(PlantProperties)));
 
+// Leaf Litter
+blockProps.addBlockProps(
+    "minecraft:leaf_litter",
+    class extends IgnoringAllStates(BushLike(PlantProperties)) {
+        readonly #lootsFor =
+            [1, 2, 3, 4].map(
+                amount =>
+                    new LootTable().always(
+                        [ new LootPool().entry(new ItemStack("minecraft:leaf_litter", amount))
+                        ]));
+
+        public override breakingSoundId(): string {
+            return "dig.grass";
+        }
+
+        public override lootTable(perm: BlockPermutation): LootTable {
+            const growth = perm.states.get("growth")! as number;
+            return this.#lootsFor[growth]!;
+        }
+    });
+
 // Short and Tall Dry Grass
 blockProps.addBlockProps(
     "minecraft:short_dry_grass",
