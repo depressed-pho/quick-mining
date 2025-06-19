@@ -4,7 +4,7 @@ import { spawn } from "cicada-lib/thread.js";
 import { PlayerSession } from "./player-session.js";
 
 @command({
-    name: "qmine:admin",
+    name: "quick-mining:qmine-admin",
     description: "game.quick-mining.command.admin",
     permissionLevel: "admin"
 })
@@ -29,7 +29,7 @@ class QuickMineAdminCommand implements ICommand {
 }
 
 @command({
-    name: "qmine:prefs",
+    name: "quick-mining:qmine-prefs",
     description: "game.quick-mining.command.prefs",
     permissionLevel: "any"
 })

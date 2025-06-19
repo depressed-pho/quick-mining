@@ -79,7 +79,7 @@ with bare hand will not trigger quick-mining.
 
 # Customization
 
-Type `/qmine:prefs` on the chat screen. A customization UI will show
+Type `/qmine-prefs` on the chat screen. A customization UI will show
 up. These are per-player settings and do not affect any other players.
 
 ![Screenshot of preferences UI](doc/prefs-ui.jpg)
@@ -300,7 +300,7 @@ Block coverage:
 ## For server admins
 
 Players with operator privileges can also change worldwide settings by
-typing `/qmine:admin` on the chat screen.
+typing `/qmine-admin` on the chat screen.
 
 * **Consume hunger bar proportionally to the number of blocks mined**:
   Turning this option on makes quick-mining consume the hunger bar the same

@@ -1,34 +1,36 @@
 # Release notes
 
-## 1.6.0 -- not released yet
+## 1.6.0 -- 2025-06-19
 
 * Updated the addon for Minecraft Bedrock 1.21.90 [#5].
 * The name of the addon shown in the pack list now contains version number,
   as requested by lycannon [#3].
-* Quick-mining now consumes the hunger bar proportionally to the number of
-  blocks mined by default. And when the hunger bar of the player drops
-  below 3 points (1.5 ham shanks), they lose their ability to perform
-  quick-mining. Previously the addon didn't consume the hunger value at
-  all.
-  * Since this is essentially a nerf of the addon, this behavior can be
-    turned off via worldwide settings that can be opened with
-    `/qmine-admin` if you are on a singleplayer world or a server op.
-
-FIXME: rename the commands
-
-## 1.5.0 -- 2025-06-19
-
-* Updated the addon for Minecraft Bedrock 1.21.81.
 * Fixed custom commands `;qmine prefs` and `;qmine admin` that have stopped
   working since MCBE 1.21.80. Reported by TELDAX-2 and Nicane (#4).
 * Migrated to native custom commands introduced in MCBE 1.21.80. The
-  per-player preferences UI can now be opened via `/qmine:prefs`, and the
-  admin UI can be opened via `/qmine:admin`. Legacy commands still work,
+  per-player preferences UI can now be opened via `/qmine-prefs`, and the
+  admin UI can be opened via `/qmine-admin`. Legacy commands still work,
   but they are deprecated and will probably be removed in the future. (The
   migration was my plan, but also suggested separately by XEnzoX9808)
 * Added [Leaf Litter](https://minecraft.wiki/w/Leaf_Litter) to the category
   **Plants and Crops**. It requires shears to quick-mine, and does not
   consume durability. Suggested by captaingreed477
+* Quick-mining now consumes the hunger bar proportionally to the number of
+  blocks mined. And when the hunger bar of the player drops below 3 points
+  (1.5 ham shanks), they lose their ability to perform
+  quick-mining. Previously the addon didn't consume the hunger value at
+  all.
+  * Since this is essentially a nerf of the addon, this behavior can be
+    turned off via worldwide settings that can be opened with
+    `/qmine-admin` if you are on a singleplayer world or a server op.
+  * We are not going to add a toggle button for turning consumption of tool
+    durability off, because the addon has always done it since the very
+    beginning.
+
+## 1.5.0 -- 2025-06-19
+
+* 1.5.0 was meant to be an update for Minecraft Bedrock 1.21.81 but its
+  release was canceled.
 
 ## 1.4.0 -- 2025-03-27
 
