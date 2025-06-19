@@ -2,9 +2,19 @@
 
 ## 1.6.0 -- not released yet
 
-* Updated the addon for Minecraft Bedrock 1.21.90.
+* Updated the addon for Minecraft Bedrock 1.21.90 [#5].
 * The name of the addon shown in the pack list now contains version number,
   as requested by lycannon [#3].
+* Quick-mining now consumes the hunger bar proportionally to the number of
+  blocks mined by default. And when the hunger bar of the player drops
+  below 3 points (1.5 ham shanks), they lose their ability to perform
+  quick-mining. Previously the addon didn't consume the hunger value at
+  all.
+  * Since this is essentially a nerf of the addon, this behavior can be
+    turned off via worldwide settings that can be opened with
+    `/qmine-admin` if you are on a singleplayer world or a server op.
+
+FIXME: rename the commands
 
 ## 1.5.0 -- 2025-06-19
 

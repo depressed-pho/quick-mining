@@ -15,6 +15,7 @@ game.quick-mining.message.welcome.admin-cmd.0=Type "
 game.quick-mining.message.welcome.admin-cmd.1=" in the chat screen to change the world settings.
 
 ui.quick-mining.admin.title=Quick Mining: World Preferences
+ui.quick-mining.admin.consumeHungerBar=Consume hunger bar proportionally to the number of blocks mined
 ui.quick-mining.admin.timeBudgetInMsPerTick=Time budget for quick-mining in milliseconds per tick
 ui.quick-mining.admin.maxHorizontalDistance=Maximum horizontal distance for blocks to quick-mine
 ui.quick-mining.admin.maxVerticalDistance=Maximum vertical distance for blocks to quick-mine

@@ -8,6 +8,10 @@ export class WorldPrefsUI {
     public static async open(player: Player): Promise<void> {
         const form = new ModalFormData()
             .title({translate: "ui.quick-mining.admin.title"})
+            .toggle(
+                "consumeHungerBar",
+                {translate: "ui.quick-mining.admin.consumeHungerBar"},
+                {defaultValue: worldPrefs.consumeHungerBar})
             .slider(
                 "timeBudgetInMsPerTick",
                 {translate: "ui.quick-mining.admin.timeBudgetInMsPerTick"},
@@ -32,6 +36,8 @@ export class WorldPrefsUI {
 
         const res = await form.show(player, {retryWhenBusy: true});
         if (res.formValues) {
+            worldPrefs.consumeHungerBar =
+                res.formValues.getBoolean("consumeHungerBar");
             worldPrefs.timeBudgetInMsPerTick =
                 res.formValues.getNumber("timeBudgetInMsPerTick");
             worldPrefs.maxHorizontalDistance =

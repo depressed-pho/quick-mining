@@ -302,6 +302,12 @@ Block coverage:
 Players with operator privileges can also change worldwide settings by
 typing `/qmine:admin` on the chat screen.
 
+* **Consume hunger bar proportionally to the number of blocks mined**:
+  Turning this option on makes quick-mining consume the hunger bar the same
+  way as mining blocks in the regular way. And when the hunger bar of the
+  player drops below 3 points (1.5 ham shanks), they lose their ability to
+  perform quick-mining. Turning it off may slightly improve performance of
+  the addon but makes it OP so it's not recommended.
 * **Time budget for quick-mining in milliseconds per tick**: Setting this
   to higher values may speed up the process of quick-mining, but can cause
   severe server lags. MCBE addons are single-threaded, that is, addon
@@ -336,11 +342,6 @@ typing `/qmine:admin` on the chat screen.
   a block state indicating that they are covering *something*, but the
   thing they cover is not accessible from the scripting API. Addons can
   therefore not uncover them nor harvest covered plants.
-* The addon lets players mine blocks without consuming their
-  [Hunger](https://minecraft.wiki/w/Hunger) value. This is because
-  the scripting API is currently not capable of allowing addons to
-  manipulate hunger. You might consider it overpowered but you have to live
-  with that.
 * [Chiseled Bookshelf](https://minecraft.wiki/w/Chiseled_Bookshelf) cannot
   be quick-mined. It is supposed to be a container but it doesn't have a
   block component `minecraft:inventory` and thus we cannot retrieve books

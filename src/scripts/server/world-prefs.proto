@@ -2,6 +2,7 @@ syntax = "proto3";
 package quickMining;
 
 message WorldPrefs {
+  optional bool consumeHungerBar = 4;
   optional uint32 timeBudgetInMsPerTick = 1; // Max 50
   optional uint32 maxHorizontalDistance = 2;
   optional uint32 maxVerticalDistance = 3;

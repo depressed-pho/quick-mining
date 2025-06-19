@@ -31,6 +31,7 @@ export class MinerThread extends Thread {
     #experience: number;
 
     public static readonly TOOL_PROTECTION_MARGIN = 4;
+    public static readonly HUNGER_BAR_THRESHOLD = 3;
 
     public constructor(player: Player, tool: ItemStack, origin: Block, perm: BlockPermutation) {
         super();
@@ -96,6 +97,11 @@ export class MinerThread extends Thread {
 
                     if (!this.#tryMining(block, way, perm))
                         break;
+
+                    if (worldPrefs.consumeHungerBar) {
+                        if (!this.#consumeHungerBar())
+                            break;
+                    }
 
                     if (timer.elapsedMs >= worldPrefs.timeBudgetInMsPerTick) {
                         this.#flushLoots();
@@ -191,7 +197,7 @@ export class MinerThread extends Thread {
         this.#soundsPlayed.add(soundId);
     }
 
-    /// Return `true` if we should continue mining blocks. `false` otherwise.
+    /// Return `true` iff we should continue mining blocks.
     #tryMining(block: Block, way: MiningWay, perm: BlockPermutation): boolean {
         console.assert(
             way === MiningWay.MineRegularly ||
@@ -270,6 +276,23 @@ export class MinerThread extends Thread {
         props.break(block, tool);
 
         return toolWithstood;
+    }
+
+    /// Return `true` iff we should continue mining blocks.
+    #consumeHungerBar(): boolean {
+        if (!this.#player.isValid)
+            return false;
+
+        this.#player.exhaustion.current += 0.005;
+        if (this.#player.exhaustion.current >= 4) {
+            this.#player.exhaustion.current -= 4;
+            if (this.#player.saturation.current > 0)
+                this.#player.saturation.current = Math.max(0, this.#player.saturation.current - 1);
+            else
+                this.#player.hunger.current = Math.max(0, this.#player.hunger.current - 1);
+            return this.#player.hunger.current >= MinerThread.HUNGER_BAR_THRESHOLD;
+        }
+        return true;
     }
 
     #flushLoots() {

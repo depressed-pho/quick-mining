@@ -10,6 +10,7 @@ import { MinerThread } from "./miner-thread.js";
 import { QuickMiningMode } from "./player-prefs.js";
 import { PlayerSession } from "./player-session.js";
 import { isStandingOn } from "./utils.js";
+import { worldPrefs } from "./world-prefs.js";
 import pkg from "package.json";
 import * as MinecraftProps from "./block-properties/minecraft.js";
 import "./commands.js";
@@ -74,6 +75,9 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     }
 
     if (!isQuickMiningEnabled(player))
+        return;
+
+    if (worldPrefs.consumeHungerBar && player.hunger.current < MinerThread.HUNGER_BAR_THRESHOLD)
         return;
 
     if (!props.isToolSuitable(perm, tool, prefs))

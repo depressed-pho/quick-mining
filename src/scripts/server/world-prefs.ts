@@ -8,6 +8,7 @@ export type WorldPrefs = DeepRequired<PB.WorldPrefs>;
 
 // This has to be kept in sync with world-prefs/ui.ts
 const DEFAULTS: WorldPrefs = {
+    consumeHungerBar:      true,
     timeBudgetInMsPerTick: 30,
     maxHorizontalDistance: 16,
     maxVerticalDistance:   32,
