@@ -2,7 +2,7 @@ module.exports = {
     common: {
         name: "Quick Mining Addon",
         icon: "quick-mining.png",
-        min_engine_version: "1.21.80"
+        min_engine_version: "1.21.90"
     },
     packs: [
         {
@@ -25,11 +25,11 @@ module.exports = {
                 },
                 {
                     module_name: "@minecraft/server",
-                    version: "2.0.0-beta"
+                    version: "2.1.0-beta"
                 },
                 {
                     module_name: "@minecraft/server-ui",
-                    version: "2.0.0-beta"
+                    version: "2.1.0-beta"
                 }
             ]
         },

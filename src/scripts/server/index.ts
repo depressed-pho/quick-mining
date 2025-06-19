@@ -1,6 +1,6 @@
 import "cicada-lib/shims/console.js";
 import "cicada-lib/shims/timeout.js";
-import { GameMode, Player } from "cicada-lib/player.js";
+import { GameMode, Player, PlayerPermissionLevel } from "cicada-lib/player.js";
 import { Latch } from "cicada-lib/sync/latch.js";
 import { spawn } from "cicada-lib/thread.js";
 import { world } from "cicada-lib/world.js";
@@ -65,7 +65,7 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     // Tool protection should happen regardless of whether quick-mining is
     // enabled.
     if (prefs.protection.abortBeforeNamedToolBreaks &&
-        player.gameMode !== GameMode.creative &&
+        player.gameMode !== GameMode.Creative &&
         tool.nameTag !== undefined &&
         (tool.durability?.current ?? Infinity) <= MinerThread.TOOL_PROTECTION_MARGIN) {
 
@@ -169,7 +169,7 @@ world.afterEvents.playerSpawn.subscribe(async ev => {
         Fmt.toString([ Fmt.reset ])
     ]);
 
-    if (ev.player.isOp) {
+    if (ev.player.permissionLevel >= PlayerPermissionLevel.Operator) {
         ev.player.sendMessage([
             Fmt.toString([ Fmt.setColour(Fmt.Colour.Green) ]),
             { translate: "game.quick-mining.message.welcome.admin-cmd.0" },

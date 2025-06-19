@@ -113,7 +113,7 @@ export class MinerThread extends Thread {
 
     get #isCreative(): boolean {
         if (this.#player.isValid)
-            return this.#player.gameMode == GameMode.creative;
+            return this.#player.gameMode == GameMode.Creative;
         else
             return false;
     }
