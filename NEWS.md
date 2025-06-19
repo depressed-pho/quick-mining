@@ -4,7 +4,7 @@
 
 * Updated the addon for Minecraft Bedrock 1.21.81.
 * Fixed custom commands `;qmine prefs` and `;qmine admin` that have stopped
-  working since MCBE 1.21.80. Reported by TELDAX-2
+  working since MCBE 1.21.80. Reported by TELDAX-2 and Nicane (#4).
 * Migrated to native custom commands introduced in MCBE 1.21.80. The
   per-player preferences UI can now be opened via `/qmine:prefs`, and the
   admin UI can be opened via `/qmine:admin`. Legacy commands still work,
