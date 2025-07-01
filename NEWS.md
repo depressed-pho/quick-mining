@@ -1,6 +1,6 @@
 # Release notes
 
-## 1.7.0 -- not released yet
+## 1.7.0 -- 2025-07-02
 
 * Fixed an issue where changes made to `/qmine-prefs` or `/qmine-admin` GUI
   would not be saved [#7]. Reported by RutvikFozdar, SynovialAlloy, and
