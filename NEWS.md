@@ -3,7 +3,8 @@
 ## 1.7.0 -- not released yet
 
 * Fixed an issue where changes made to `/qmine-prefs` or `/qmine-admin` GUI
-  would not be saved [#7].
+  would not be saved [#7]. Reported by RutvikFozdar, SynovialAlloy, and
+  ABadPlayer76233.
 * Fixed an issue where the hunger bar would be consumed when it
   shouldn't. Specifically, blocks that are mined as a bonus, such as leaves
   that are broken as a result of nearby logs being mined, no longer
