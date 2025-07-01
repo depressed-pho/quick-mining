@@ -17,14 +17,20 @@ class MossLikeProperties extends BlockProperties {
     }
 }
 
+class MossCarpetLikeProperties extends MossLikeProperties {
+    public override dependence(): number {
+        return 2;
+    }
+}
+
 // Moss Block
 blockProps.addBlockProps("minecraft:moss_block", MossLikeProperties);
 
 // Moss Carpet
-blockProps.addBlockProps("minecraft:moss_carpet", MossLikeProperties);
+blockProps.addBlockProps("minecraft:moss_carpet", MossCarpetLikeProperties);
 
 // Pale Moss Block
 blockProps.addBlockProps("minecraft:pale_moss_block", MossLikeProperties);
 
 // Pale Moss Carpet
-blockProps.addBlockProps("minecraft:pale_moss_carpet", MossLikeProperties);
+blockProps.addBlockProps("minecraft:pale_moss_carpet", MossCarpetLikeProperties);

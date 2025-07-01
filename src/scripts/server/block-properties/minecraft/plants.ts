@@ -96,6 +96,16 @@ function MinedWithHoeOrShears<T extends Constructor<BlockProperties & IIsToolSui
     return MinedWithHoeOrShears;
 }
 
+/// Mixin for plants that require supporting blocks.
+function Dependent<T extends Constructor<BlockProperties>>(base: T) {
+    abstract class Dependent extends base {
+        public override dependence(): number {
+            return 2;
+        }
+    }
+    return Dependent;
+}
+
 /// Mixin for crops. Their seed drops use binomial distribution.
 function Crop<T extends Constructor<BlockProperties & IIsToolSuitable>>(
     base: T, item: ItemStack, seed: ItemStack, extraPools?: LootPool[]) {
@@ -179,6 +189,10 @@ blockProps.addBlockProps(
     class extends IgnoringState(
         MinedWithAxe(PlantProperties), "direction") {
 
+        public override dependence(): number {
+            return 2;
+        }
+
         readonly #immatureLoots = new LootTable()
             .always(
                 // Only one bean.
@@ -230,7 +244,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:nether_wart",
     class extends DiscreteUniformDrops(
-        MinedWithHoe(PlantProperties),
+        MinedWithHoe(Dependent(PlantProperties)),
         new ItemStack("minecraft:nether_wart"),
         2, 4, undefined,
         new ItemStack("minecraft:nether_wart")) {
@@ -260,7 +274,7 @@ blockProps.addBlockProps(
 // breaks their lower-halves.
 blockProps.addBlockProps(
     "minecraft:tallgrass",
-    class extends MinedWithHoeOrShears(PlantProperties) {
+    class extends MinedWithHoeOrShears(Dependent(PlantProperties)) {
         readonly #grassLoots = new LootTable()
             .when(
                 LootCondition.matchTool().typeId("minecraft:shears"),
@@ -316,7 +330,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:beetroot",
     class extends Crop(
-        MinedWithHoe(PlantProperties),
+        MinedWithHoe(Dependent(PlantProperties)),
         new ItemStack("minecraft:beetroot"),
         new ItemStack("minecraft:beetroot_seeds")) {
 
@@ -328,14 +342,14 @@ blockProps.addBlockProps(
 // Bush and Firefly Bush
 blockProps.addBlockProps(
     "minecraft:bush",
-    class extends BushLike(PlantProperties) {
+    class extends BushLike(Dependent(PlantProperties)) {
         public override breakingSoundId(): string {
             return "dig.grass";
         }
     });
 blockProps.addBlockProps(
     "minecraft:firefly_bush",
-    class extends BushLike(PlantProperties) {
+    class extends BushLike(Dependent(PlantProperties)) {
         public override breakingSoundId(): string {
             return "block.sweet_berry_bush.break";
         }
@@ -345,19 +359,19 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:carrots",
     Crop(
-        MinedWithHoe(PlantProperties),
+        MinedWithHoe(Dependent(PlantProperties)),
         new ItemStack("minecraft:carrot"),
         new ItemStack("minecraft:carrot")));
 
 // Glow Lichen
 blockProps.addBlockProps(
     "minecraft:glow_lichen",
-    GlowLichenLike(MinedWithShears(PlantProperties)));
+    GlowLichenLike(MinedWithShears(Dependent(PlantProperties))));
 
 // Leaf Litter
 blockProps.addBlockProps(
     "minecraft:leaf_litter",
-    class extends IgnoringAllStates(BushLike(PlantProperties)) {
+    class extends IgnoringAllStates(BushLike(Dependent(PlantProperties))) {
         readonly #lootsFor =
             [1, 2, 3, 4].map(
                 amount =>
@@ -378,14 +392,14 @@ blockProps.addBlockProps(
 // Short and Tall Dry Grass
 blockProps.addBlockProps(
     "minecraft:short_dry_grass",
-    class extends BushLike(PlantProperties) {
+    class extends BushLike(Dependent(PlantProperties)) {
         public override breakingSoundId(): string {
             return "dig.grass";
         }
     });
 blockProps.addBlockProps(
     "minecraft:tall_dry_grass",
-    class extends BushLike(PlantProperties) {
+    class extends BushLike(Dependent(PlantProperties)) {
         public override breakingSoundId(): string {
             return "dig.grass";
         }
@@ -395,7 +409,7 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:potatoes",
     Crop(
-        MinedWithHoe(PlantProperties),
+        MinedWithHoe(Dependent(PlantProperties)),
         new ItemStack("minecraft:potato"),
         new ItemStack("minecraft:potato"),
         [ new LootPool()
@@ -406,7 +420,7 @@ blockProps.addBlockProps(
 // Vines
 blockProps.addBlockProps(
     "minecraft:vine",
-    class extends VineLike(MinedWithShears(PlantProperties)) {
+    class extends VineLike(MinedWithShears(Dependent(PlantProperties))) {
         public override breakingSoundId(): string {
             return "dig.roots";
         }
@@ -416,6 +430,6 @@ blockProps.addBlockProps(
 blockProps.addBlockProps(
     "minecraft:wheat",
     Crop(
-        MinedWithHoe(PlantProperties),
+        MinedWithHoe(Dependent(PlantProperties)),
         new ItemStack("minecraft:wheat"),
         new ItemStack("minecraft:wheat_seeds")));

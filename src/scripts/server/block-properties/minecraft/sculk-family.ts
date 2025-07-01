@@ -67,6 +67,10 @@ blockProps.addBlockProps(
         SculkFamilyProperties,
         LootCondition.matchTool().enchantment("silk_touch")) {
 
+        public override dependence(): number {
+            return 2;
+        }
+
         public breakingSoundId(): string {
             return "break.sculk_vein";
         }

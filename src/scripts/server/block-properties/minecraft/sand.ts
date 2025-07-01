@@ -6,6 +6,10 @@ import { PlayerPrefs } from "../../player-prefs.js";
 
 /// Base class for sand-like blocks.
 abstract class SandLikeProperties extends BlockProperties {
+    public override dependence(): number {
+        return 1;
+    }
+
     public isToolSuitable(_perm: BlockPermutation, tool: ItemStack, prefs: PlayerPrefs) {
         if (prefs.coverage.sandLike)
             return tool.tags.has("minecraft:is_shovel");

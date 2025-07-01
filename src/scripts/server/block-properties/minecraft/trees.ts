@@ -85,12 +85,12 @@ blockProps.addBlockProps(
 
         readonly #nothing = new LootTable();
 
-        public breakingSoundId(): string {
-            return "dig.grass";
+        public override dependence(): number {
+            return 3;
         }
 
-        public override isFragile(): boolean {
-            return true;
+        public breakingSoundId(): string {
+            return "dig.grass";
         }
 
         public isToolSuitable(): boolean {

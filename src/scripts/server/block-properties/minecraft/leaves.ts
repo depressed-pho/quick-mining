@@ -31,6 +31,10 @@ function lootOfLeaves(leafBlock: ItemStack, extraPools: LootPool[]): LootTable {
 
 /// Base class for all leaf blocks.
 class LeavesProperties extends IgnoringState(BlockProperties, "update_bit") {
+    public override dependence(): number {
+        return 2;
+    }
+
     public breakingSoundId(): string {
         return "dig.grass";
     }

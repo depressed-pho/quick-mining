@@ -4,6 +4,11 @@
 
 * Fixed an issue where changes made to `/qmine-prefs` or `/qmine-admin` GUI
   would not be saved [#7].
+* Reimplemented the mining priority system to fix an issue where loots from
+  leaves that are broken as a consequence of mining nearby logs could
+  sometimes drop without being auto-collected. This also allows us to
+  implement quick-mining blocks that are generated with fragile attachments
+  such as Coral.
 
 ## 1.6.0 -- 2025-06-19
 

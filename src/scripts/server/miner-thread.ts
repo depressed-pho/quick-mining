@@ -24,8 +24,8 @@ export class MinerThread extends Thread {
     readonly #origProps: BlockProperties;
     readonly #scanned: LocationSet; // negative cache for scanning
     readonly #toScan: LocationSet;
-    readonly #toMine: OrdMap<Block, [MiningWay, BlockPermutation]>;
-    readonly #toMineFragile: OrdMap<Block, [MiningWay, BlockPermutation]>;
+    // First categorised by the dependence level, then Block.
+    readonly #toMineFor: OrdMap<number, OrdMap<Block, [MiningWay, BlockPermutation]>>;
     readonly #loots: ItemBag;
     readonly #soundsPlayed: Set<string>;
     #experience: number;
@@ -33,33 +33,32 @@ export class MinerThread extends Thread {
     public static readonly TOOL_PROTECTION_MARGIN = 4;
     public static readonly HUNGER_BAR_THRESHOLD = 3;
 
+    static #ordBlock(ba: Block, bb: Block): -1|0|1 {
+        // We sort scheduled blocks by Y, then X, and then Z, and mine
+        // blocks from the highest to the lowest. This is because blocks
+        // might be gravity-affected and we don't want them to fall.
+        return ba.y > bb.y ?  1 :
+            ba.y < bb.y ? -1 :
+            ba.x > bb.x ?  1 :
+            ba.x < bb.x ? -1 :
+            ba.z > bb.z ?  1 :
+            ba.z < bb.z ? -1 :
+            0;
+    }
+
     public constructor(player: Player, tool: ItemStack, origin: Block, perm: BlockPermutation) {
         super();
-        this.#player      = player;
-        this.#playerPrefs = player.getSession<PlayerSession>().playerPrefs;
-        this.#tool        = tool;
-        this.#dimension   = origin.dimension;
-        this.#origLoc     = origin.location;
-        this.#origPerm    = perm;
-        this.#origProps   = blockProps.get(perm);
+        this.#player       = player;
+        this.#playerPrefs  = player.getSession<PlayerSession>().playerPrefs;
+        this.#tool         = tool;
+        this.#dimension    = origin.dimension;
+        this.#origLoc      = origin.location;
+        this.#origPerm     = perm;
+        this.#origProps    = blockProps.get(perm);
 
-        const ordBlock  = (ba: Block, bb: Block) => {
-            // We sort scheduled blocks by Y, then X, and then Z, and mine
-            // blocks from the highest to the lowest. This is because
-            // blocks might be gravity-affected and we don't want them to
-            // fall.
-            return ba.y > bb.y ?  1 :
-                   ba.y < bb.y ? -1 :
-                   ba.x > bb.x ?  1 :
-                   ba.x < bb.x ? -1 :
-                   ba.z > bb.z ?  1 :
-                   ba.z < bb.z ? -1 :
-                   0;
-        };
-        this.#scanned       = new LocationSet();
-        this.#toScan        = new LocationSet();
-        this.#toMine        = new OrdMap(ordBlock);
-        this.#toMineFragile = new OrdMap(ordBlock);
+        this.#scanned      = new LocationSet();
+        this.#toScan       = new LocationSet();
+        this.#toMineFor    = new OrdMap();
 
         this.#loots        = new ItemBag();
         this.#soundsPlayed = new Set();
@@ -87,8 +86,8 @@ export class MinerThread extends Thread {
 
         // The second path: mine all blocks that we have decided to mine.
         try {
-            // We must mine fragile blocks first.
-            for (const toMine of [this.#toMineFragile, this.#toMine]) {
+            // We must mine the most fragile blocks first.
+            for (const toMine of this.#toMineFor.values().reverse()) {
                 for (const [block, [way, perm]] of toMine.entries().reverse()) {
                     if (this.#playerPrefs.protection.keepGroundFromQuickMined) {
                         if (this.#player.isValid && isStandingOn(this.#player, block))
@@ -155,10 +154,14 @@ export class MinerThread extends Thread {
             case MiningWay.MineAsABonus:
                 const perm  = block.permutation;
                 const props = blockProps.get(perm);
-                if (props.isFragile(perm))
-                    this.#toMineFragile.set(block, [way, perm]);
-                else
-                    this.#toMine.set(block, [way, perm]);
+
+                const depLv  = props.dependence(perm);
+                let   toMine = this.#toMineFor.get(depLv);
+                if (!toMine) {
+                    toMine = new OrdMap(MinerThread.#ordBlock);
+                    this.#toMineFor.set(depLv, toMine);
+                }
+                toMine.set(block, [way, perm]);
 
                 this.#scanned.add(loc);
 

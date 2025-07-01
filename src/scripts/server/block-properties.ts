@@ -32,13 +32,18 @@ export abstract class BlockProperties {
         return false;
     }
 
-    /** See if the block breaks itself when it's not attached to an
-     * adjacent block. Keep in mind that this isn't perfect, that is,
-     * fragile blocks MUST NOT be quick-mined if their only supporting
-     * blocks are also fragile.
+    /** Dependence level of the block.
+     *
+     * - Level 0 is a free-standing block that doesn't require any
+     *   supporting blocks, such as cobblestone.
+     * - Level 1 is a gravity-affected block, such as sand.
+     * - Level 2 is a block that requires support from level <2 blocks,
+     *   such as leaves.
+     * - Level 3 is a block that requires support from level <3 blocks,
+     *   such as mangrove propagules.
      */
-    public isFragile(_perm: BlockPermutation): boolean {
-        return false;
+    public dependence(_perm: BlockPermutation): number {
+        return 0;
     }
 
     /** See if a quick mining should be initiated by mining the block using
