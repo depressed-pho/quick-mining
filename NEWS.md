@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.7.0 -- not released yet
+
+* Fixed an issue where changes made to `/qmine-prefs` or `/qmine-admin` GUI
+  would not be saved [#7].
+
 ## 1.6.0 -- 2025-06-19
 
 * Updated the addon for Minecraft Bedrock 1.21.90 [#5].
