@@ -139,6 +139,21 @@ Block coverage:
   Block](https://minecraft.wiki/w/Snow_Block), and
   [Snow](https://minecraft.wiki/w/Snow). These require
   [shovels](https://minecraft.wiki/w/Shovel) to quick-mine.
+* **Corals**: Enable quick-mining for
+  [Coral](https://minecraft.wiki/w/Coral), [Dead
+  Coral](https://minecraft.wiki/w/Dead_Coral), [Coral
+  Fans](https://minecraft.wiki/w/Coral_Fans), [Dead Coral
+  Fans](https://minecraft.wiki/w/Dead_Coral_Fans), [Coral
+  Blocks](https://minecraft.wiki/w/Coral_Blocks), and [Dead Coral
+  Blocks](https://minecraft.wiki/w/Dead_Coral_Block). These require
+  pickaxes with Silk Touch, except for Coral Blocks that can also be
+  quick-mined with a non-silk-touch pickaxe (although doing so kills the
+  corals). Mining non-block corals or fans do not consume tool
+  durability. Mining Coral Blocks also mines non-block Corals, Coral Fans,
+  and [Sea Pickles](https://minecraft.wiki/w/Sea_Pickle) attached to them
+  with no tool durability nor hunger bar consumption, but non-block Corals
+  and Fans are destroyed in this case because that's what happens in
+  vanilla Minecraft.
 * **Amethyst Buds and Clusters**: Enable quick-mining for [Amethyst
   Buds](https://minecraft.wiki/w/Amethyst_Cluster) of any size, as
   well as Amethyst Clusters. These require
@@ -227,6 +242,9 @@ Block coverage:
     that [Sculk Vein](https://minecraft.wiki/w/Sculk_Vein) does
     not count as a plant, while Glow Lichen counts although lichens are
     technically not plants.
+  * [Sea Pickle](https://minecraft.wiki/w/Sea_Pickle) requires shears to
+    quick-mine, and does not consume tool durability. It counts as a plant
+    although it's in fact not.
   * [Bush](https://minecraft.wiki/w/Bush), [Firefly
     Bush](https://minecraft.wiki/w/Firefly_Bush), [Short Dry
     Grass](https://minecraft.wiki/w/Short_Dry_Grass), [Tall Dry

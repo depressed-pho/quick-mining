@@ -21,6 +21,7 @@ const DEFAULTS: PlayerPrefs = {
         bones:          false,
         bookshelves:    true,
         clayLike:       true,
+        corals:         true,
         crystals:       true,
         dirtLike:       false,
         glowstoneLike:  true,

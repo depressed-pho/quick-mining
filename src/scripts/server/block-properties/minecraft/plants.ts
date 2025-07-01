@@ -417,6 +417,32 @@ blockProps.addBlockProps(
             .entry(new ItemStack("minecraft:poisonous_potato"))
         ]));
 
+// Sea Pickle
+blockProps.addBlockProps(
+    "minecraft:sea_pickle",
+    class extends IgnoringAllStates(MinedWithShears(PlantProperties)) {
+        readonly #lootsFor =
+            [1, 2, 3, 4].map(
+                amount =>
+                    new LootTable().always(
+                        [ new LootPool().entry(new ItemStack("minecraft:sea_pickle", amount))
+                        ]));
+
+        public override breakingSoundId(): string {
+            return "hit.slime";
+        }
+
+        public override consumesDurability(): boolean {
+            return false;
+        }
+
+        public override lootTable(perm: BlockPermutation): LootTable {
+            // The count is 0-based.
+            const count = perm.states.get("cluster_count") as number;
+            return this.#lootsFor[count]!;
+        }
+    });
+
 // Vines
 blockProps.addBlockProps(
     "minecraft:vine",

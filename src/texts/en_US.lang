@@ -33,6 +33,7 @@ ui.quick-mining.prefs.loots.autoCollect=Automatically collect items and XP orbs
 ui.quick-mining.prefs.coverage.bones=Bones
 ui.quick-mining.prefs.coverage.bookshelves=Bookshelves
 ui.quick-mining.prefs.coverage.clayLike=Clay, Mud, and Snow
+ui.quick-mining.prefs.coverage.corals=Coral, Coral Fans, and Coral Blocks
 ui.quick-mining.prefs.coverage.crystals=Amethyst Buds and Clusters
 ui.quick-mining.prefs.coverage.dirtLike=Dirt, Grass Block, and their variants
 ui.quick-mining.prefs.coverage.glowstoneLike=Glowstone and Sea Lantern

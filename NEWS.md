@@ -18,6 +18,24 @@
 * Cocoa pods are now automatically collected when their attaching jungle
   logs are quick-mined. They were previously scattered around and not
   collected.
+* Added a category for [Coral](https://minecraft.wiki/w/Coral), [Dead
+  Coral](https://minecraft.wiki/w/Dead_Coral), [Coral
+  Fans](https://minecraft.wiki/w/Coral_Fans), [Dead Coral
+  Fans](https://minecraft.wiki/w/Dead_Coral_Fans), [Coral
+  Blocks](https://minecraft.wiki/w/Coral_Blocks), and [Dead Coral
+  Blocks](https://minecraft.wiki/w/Dead_Coral_Block). These require
+  pickaxes with Silk Touch, except for Coral Blocks that can also be
+  quick-mined with a non-silk-touch pickaxe (although doing so kills the
+  corals). Mining non-block corals or fans do not consume tool
+  durability. Mining Coral Blocks also mines non-block Corals, Coral Fans,
+  and [Sea Pickles](https://minecraft.wiki/w/Sea_Pickle) attached to them
+  with no tool durability nor hunger bar consumption, but non-block Corals
+  and Fans are destroyed in this case because that's what happens in
+  vanilla Minecraft.
+* Added [Sea Pickle](https://minecraft.wiki/w/Sea_Pickle) to the category
+  **Plants and Crops**. It requires shears to quick-mine, and does not
+  consume tool durability. Yes I know sea pickle isn't a plant but
+  Minecraft treats it as so. It's not my fault.
 
 ## 1.6.0 -- 2025-06-19
 

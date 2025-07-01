@@ -20,6 +20,7 @@ const COVERAGE = [
     "bones",
     "bookshelves",
     "clayLike",
+    "corals",
     "crystals",
     "dirtLike",
     "glowstoneLike",

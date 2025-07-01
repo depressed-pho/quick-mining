@@ -26,12 +26,6 @@ export abstract class BlockProperties {
      */
     public abstract breakingSoundId(perm: BlockPermutation): string;
 
-    /** See if the block should be protected from getting mined.
-     */
-    public isProtected(_perm: BlockPermutation, _player: Player, _prefs: PlayerPrefs): boolean {
-        return false;
-    }
-
     /** Dependence level of the block.
      *
      * - Level 0 is a free-standing block that doesn't require any
@@ -44,6 +38,12 @@ export abstract class BlockProperties {
      */
     public dependence(_perm: BlockPermutation): number {
         return 0;
+    }
+
+    /** See if the block should be protected from getting mined.
+     */
+    public isProtected(_perm: BlockPermutation, _player: Player, _prefs: PlayerPrefs): boolean {
+        return false;
     }
 
     /** See if a quick mining should be initiated by mining the block using

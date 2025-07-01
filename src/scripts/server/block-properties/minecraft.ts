@@ -2,6 +2,7 @@ const MODULES = [
     "./minecraft/bones.js",
     "./minecraft/bookshelves.js",
     "./minecraft/clay.js",
+    "./minecraft/corals.js",
     "./minecraft/crystals.js",
     "./minecraft/dirt.js",
     "./minecraft/fungi.js",
