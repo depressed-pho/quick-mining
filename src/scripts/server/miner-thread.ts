@@ -97,7 +97,7 @@ export class MinerThread extends Thread {
                     if (!this.#tryMining(block, way, perm))
                         break;
 
-                    if (worldPrefs.consumeHungerBar) {
+                    if (worldPrefs.consumeHungerBar && !this.#isCreative && way === MiningWay.MineRegularly) {
                         if (!this.#consumeHungerBar())
                             break;
                     }

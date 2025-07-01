@@ -4,6 +4,11 @@
 
 * Fixed an issue where changes made to `/qmine-prefs` or `/qmine-admin` GUI
   would not be saved [#7].
+* Fixed an issue where the hunger bar would be consumed when it
+  shouldn't. Specifically, blocks that are mined as a bonus, such as leaves
+  that are broken as a result of nearby logs being mined, no longer
+  consumes the hunger bar. Creative players are also exempted from hunger
+  now.
 * Reimplemented the mining priority system to fix an issue where loots from
   leaves that are broken as a consequence of mining nearby logs could
   sometimes drop without being auto-collected. This also allows us to
