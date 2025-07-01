@@ -5,7 +5,7 @@ import { LootTable, LootPool } from "../../loot-table.js";
 import { treeProps } from "../../tree-properties.js";
 
 // Regular trees.
-for (const tree of ["spruce", "birch", "jungle", "acacia", "dark_oak", "cherry", "pale_oak"]) {
+for (const tree of ["spruce", "birch", "acacia", "dark_oak", "cherry", "pale_oak"]) {
     treeProps.add({
         log:          `minecraft:${tree}_log`,
         wood:         `minecraft:${tree}_wood`,
@@ -40,6 +40,30 @@ treeProps.add({
         "minecraft:azalea_leaves",
         "minecraft:azalea_leaves_flowered"
     ]
+});
+
+// Jungle
+treeProps.add({
+    log:          `minecraft:jungle_log`,
+    wood:         `minecraft:jungle_wood`,
+    strippedLog:  `minecraft:stripped_jungle_log`,
+    strippedWood: `minecraft:stripped_jungle_wood`,
+    leaves: [
+        `minecraft:jungle_leaves`
+    ],
+    miningWay: (_origin: BlockPermutation, perm: BlockPermutation) => {
+        switch (perm.typeId) {
+            case "minecraft:cocoa":
+                // This is not ideal because the direction of the cocoa pod
+                // is not taken into account. We don't know whether the
+                // jungle log this particular cocoa pod is attaching to is
+                // being mined or not.
+                return MiningWay.MineAsABonus;
+
+            default:
+                return MiningWay.LeaveAlone;
+        }
+    }
 });
 
 // Mangrove

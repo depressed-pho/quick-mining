@@ -9,6 +9,9 @@
   sometimes drop without being auto-collected. This also allows us to
   implement quick-mining blocks that are generated with fragile attachments
   such as Coral.
+* Cocoa pods are now automatically collected when their attaching jungle
+  logs are quick-mined. They were previously scattered around and not
+  collected.
 
 ## 1.6.0 -- 2025-06-19
 
