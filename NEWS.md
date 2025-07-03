@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.7.1 -- 2025-07-03
+
+* Fixed an issue where `/qmine-prefs` and `/qmine-admin` would not be
+  usable in a world with cheats disabled.
+
 ## 1.7.0 -- 2025-07-02
 
 * Fixed an issue where changes made to `/qmine-prefs` or `/qmine-admin` GUI

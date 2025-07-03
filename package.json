@@ -1,6 +1,6 @@
 {
   "name": "quick-mining-addon",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Allow players to mine the entire ore veins, trees, and more",
   "scripts": {
     "postinstall": "patch-package",
