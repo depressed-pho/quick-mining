@@ -70,18 +70,23 @@ class CoralBlockProperties extends IgnoringAllStates(BlockProperties) {
     }
 
     public override lootTable(perm: BlockPermutation): LootTable {
-        // Mining coral blocks without silk-touch pick drops dead
-        // counterparts.
-        const deadId = DEAD_CORAL_BLOCK_ID_FOR.get(perm.typeId);
-        if (!deadId)
-            throw new Error(`No dead counterpart was found for ${perm.typeId}`);
+        if (CORAL_BLOCK_IDS.has(perm.typeId)) {
+            // Mining live coral blocks without silk-touch pick drops dead
+            // counterparts.
+            const deadId = DEAD_CORAL_BLOCK_ID_FOR.get(perm.typeId);
+            if (!deadId)
+                throw new Error(`No dead counterpart was found for ${perm.typeId}`);
 
-        return new LootTable()
-            .when(
-                LootCondition.matchTool().enchantment("silk_touch"),
-                [ new LootPool().entry(new ItemStack(perm.typeId)) ])
-            .otherwise(
-                [ new LootPool().entry(new ItemStack(deadId)) ]);
+            return new LootTable()
+                .when(
+                    LootCondition.matchTool().enchantment("silk_touch"),
+                    [ new LootPool().entry(new ItemStack(perm.typeId)) ])
+                .otherwise(
+                    [ new LootPool().entry(new ItemStack(deadId)) ]);
+        }
+        else {
+            return super.lootTable(perm);
+        }
     }
 
     readonly #bonusIDs =

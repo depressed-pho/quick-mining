@@ -1,5 +1,13 @@
 # Release notes
 
+## 1.7.2 -- not released yet
+
+* Fixed an issue where trying to quick-mine Dead Coral Blocks would result
+  in an error saying something like `No dead counterpart was found for
+  minecraft:dead_tube_coral_block`. This was an oversight. The addon was
+  trying to find a dead variant of already dead coral, which obviously
+  didn't exist. Dead corals of course cannot die further.
+
 ## 1.7.1 -- 2025-07-03
 
 * Fixed an issue where `/qmine-prefs` and `/qmine-admin` would not be
