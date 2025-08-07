@@ -262,6 +262,9 @@ export class MinerThread extends Thread {
 
         // Tool enchantments should not apply to bonus mining.
         const tool  = way === MiningWay.MineRegularly ? this.#tool : undefined;
+        // We can't do `block.generateLoot(tool)` unfortunately. On MCBE
+        // 1.21.100 it has a bug where tool enchantments aren't applied
+        // (MCPE-226214).
         const loots = props.lootTable(perm).execute(tool);
         const xp    = props.experience(perm, this.#tool);
         if (this.#playerPrefs.loots.autoCollect) {
