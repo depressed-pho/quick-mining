@@ -206,6 +206,11 @@ export class MinerThread extends Thread {
             way === MiningWay.MineRegularly ||
             way === MiningWay.MineAsABonus);
 
+        // Players might have moved away from this block, and it's
+        // potentially in an unloaded chunk now. Skip it if so.
+        if (!block.isValid)
+            return true;
+
         // Things might have changed since we scanned blocks, as our
         // operation is asynchronous. Check if the block is still the one
         // we expect.
@@ -271,7 +276,8 @@ export class MinerThread extends Thread {
                 for (const stack of loots)
                     this.#dimension.spawnItem(stack, block.location.offset(0.5));
 
-                // We cannot spawn experience orbs with custom values. Shit.
+                // There are no means to spawn experience orbs with an
+                // arbitrary xp value. Shit.
                 for (let i = 0; i < xp; i++)
                     this.#dimension.spawnEntity("minecraft:xp_orb", block.location.offset(0.5));
             }
