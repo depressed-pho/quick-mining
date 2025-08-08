@@ -1,17 +1,18 @@
 # Release notes
 
-## 1.8.0 -- not released yet
+## 1.8.0 -- 2025-08-08
 
 * Updated the addon for Minecraft Bedrock 1.21.100.
-* Eliminated a potential failure mode. When a player initiates a
-  quick-mining for a large blob of blocks and then immediately teleports
-  away, the addon could crash by attempting to break blocks in an unloaded
-  chunk. It now skips over blocks that are no longer loaded.
 * Fixed an issue where trying to quick-mine Dead Coral Blocks would result
   in an error saying something like `No dead counterpart was found for
   minecraft:dead_tube_coral_block`. This was an oversight. The addon was
   trying to find a dead variant of already dead coral, which obviously
   didn't exist. Dead corals of course cannot die further [#8].
+* Eliminated a potential failure case. When a player initiates a
+  quick-mining for a large blob of blocks and then immediately teleports
+  away, the addon could crash by attempting to break blocks in an unloaded
+  chunk. It now skips over blocks that reside in chunks that are no longer
+  loaded.
 
 ## 1.7.1 -- 2025-07-03
 
