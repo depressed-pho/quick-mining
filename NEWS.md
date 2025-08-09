@@ -1,5 +1,12 @@
 # Release notes
 
+## 1.8.1 -- 2025-08-09
+
+* Patched an exploit where players could initiate a quick-mining then
+  immediately switch to an empty hotbar slot in order to prevent the tool
+  from taking damage, or throw the tool away. Now the addon locks the tool
+  in the slot while the quick-mining is ongoing.
+
 ## 1.8.0 -- 2025-08-08
 
 * Updated the addon for Minecraft Bedrock 1.21.100.

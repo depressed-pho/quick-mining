@@ -105,6 +105,7 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
     // We are going to use async/await from here. The event handler itself
     // cannot be asynchronous because it has to call ev.cancel()
     // synchronously.
+    const slot = player.inventory.slot(player.selectedSlotIndex);
     (async () => {
         if (session.runningMiner) {
             // The miner thread this player spawned in the past has not
@@ -114,7 +115,7 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
         else {
             // There are currently no running miner threads spawned by this
             // player. We can spawn one.
-            session.runningMiner = new MinerThread(player, tool, block, perm).start();
+            session.runningMiner = new MinerThread(player, slot, tool, block, perm).start();
             await session.runningMiner.join();
             session.runningMiner = null;
         }

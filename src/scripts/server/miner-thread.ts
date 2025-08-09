@@ -1,5 +1,6 @@
 import { Block, BlockPermutation } from "cicada-lib/block.js";
 import { OrdMap } from "cicada-lib/collections/ordered-map.js";
+import { ContainerSlot, ItemLockMode } from "cicada-lib/container/slot.js";
 import { Dimension } from "cicada-lib/dimension.js";
 import { EquipmentSlot } from "cicada-lib/entity.js";
 import { ItemBag } from "cicada-lib/item/bag.js";
@@ -17,6 +18,7 @@ import { worldPrefs } from "./world-prefs.js";
 export class MinerThread extends Thread {
     readonly #player: Player;
     readonly #playerPrefs: PlayerPrefs;
+    readonly #toolSlot: ContainerSlot;
     readonly #tool: ItemStack;
     readonly #dimension: Dimension;
     readonly #origLoc: Location;
@@ -46,10 +48,11 @@ export class MinerThread extends Thread {
             0;
     }
 
-    public constructor(player: Player, tool: ItemStack, origin: Block, perm: BlockPermutation) {
+    public constructor(player: Player, toolSlot: ContainerSlot, tool: ItemStack, origin: Block, perm: BlockPermutation) {
         super();
         this.#player       = player;
         this.#playerPrefs  = player.getSession<PlayerSession>().playerPrefs;
+        this.#toolSlot     = toolSlot;
         this.#tool         = tool;
         this.#dimension    = origin.dimension;
         this.#origLoc      = origin.location;
@@ -85,6 +88,8 @@ export class MinerThread extends Thread {
         }
 
         // The second path: mine all blocks that we have decided to mine.
+        let savedLockMode = this.#toolSlot.lockMode;
+        let slotLocked = false;
         try {
             // We must mine the most fragile blocks first.
             for (const toMine of this.#toMineFor.values().reverse()) {
@@ -105,6 +110,17 @@ export class MinerThread extends Thread {
                     if (timer.elapsedMs >= worldPrefs.timeBudgetInMsPerTick) {
                         this.#flushLoots();
                         this.#soundsPlayed.clear();
+                        /* We are leaving the tick. Before we leave we must
+                         * lock the item in the slot, otherwise players can
+                         * throw it away and protect it from getting
+                         * damage. We must be very careful not to leave it
+                         * locked before terminating the thread.
+                         */
+                        if (!slotLocked) {
+                            if (!this.#isCreative)
+                                this.#toolSlot.lockMode = ItemLockMode.slot;
+                            slotLocked = true;
+                        }
                         yield;
                         timer.reset();
                     }
@@ -112,6 +128,8 @@ export class MinerThread extends Thread {
             }
         }
         finally {
+            if (slotLocked)
+                this.#toolSlot.lockMode = savedLockMode;
             this.#flushLoots();
         }
     }
@@ -228,15 +246,13 @@ export class MinerThread extends Thread {
                 // The item stack this.#tool is only a snapshot of the tool
                 // the player used to initiate quick-mining. At this point
                 // they might have put it in a chest, handed it to another
-                // player, thrown it in lava, or whatever. So we have no
-                // choice but to just reduce the durability of the tool the
-                // player is currently holding in their main hand. Maybe we
-                // can lock the tool in inventory but then we would take a
-                // risk of permanently locking it in case of failure.
+                // player, thrown it in lava, or whatever. But since we
+                // lock the slot before leaving a tick, the original item
+                // is guaranteed to be still there.
                 if (!this.#player.isValid)
                     return false;
 
-                const tool = this.#player.equipment.get(EquipmentSlot.Mainhand);
+                const tool = this.#toolSlot.item!;
                 if (tool && tool.durability) {
                     if (this.#playerPrefs.protection.abortBeforeNamedToolBreaks) {
                         if (tool.nameTag !== undefined &&
@@ -250,11 +266,11 @@ export class MinerThread extends Thread {
                         // tools leaving scraps upon breaking, but there is
                         // currently no mechanism available for us to
                         // customise the behaviour.
-                        this.#player.equipment.delete(EquipmentSlot.Mainhand);
+                        this.#toolSlot.item = null;
                         toolWithstood = false;
                     }
                     else {
-                        this.#player.equipment.set(EquipmentSlot.Mainhand, tool);
+                        this.#toolSlot.item = tool;
                     }
                 }
             }
