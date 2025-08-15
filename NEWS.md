@@ -1,5 +1,16 @@
 # Release notes
 
+## 1.9.0 -- not released yet
+
+* The addon no longer requires Beta APIs or any other experimental features
+  to work.
+* The legacy way of invoking custom commands, namely `;qmine prefs` and
+  `;qmine admin` is now removed. Users must use `/qmine-prefs` and
+  `/qmine-admin` respectively. The legacy commands had been retained for a
+  compatibility reason but it is incompatible with the stable API.
+* Corrected my mistake in the welcome message advertising old names for the
+  custom commands.
+
 ## 1.8.1 -- 2025-08-09
 
 * Patched an exploit where players could initiate a quick-mining then
