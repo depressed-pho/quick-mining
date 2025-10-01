@@ -1,9 +1,10 @@
 # Release notes
 
-## 1.9.0 -- not released yet
+## 1.9.0 -- 2025-10-01
 
 * The addon no longer requires Beta APIs or any other experimental features
-  to work.
+  to work. It's been confirmed to be compatible with Minecraft Bedrock
+  v1.21.111.
 * The legacy way of invoking custom commands, namely `;qmine prefs` and
   `;qmine admin` is now removed. Users must use `/qmine-prefs` and
   `/qmine-admin` respectively. The legacy commands had been retained for a
